@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.users.ProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_users"
+            android:layout_width="@dimen/user_image_size"
+            android:layout_height="@dimen/user_image_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/image_margin"
+            android:layout_marginTop="@dimen/image_margin"
+            android:layout_marginEnd="@dimen/image_margin"
+            android:layout_marginBottom="@dimen/image_margin"
+            android:background="@android:color/white"
+            android:contentDescription="@string/app_name"
+            android:elevation="@dimen/elevation_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CircleImageView"
+            tools:ignore="ImageContrastCheck"
+            tools:src="@tools:sample/avatars" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/img_users"
+            android:layout_alignBottom="@+id/img_users"
+            android:contentDescription="@string/upload"
+            android:src="@drawable/ic_baseline_add_a_photo"
+            app:layout_constraintBottom_toBottomOf="@+id/img_users"
+            app:layout_constraintStart_toEndOf="@+id/img_users" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_upload_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/img_users"
+            android:layout_alignBottom="@+id/img_users"
+            android:contentDescription="@string/upload"
+            android:src="@drawable/ic_baseline_file_upload"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/img_users"
+            app:layout_constraintStart_toEndOf="@+id/img_users" />
+
+        <LinearLayout
+            style="@style/LinearLayoutInventory"
+            android:layout_below="@id/img_users"
+            android:paddingBottom="@dimen/image_margin">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_username"
+                style="@style/TextInputLayoutInventory"
+                android:hint="@string/username"
+                app:endIconDrawable="@drawable/ic_baseline_edit"
+                app:endIconMode="custom"
+                app:startIconDrawable="@drawable/ic_baseline_account_circle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_employee_id_number"
+                style="@style/TextInputLayoutInventory"
+                android:hint="@string/employee_id_number"
+                app:endIconDrawable="@drawable/ic_baseline_edit"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_employee_id_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    tools:ignore="TextContrastCheck,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_email"
+                style="@style/TextInputLayoutInventory"
+                android:hint="@string/email"
+                app:endIconDrawable="@drawable/ic_baseline_verified"
+                app:endIconMode="custom"
+                app:startIconDrawable="@drawable/ic_baseline_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_level"
+                style="@style/TextInputLayoutInventory"
+                android:hint="@string/level"
+                app:startIconDrawable="@drawable/ic_baseline_label">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_position"
+                style="@style/TextInputLayoutInventory"
+                android:hint="@string/position"
+                app:endIconDrawable="@drawable/ic_baseline_edit"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    tools:ignore="TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

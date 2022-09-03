@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.inventories.report.AddReportFragment">
+
+    <LinearLayout style="@style/LinearLayoutInventory">
+
+        <ImageView
+            style="@style/ImageViewInventory"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            style="@style/TextViewInventory"
+            android:layout_gravity="center"
+            android:text="@string/app_name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_procurement_purpose"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/procurement_purpose">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_procurement_purpose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            style="@style/TextViewDialog"
+            android:text="@string/knowing" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_team_leader"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/team_leader">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_team_leader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_date_procurement"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/date"
+            app:endIconDrawable="@drawable/ic_baseline_calendar"
+            app:endIconMode="custom">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_date_procurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date|text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_vice_principal"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/vice_principal">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_vice_principal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            style="@style/TextViewDialog"
+            android:text="@string/approve" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_principal"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/principal">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_principal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_download"
+            style="@style/ButtonInventory"
+            android:layout_width="match_parent"
+            android:layout_gravity="end"
+            android:text="@string/download"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

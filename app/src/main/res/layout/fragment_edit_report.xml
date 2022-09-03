@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.inventories.report.EditReportFragment">
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btn_reject"
+        style="@style/ButtonInventoryTextButton"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="@dimen/fab_margin_end_bottom"
+        android:text="@string/reject"
+        android:visibility="gone"
+        app:icon="@drawable/ic_baseline_reject" />
+
+    <Button
+        android:id="@+id/btn_agree"
+        style="@style/ButtonInventoryTextButton"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin_end_bottom"
+        android:text="@string/agree"
+        android:visibility="gone"
+        app:icon="@drawable/ic_baseline_verified"
+        tools:ignore="TextContrastCheck" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

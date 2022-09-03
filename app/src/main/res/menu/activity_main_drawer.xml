@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_home"
+            android:title="@string/home" />
+    </group>
+
+    <item
+        android:id="@+id/nav_sub_data"
+        android:title="@string/sub_menu_data"
+        android:visible="false">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_grid_placement_for_procurement"
+                    android:icon="@drawable/ic_baseline_procurement"
+                    android:title="@string/procurement" />
+                <item
+                    android:id="@+id/nav_list_placement"
+                    android:icon="@drawable/ic_baseline_placement"
+                    android:title="@string/placement" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/nav_sub_manage"
+        android:title="@string/sub_menu_manage"
+        android:visible="false">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_list_user"
+                    android:icon="@drawable/ic_baseline_manage_accounts"
+                    android:title="@string/user" />
+                <item
+                    android:id="@+id/nav_list_report"
+                    android:icon="@drawable/ic_baseline_report"
+                    android:title="@string/report" />
+                <item
+                    android:id="@+id/nav_list_level"
+                    android:icon="@drawable/ic_baseline_label"
+                    android:title="@string/level" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_sub_addition"
+        android:title="@string/sub_menu_addition"
+        android:visible="false">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_help"
+                    android:icon="@drawable/ic_baseline_help"
+                    android:title="@string/help" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.inventories.procurement.AddOrEditProcurementFragment">
+
+    <LinearLayout style="@style/LinearLayoutInventory">
+
+        <ImageView
+            style="@style/ImageViewInventory"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            style="@style/TextViewInventory"
+            android:layout_gravity="center"
+            android:text="@string/app_name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_procurement"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/procurement">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_procurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_volume"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/volume">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_volume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_unit"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/unit">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_price"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/price">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_description"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/description">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            style="@style/ButtonInventory"
+            android:layout_gravity="end"
+            android:text="@string/save"
+            tools:ignore="TextContrastCheck" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_update"
+            style="@style/ButtonInventory"
+            android:layout_gravity="end"
+            android:text="@string/update"
+            android:visibility="gone"
+            tools:ignore="TextContrastCheck" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

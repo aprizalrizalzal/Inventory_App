@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="id.sch.smkn1batukliang.inventory.ui.home.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_grid_placement_for_procurement"
+            app:destination="@id/nav_grid_placement_for_procurement" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_help"
+            app:destination="@id/nav_help" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_list_procurement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.ListProcurementFragment"
+        android:label="@string/procurement"
+        tools:layout="@layout/fragment_list_procurement">
+        <action
+            android:id="@+id/action_nav_list_procurement_to_nav_grid_placement_for_procurement"
+            app:destination="@id/nav_grid_placement_for_procurement" />
+        <action
+            android:id="@+id/action_nav_list_procurement_to_nav_add_or_edit_procurement"
+            app:destination="@id/nav_add_or_edit_procurement" />
+        <action
+            android:id="@+id/action_nav_list_procurement_to_nav_add_report"
+            app:destination="@id/nav_add_report" />
+        <action
+            android:id="@+id/action_nav_list_procurement_to_nav_list_report"
+            app:destination="@id/nav_list_report" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_grid_placement_for_procurement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment"
+        android:label="@string/procurement"
+        tools:layout="@layout/fragment_grid_placement_for_procurement">
+        <action
+            android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_add_or_edit_procurement"
+            app:destination="@id/nav_add_or_edit_procurement" />
+        <action
+            android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_list_procurement"
+            app:destination="@id/nav_list_procurement" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_or_edit_procurement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.AddOrEditProcurementFragment"
+        android:label="@string/placement"
+        tools:layout="@layout/fragment_add_or_edit_procurement" />
+
+    <fragment
+        android:id="@+id/nav_list_placement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.placement.ListPlacementFragment"
+        android:label="@string/placement"
+        tools:layout="@layout/fragment_list_placement">
+        <action
+            android:id="@+id/action_nav_list_placement_to_nav_add_or_edit_placement"
+            app:destination="@id/nav_add_or_edit_placement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_placement" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_or_edit_placement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.placement.AddOrEditPlacementFragment"
+        android:label="@string/placement"
+        tools:layout="@layout/fragment_add_or_edit_placement" />
+
+    <fragment
+        android:id="@+id/nav_list_user"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.ListUserFragment"
+        android:label="@string/user"
+        tools:layout="@layout/fragment_list_users">
+        <action
+            android:id="@+id/action_nav_list_user_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_user" />
+        <action
+            android:id="@+id/action_nav_list_user_to_nav_sign_up"
+            app:destination="@id/nav_sign_up"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_user" />
+    </fragment>
+
+    <activity
+        android:id="@+id/nav_profile"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity"
+        android:label="@string/profile"
+        tools:layout="@layout/activity_profile" />
+
+    <activity
+        android:id="@+id/nav_sign_up"
+        android:name="id.sch.smkn1batukliang.inventory.ui.auth.SignUpActivity"
+        android:label="activity_sign_up"
+        tools:layout="@layout/activity_sign_up" />
+
+    <fragment
+        android:id="@+id/nav_list_level"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.levels.ListLevelFragment"
+        android:label="@string/level"
+        tools:layout="@layout/fragment_list_level">
+        <action
+            android:id="@+id/action_nav_list_level_to_nav_add_or_edit_level"
+            app:destination="@id/nav_add_or_edit_level"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_level" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_or_edit_level"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.levels.AddOrEditLevelFragment"
+        android:label="@string/level"
+        tools:layout="@layout/fragment_add_or_edit_level" />
+
+    <fragment
+        android:id="@+id/nav_list_report"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.report.ListReportFragment"
+        android:label="@string/report"
+        tools:layout="@layout/fragment_list_report">
+        <action
+            android:id="@+id/action_nav_list_report_to_nav_edit_report"
+            app:destination="@id/nav_edit_report" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_report"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.report.EditReportFragment"
+        android:label="@string/report"
+        tools:layout="@layout/fragment_edit_report" />
+
+    <fragment
+        android:id="@+id/nav_add_report"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.report.AddReportFragment"
+        android:label="@string/report"
+        tools:layout="@layout/fragment_add_report" />
+
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="id.sch.smkn1batukliang.inventory.HelpFragment"
+        android:label="@string/help"
+        tools:layout="@layout/fragment_help" />
+
+</navigation>

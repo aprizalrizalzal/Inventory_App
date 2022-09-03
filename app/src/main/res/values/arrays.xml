@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="levels">
+        <item>@string/admin</item>
+        <item>@string/study_program_leader</item>
+        <item>@string/team_leader</item>
+        <item>@string/vice_principal</item>
+        <item>@string/principal</item>
+    </string-array>
+</resources>
