@@ -49,7 +49,7 @@ public class ListPlacementAdapter extends RecyclerView.Adapter<ListPlacementAdap
     public void onBindViewHolder(@NonNull ListPlacementAdapter.ViewHolder holder, int position) {
         holder.bind(placements.get(position));
         holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(placements.get(holder.getAdapterPosition())));
-        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(placements.get(position)));
+        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(placements.get(holder.getAdapterPosition())));
     }
 
     @Override

@@ -14,13 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
+import id.sch.smkn1batukliang.inventory.adapter.users.levels.ListLevelAdapter;
 import id.sch.smkn1batukliang.inventory.databinding.ListUserBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
 
     private final List<Users> users = new ArrayList<>();
     private OnItemClickCallback onItemClickCallback;
+    private OnItemClickCallbackDelete onItemClickCallbackDelete;
 
     @SuppressLint("NotifyDataSetChanged")
     public void setListUser(List<Users> users) {
@@ -31,6 +34,10 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
 
     public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback;
+    }
+
+    public void setOnItemClickCallbackDelete(OnItemClickCallbackDelete onItemClickCallbackDelete) {
+        this.onItemClickCallbackDelete = onItemClickCallbackDelete;
     }
 
     @NonNull
@@ -44,6 +51,8 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(users.get(position));
         holder.itemView.setOnClickListener(v -> onItemClickCallback.onItemClicked(users.get(holder.getAdapterPosition())));
+        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(users.get(holder.getAdapterPosition())));
+
     }
 
     @Override
@@ -53,6 +62,10 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
 
     public interface OnItemClickCallback {
         void onItemClicked(Users users);
+    }
+
+    public interface OnItemClickCallbackDelete {
+        void onItemClickedDelete(Users users);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

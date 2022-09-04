@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Inventaris SMK Negeri 1 Batukliang</string>
+    <string name="sorry">Maaf %s tidak bisa dihapus</string>
+    <string name="firebase_billing_plans">Paket penagihan Firebase masih menggunakan %s, harus ditingkatkan ke %s</string>
+    <string name="spark">Spark (Tanpa biaya $0/bulan)</string>
+    <string name="blaze">Blaze (Bayar sesuai pemakaian)</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_title">SMK Negeri 1 Batukliang</string>
     <string name="nav_header_subtitle">smkn1batukliang@gmail.com</string>
-    <string name="default_email">smkn1batukliang@gmail.com</string>
+    <string name="default_email">admin@gmail.com</string>
     <string name="admin">Admin</string>
     <string name="teacher">Guru</string>
     <string name="email">Email</string>
@@ -62,6 +66,7 @@
     <string name="registration_failed">Pendaftaran gagal.</string>
     <string name="new_email_required">Email baru diperlukan</string>
     <string name="failed">Gagal</string>
+    <string name="f_delete_users">Apakah Anda yakin ingin menghapus %s</string>
     <string name="f_delete_procurement">Apakah Anda yakin ingin menghapus pengadaan %s</string>
     <string name="f_delete_placement">Apakah Anda yakin ingin menghapus penempatan %s</string>
     <string name="f_delete_report">Apakah Anda yakin ingin menghapus laporan %s</string>

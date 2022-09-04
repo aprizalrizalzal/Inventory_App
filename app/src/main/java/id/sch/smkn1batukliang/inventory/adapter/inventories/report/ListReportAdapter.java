@@ -49,7 +49,7 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(reports.get(position));
         holder.itemView.setOnClickListener(v -> onItemClickCallback.onItemClicked(reports.get(holder.getAdapterPosition())));
-        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(reports.get(position)));
+        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(reports.get(holder.getAdapterPosition())));
     }
 
     @Override

@@ -39,7 +39,6 @@ import java.util.Locale;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -124,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormatId =
-                new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
+        SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
         Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "");
@@ -176,46 +174,47 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Levels levels = dataSnapshot.getValue(Levels.class);
-                        if (levels != null) {
-                            if (users.getAuthId().equals(levels.getUsers().getAuthId())) {
-                                if (users.getLevel() != null && users.getLevel().equals(getString(R.string.admin))) {
-                                    nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
-                                    nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
-                                } else if (users.getLevel() != null && users.getLevel().equals(getString(R.string.teacher))) {
-                                    nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                                    nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
-                                    nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
-                                } else if (users.getLevel() != null
-                                        && users.getLevel().equals(getString(R.string.team_leader))
-                                        || users.getLevel().equals(getString(R.string.vice_principal))
-                                        || users.getLevel().equals(getString(R.string.principal))) {
-                                    nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                                    nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
-                                    nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
-                                    nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
-                                    nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
-                                }
+                        Users lUsers = dataSnapshot.child("users").getValue(Users.class);
+                        if (lUsers != null) {
+                            if (users.getAuthId().equals(lUsers.getAuthId())) {
+                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                            } else if (users.getAuthId().equals(lUsers.getAuthId())
+                                    && lUsers.getLevel().equals(getString(R.string.vice_principal))
+                                    || users.getLevel().equals(getString(R.string.team_leader))
+                                    || users.getLevel().equals(getString(R.string.principal))) {
+                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                                nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
+                                nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
+                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                            } else if (users.getAuthId().equals(lUsers.getAuthId())
+                                    && lUsers.getLevel().equals(getString(R.string.admin))) {
+                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                            } else {
+                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                             }
-                        }else {
-                            nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                            nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                            nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                         }
                     }
+                } else {
+                    nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                    nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                progressDialog.DismissProgressDialog();
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void reload() {

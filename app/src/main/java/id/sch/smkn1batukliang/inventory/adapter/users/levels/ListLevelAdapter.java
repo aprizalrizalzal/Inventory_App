@@ -49,7 +49,7 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
     public void onBindViewHolder(@NonNull ListLevelAdapter.ViewHolder holder, int position) {
         holder.bind(levels.get(position));
         holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(levels.get(holder.getAdapterPosition())));
-        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(levels.get(position)));
+        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(levels.get(holder.getAdapterPosition())));
     }
 
     @Override

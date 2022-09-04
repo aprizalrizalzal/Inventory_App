@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -91,6 +92,7 @@ public class ListUserFragment extends Fragment {
                     adapter.setListUser(users);
                 }
                 adapter.setOnItemClickCallback(this::showSelectedUsers);
+                adapter.setOnItemClickCallbackDelete(this::deleteSelectedUsers);
                 progressDialog.DismissProgressDialog();
             }
         }).addOnFailureListener(e -> {
@@ -104,6 +106,21 @@ public class ListUserFragment extends Fragment {
 
         bundle.putParcelable(EXTRA_USERS, model);
         Navigation.findNavController(view).navigate(R.id.action_nav_list_user_to_nav_profile, bundle);
+    }
+
+    private void deleteSelectedUsers(Users users) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(getString(R.string.delete)).setMessage(getString(R.string.f_delete_users, users.getUsername())).setCancelable(false)
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> deleteUsers(users));
+        builder.show();
+    }
+
+    private void deleteUsers(Users users) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(getString(R.string.sorry, users.getUsername())).setMessage(getString(R.string.firebase_billing_plans, getString(R.string.spark), getString(R.string.blaze))).setCancelable(false)
+                .setNeutralButton(getString(R.string.yes), (dialog, id) -> dialog.cancel());
+        builder.show();
     }
 
     @Override

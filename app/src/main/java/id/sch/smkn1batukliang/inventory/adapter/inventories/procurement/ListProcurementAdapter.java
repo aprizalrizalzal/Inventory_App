@@ -50,8 +50,8 @@ public class ListProcurementAdapter extends RecyclerView.Adapter<ListProcurement
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(procurements.get(position));
-        holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(procurements.get(position)));
-        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(procurements.get(position)));
+        holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(procurements.get(holder.getAdapterPosition())));
+        holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(procurements.get(holder.getAdapterPosition())));
     }
 
     @Override
