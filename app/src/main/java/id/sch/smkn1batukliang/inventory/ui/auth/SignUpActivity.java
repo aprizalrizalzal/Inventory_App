@@ -19,6 +19,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivitySignUpBinding;
 public class SignUpActivity extends AppCompatActivity {
 
     boolean isEmptyFields = false;
+    private String email, password, confirmPassword;
     private FirebaseAuth auth;
     private ActivitySignUpBinding binding;
     private CustomProgressDialog progressDialog;
@@ -38,9 +39,9 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         binding.btnSignUp.setOnClickListener(v -> {
-            String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
-            String password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
-            String confirmPassword = Objects.requireNonNull(binding.tietConfirmPassword.getText()).toString();
+            email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
+            password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
+            confirmPassword = Objects.requireNonNull(binding.tietConfirmPassword.getText()).toString();
 
             isEmptyFields = validateFields(email, password, confirmPassword);
         });
@@ -74,11 +75,11 @@ public class SignUpActivity extends AppCompatActivity {
             binding.tilConfirmPassword.setErrorEnabled(false);
         }
 
-        signUp(email, password);
+        signUp();
         return true;
     }
 
-    private void signUp(String email, String password) {
+    private void signUp() {
         progressDialog.ShowProgressDialog();
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

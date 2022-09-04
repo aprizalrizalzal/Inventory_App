@@ -26,7 +26,7 @@ public class UpdateEmailActivity extends AppCompatActivity {
 
     boolean isEmptyFields = false;
     private FirebaseUser user;
-    private String authId;
+    private String authId, email, newEmail, password;
     private FirebaseFirestore firestore;
     private ActivityUpdateEmailBinding binding;
     private CustomProgressDialog progressDialog;
@@ -50,15 +50,15 @@ public class UpdateEmailActivity extends AppCompatActivity {
         }
 
         binding.btnUpdate.setOnClickListener(v -> {
-            String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
-            String newEmail = Objects.requireNonNull(binding.tietNewEmail.getText()).toString().trim();
-            String password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
+            email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
+            newEmail = Objects.requireNonNull(binding.tietNewEmail.getText()).toString().trim();
+            password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
 
-            isEmptyFields = validateFields(email, newEmail, password);
+            isEmptyFields = validateFields();
         });
     }
 
-    private boolean validateFields(String email, String newEmail, String password) {
+    private boolean validateFields() {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
             return false;
@@ -80,18 +80,18 @@ public class UpdateEmailActivity extends AppCompatActivity {
             binding.tilPassword.setErrorEnabled(false);
         }
 
-        updateEmail(email, newEmail, password);
+        updateEmail();
         return true;
     }
 
-    private void updateEmail(String email, String newEmail, String password) {
+    private void updateEmail() {
         progressDialog.ShowProgressDialog();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         user.reauthenticate(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 user.updateEmail(newEmail).addOnCompleteListener(command -> {
                     if (command.isSuccessful()) {
-                        updateNewEmail(newEmail);
+                        updateNewEmail();
                         Toast.makeText(getApplicationContext(), getString(R.string.successfully) + newEmail, Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
@@ -111,7 +111,7 @@ public class UpdateEmailActivity extends AppCompatActivity {
         });
     }
 
-    private void updateNewEmail(String newEmail) {
+    private void updateNewEmail() {
         progressDialog.ShowProgressDialog();
         DocumentReference documentReference = firestore.collection("users").document(authId);
         documentReference.update("email", newEmail)

@@ -7,21 +7,17 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.lang.reflect.Type;
 
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHelpBinding;
@@ -99,9 +95,9 @@ public class HelpFragment extends Fragment {
         binding.tietWhatsappNumber.setText(lUsers.getWhatsappNumber());
         binding.tietWhatsappNumber.setInputType(InputType.TYPE_NULL);
         binding.tietWhatsappNumber.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus){
+            if (hasFocus) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://wa.me/"+lUsers.getWhatsappNumber()));
+                intent.setData(Uri.parse("https://wa.me/" + lUsers.getWhatsappNumber()));
                 requireActivity().startActivity(intent);
             }
         });

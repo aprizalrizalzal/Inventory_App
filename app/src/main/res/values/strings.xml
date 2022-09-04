@@ -109,7 +109,7 @@
     <string name="up_down_report">Kirim dan unduh laporan</string>
     <string name="download_report_denied">Unduh laporan tidak bisa, izin ditolak</string>
     <string name="no_data_available_procurement">Tidak ada data pengadaan yang tersedia</string>
-    <string name="no_data_available_placement_for_procurement">Tidak ada data penempatan yang tersedia, silahkan hubungi admin</string>
+    <string name="no_data_available_placement_for_procurement">Tidak ada data penempatan yang tersedia, silahkan hubungi atau chat admin</string>
     <string name="no_data_available_placement">Tidak ada data penempatan yang tersedia</string>
     <string name="no_data_available_report">Tidak ada data laporan yang tersedia</string>
     <string name="no_data_available_users">Tidak ada data pengguna yang tersedia</string>
@@ -122,4 +122,5 @@
     <string name="password_confirm_required">Konfirmasi kata sandi diperlukan</string>
     <string name="sign_in_to_sign_up">Belum punya akun?</string>
     <string name="whatsapp_number">wa.me/</string>
+    <string name="new_password_required">Kata Sandi baru diperlukan</string>
 </resources>

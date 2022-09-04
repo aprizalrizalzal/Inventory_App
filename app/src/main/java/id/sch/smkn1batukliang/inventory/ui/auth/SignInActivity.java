@@ -18,6 +18,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivitySignInBinding;
 public class SignInActivity extends AppCompatActivity {
 
     boolean isEmptyFields = false;
+    private String email, password;
     private FirebaseAuth auth;
     private ActivitySignInBinding binding;
     private CustomProgressDialog progressDialog;
@@ -38,10 +39,10 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         binding.btnSignIn.setOnClickListener(v -> {
-            String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
-            String password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
+            email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
+            password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
 
-            isEmptyFields = validateFields(email, password);
+            isEmptyFields = validateFields();
         });
 
         binding.tvSignInToSignUp.setOnClickListener(v -> {
@@ -51,7 +52,7 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    private boolean validateFields(String email, String password) {
+    private boolean validateFields() {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
             return false;
@@ -66,11 +67,11 @@ public class SignInActivity extends AppCompatActivity {
             binding.tilPassword.setErrorEnabled(false);
         }
 
-        signIn(email, password);
+        signIn();
         return true;
     }
 
-    private void signIn(String email, String password) {
+    private void signIn() {
         progressDialog.ShowProgressDialog();
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

@@ -1,7 +1,5 @@
 package id.sch.smkn1batukliang.inventory.ui.inventories.procurement;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.inventories.placement.GridPlacementForProcurementAdapter;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentGridPlacementForProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
-import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class GridPlacementForProcurementFragment extends Fragment {
 
@@ -41,7 +38,6 @@ public class GridPlacementForProcurementFragment extends Fragment {
     private DatabaseReference databaseReferencePlacement;
     private GridPlacementForProcurementAdapter adapter;
     private CustomProgressDialog progressDialog;
-    private DatabaseReference referenceLevels;
 
     public GridPlacementForProcurementFragment() {
         // Required empty public constructor
@@ -71,7 +67,6 @@ public class GridPlacementForProcurementFragment extends Fragment {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReferencePlacement = database.getReference("placement");
-        referenceLevels = database.getReference("levels");
 
         adapter = new GridPlacementForProcurementAdapter();
         binding.tvEmptyData.setText(getString(R.string.no_data_available_placement_for_procurement));

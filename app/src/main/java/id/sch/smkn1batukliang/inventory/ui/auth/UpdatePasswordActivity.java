@@ -2,7 +2,6 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -25,6 +24,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
 
     boolean isEmptyFields = false;
     private FirebaseUser user;
+    private String email, password, newPassword;
     private ActivityUpdatePasswordBinding binding;
     private CustomProgressDialog progressDialog;
 
@@ -44,41 +44,41 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         }
 
         binding.btnUpdate.setOnClickListener(v -> {
-            String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
-            String password = Objects.requireNonNull(binding.tietPassword.getText()).toString().trim();
-            String newPassword = Objects.requireNonNull(binding.tietNewPassword.getText()).toString();
+            email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
+            password = Objects.requireNonNull(binding.tietPassword.getText()).toString().trim();
+            newPassword = Objects.requireNonNull(binding.tietNewPassword.getText()).toString();
 
-            isEmptyFields = validateFields(email, password, newPassword);
+            isEmptyFields = validateFields();
         });
     }
 
-    private boolean validateFields(String email, String password, String newPassword) {
-        if (TextUtils.isEmpty(email)) {
+    private boolean validateFields() {
+        if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
             return false;
         } else {
             binding.tilEmail.setErrorEnabled(false);
         }
 
-        if (TextUtils.isEmpty(email)) {
+        if (password.isEmpty()) {
             binding.tilPassword.setError(getString(R.string.password_required));
             return false;
         } else {
             binding.tilPassword.setErrorEnabled(false);
         }
 
-        if (TextUtils.isEmpty(password)) {
-            binding.tilNewPassword.setError(getString(R.string.password_required));
+        if (newPassword.isEmpty()) {
+            binding.tilNewPassword.setError(getString(R.string.new_password_required));
             return false;
         } else {
             binding.tilNewPassword.setErrorEnabled(false);
         }
 
-        updatePassword(email, password, newPassword);
+        updatePassword();
         return true;
     }
 
-    private void updatePassword(String email, String password, String newPassword) {
+    private void updatePassword() {
         progressDialog.ShowProgressDialog();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         user.reauthenticate(credential).addOnCompleteListener(task -> {

@@ -19,6 +19,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     boolean isEmptyFields = false;
     private ActivityForgetPasswordBinding binding;
+    private String email;
     private FirebaseAuth auth;
     private CustomProgressDialog progressDialog;
 
@@ -37,12 +38,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         }
 
         binding.btnReset.setOnClickListener(v -> {
-            String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
-            isEmptyFields = validateFields(email);
+            email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
+            isEmptyFields = validateFields();
         });
     }
 
-    private boolean validateFields(String email) {
+    private boolean validateFields() {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
             return false;

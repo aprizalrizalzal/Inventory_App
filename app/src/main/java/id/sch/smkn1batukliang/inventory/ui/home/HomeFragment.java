@@ -19,7 +19,6 @@ import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 
 public class HomeFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
     private FirebaseAuth auth;
     private View view;
 
@@ -36,7 +35,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
         auth = FirebaseAuth.getInstance();
