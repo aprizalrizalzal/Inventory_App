@@ -32,14 +32,20 @@ public class SignInActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        binding.tvForgetPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
+            startActivity(intent);
+        });
+
         binding.btnSignIn.setOnClickListener(v -> {
             String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
 
             isEmptyFields = validateFields(email, password);
         });
-        binding.tvForgetPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
+
+        binding.tvSignInToSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
             startActivity(intent);
         });
 

@@ -100,7 +100,7 @@ public class AddOrEditLevelFragment extends Fragment {
                     levelUsers = getString(R.string.admin);
                     break;
                 case 1:
-                    levelUsers = getString(R.string.study_program_leader);
+                    levelUsers = getString(R.string.teacher);
                     break;
                 case 2:
                     levelUsers = getString(R.string.team_leader);
@@ -220,8 +220,8 @@ public class AddOrEditLevelFragment extends Fragment {
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users l_user = new Users(users.getAuthId(), users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), dateId, users.getUsername());
-        Levels levels = new Levels(levelId, l_user);
+        Users lUser = new Users(users.getAuthId(), users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), dateId, users.getUsername());
+        Levels levels = new Levels(levelId, lUser);
         databaseReferenceLevels.child(levelId).setValue(levels).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 updateLevelUsers(users.getAuthId());
@@ -238,9 +238,9 @@ public class AddOrEditLevelFragment extends Fragment {
     private void updateLevels(Users users, String userAuthId) {
         progressDialog.ShowProgressDialog();
 
-        Users modelUser = new Users(userAuthId, users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), extraLevels.getUsers().getTimestamp(), users.getUsername());
-        Levels model = new Levels(extraLevels.getLevelId(), modelUser);
-        databaseReferenceLevels.child(extraLevels.getLevelId()).setValue(model).addOnCompleteListener(task -> {
+        Users lUsers = new Users(userAuthId, users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), extraLevels.getUsers().getTimestamp(), users.getUsername());
+        Levels levels = new Levels(extraLevels.getLevelId(), lUsers);
+        databaseReferenceLevels.child(extraLevels.getLevelId()).setValue(levels).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 updateLevelUsers(userAuthId);
             } else {

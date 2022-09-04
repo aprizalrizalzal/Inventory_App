@@ -6,10 +6,10 @@
     <string name="nav_header_subtitle">smkn1batukliang@gmail.com</string>
     <string name="default_email">smkn1batukliang@gmail.com</string>
     <string name="admin">Admin</string>
-    <string name="study_program_leader">Kepala Program Studi</string>
+    <string name="teacher">Guru</string>
     <string name="email">Email</string>
     <string name="password">Kata Sandi</string>
-    <string name="forgetPassword">Lupa Kata Sandi ?</string>
+    <string name="forget_password">Lupa Kata Sandi ?</string>
     <string name="sign_in">Masuk</string>
     <string name="confirm_password">Konfirmasi Sandi</string>
     <string name="sign_up">Daftar</string>
@@ -58,7 +58,7 @@
     <string name="password_required">Kata sandi diperlukan</string>
     <string name="authentication_failed">Otentikasi gagal, Email atau Kata Sandi Anda salah.</string>
     <string name="password_length">Kata sandi tidak boleh kurang dari 8 karakter</string>
-    <string name="invalid_password">Kata Sandi tidak sesuai</string>
+    <string name="invalid_confirm_password">Konfirmasi Kata Sandi tidak sesuai</string>
     <string name="registration_failed">Pendaftaran gagal.</string>
     <string name="new_email_required">Email baru diperlukan</string>
     <string name="failed">Gagal</string>
@@ -114,4 +114,6 @@
     <string name="f_reviewed">%s sedang ditinjau</string>
     <string name="f_agree">%s sudah disetujui</string>
     <string name="f_level">Tingkat %s</string>
+    <string name="password_confirm_required">Konfirmasi kata sandi diperlukan</string>
+    <string name="sign_in_to_sign_up">Belum punya akun?</string>
 </resources>

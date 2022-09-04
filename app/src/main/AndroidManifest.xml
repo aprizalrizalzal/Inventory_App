@@ -55,7 +55,7 @@
         <activity
             android:name=".ui.auth.ForgetPasswordActivity"
             android:exported="false"
-            android:label="@string/forgetPassword"
+            android:label="@string/forget_password"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

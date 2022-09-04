@@ -52,7 +52,7 @@
             android:id="@+id/tv_forget_password"
             style="@style/TextViewInventory"
             android:layout_gravity="end"
-            android:text="@string/forgetPassword"
+            android:text="@string/forget_password"
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
@@ -60,6 +60,13 @@
             style="@style/ButtonInventory"
             android:text="@string/sign_in"
             tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/tv_sign_in_to_sign_up"
+            style="@style/TextViewInventory"
+            android:layout_gravity="center"
+            android:text="@string/sign_in_to_sign_up"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

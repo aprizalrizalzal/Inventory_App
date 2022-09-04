@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnSignUp.setOnClickListener(v -> {
             String email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
-            String confirmPassword = Objects.requireNonNull(binding.tietPassword.getText()).toString();
+            String confirmPassword = Objects.requireNonNull(binding.tietConfirmPassword.getText()).toString();
 
             isEmptyFields = validateFields(email, password, confirmPassword);
         });
@@ -65,13 +65,10 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         if (confirmPassword.isEmpty()) {
-            binding.tilConfirmPassword.setError(getString(R.string.password_required));
-            return false;
-        } else if (confirmPassword.length() < 8) {
-            binding.tilConfirmPassword.setError(getString(R.string.password_length));
+            binding.tilConfirmPassword.setError(getString(R.string.password_confirm_required));
             return false;
         } else if (!confirmPassword.equals(password)) {
-            binding.tilConfirmPassword.setError(getString(R.string.invalid_password));
+            binding.tilConfirmPassword.setError(getString(R.string.invalid_confirm_password));
             return false;
         } else {
             binding.tilConfirmPassword.setErrorEnabled(false);

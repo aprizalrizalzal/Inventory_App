@@ -2,7 +2,7 @@
 <resources>
     <string-array name="levels">
         <item>@string/admin</item>
-        <item>@string/study_program_leader</item>
+        <item>@string/teacher</item>
         <item>@string/team_leader</item>
         <item>@string/vice_principal</item>
         <item>@string/principal</item>

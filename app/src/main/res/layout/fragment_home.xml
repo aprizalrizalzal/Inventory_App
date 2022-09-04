@@ -109,7 +109,6 @@
                         style="@style/TextViewInventory"
                         android:layout_below="@id/img_help"
                         android:layout_centerHorizontal="true"
-                        android:layout_gravity="center"
                         android:text="@string/help" />
 
                 </RelativeLayout>
@@ -151,7 +150,6 @@
                     style="@style/TextViewInventory"
                     android:layout_below="@id/img_sign_out"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
                     android:text="@string/sign_out" />
 
             </RelativeLayout>

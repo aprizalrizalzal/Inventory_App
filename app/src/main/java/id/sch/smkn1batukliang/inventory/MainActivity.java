@@ -128,8 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users users = new Users(authId, authEmail, false, "",
-                "", "", "", dateId, "");
+        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "");
         documentReferenceUser
                 .set(users)
                 .addOnSuccessListener(documentReference -> {
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                                     nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
                                     nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
                                     nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
-                                } else if (users.getLevel() != null && users.getLevel().equals(getString(R.string.study_program_leader))) {
+                                } else if (users.getLevel() != null && users.getLevel().equals(getString(R.string.teacher))) {
                                     nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
                                     nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
@@ -200,10 +199,11 @@ public class MainActivity extends AppCompatActivity {
                                     nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                                 }
-
-                            } else {
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                             }
+                        }else {
+                            nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                            nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                            nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                         }
                     }
                 }
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             int id = navDestination.getId();
-            if (id == R.id.nav_grid_placement_for_procurement){
+            if (id == R.id.nav_grid_placement_for_procurement) {
                 navigationView.setCheckedItem(R.id.nav_grid_placement_for_procurement);
             }
             if (id == R.id.nav_home
