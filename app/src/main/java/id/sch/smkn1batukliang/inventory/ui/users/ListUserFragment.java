@@ -60,6 +60,7 @@ public class ListUserFragment extends Fragment {
         collectionReferenceUsers = firestore.collection("users");
 
         adapter = new ListUserAdapter();
+        binding.tvEmptyData.setText(getString(R.string.no_data_available_users));
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvUsers, binding.tvEmptyData));
 
         binding.rvUsers.setHasFixedSize(true);

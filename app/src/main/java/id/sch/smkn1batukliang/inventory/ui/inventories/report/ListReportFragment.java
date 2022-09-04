@@ -88,6 +88,7 @@ public class ListReportFragment extends Fragment {
         });
 
         adapter = new ListReportAdapter();
+        binding.tvEmptyData.setText(getString(R.string.no_data_available_report));
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvListReport, binding.tvEmptyData));
 
         binding.rvListReport.setHasFixedSize(true);

@@ -63,7 +63,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
@@ -86,6 +85,7 @@ public class AddReportFragment extends Fragment {
     boolean isEmptyFields = false;
     private ArrayAdapter<String> stringAdapter;
     private FragmentAddReportBinding binding;
+    private SimpleDateFormat simpleDateFormatId;
     private View viewBinding;
     private CustomProgressDialog progressDialog;
     private DatabaseReference databaseReferenceProcurement, databaseReferenceReport;
@@ -94,6 +94,7 @@ public class AddReportFragment extends Fragment {
     private Placement extraPlacementForReport;
     private String placementId, placement;
     private String authId, purpose, dateProcurement, teamLeader, einTeamLeader, vicePrincipal, einVicePrincipal, principal, einPrincipal;
+    private String report;
     private File path;
 
     private final ActivityResultLauncher<String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
@@ -205,13 +206,13 @@ public class AddReportFragment extends Fragment {
             }
 
             private void updateTietDateProcurement() {
-                SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
+                simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
                 binding.tietDateProcurement.setText(simpleDateFormatId.format(calendar.getTime()));
             }
         };
 
         binding.tietDateProcurement.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus){
+            if (hasFocus) {
                 new DatePickerDialog(requireContext(), date, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -328,22 +329,19 @@ public class AddReportFragment extends Fragment {
     }
 
     private void purposeProcurement() throws IOException, DocumentException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyhhmmssSSS", new Locale("id", "ID"));
-
-        String format = simpleDateFormat.format(new Date());
-        String fileName = String.format("%s-inventaris-smk-n-1-batukliang-%s.pdf", format, placement.toLowerCase());
 
         String pathDownload = Environment.getExternalStorageDirectory().getPath() + "/Download/";
-        path = new File(pathDownload, fileName);
+        report = String.format("%s inventaris %s.pdf", dateProcurement.toLowerCase(), placement.toLowerCase());
+        path = new File(pathDownload);
 
         boolean directoryFile = path.exists();
 
         if (!directoryFile) {
-            directoryFile = new File(pathDownload).mkdirs();
+            directoryFile = path.mkdirs();
         }
 
         if (directoryFile) {
-            path = new File(pathDownload, fileName);
+            path = new File(pathDownload, report);
         }
 
         FileOutputStream fileOutputStream = new FileOutputStream(path);
@@ -356,15 +354,13 @@ public class AddReportFragment extends Fragment {
 
         document.addCreationDate();
 
-        SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         SimpleDateFormat simpleYearFormatId = new SimpleDateFormat("yyyy", new Locale("id", "ID"));
         String yearProcurement = simpleYearFormatId.format(calendar.getTime());
-        String dateProcurement = simpleDateFormatId.format(calendar.getTime());
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.BLACK);
         Font fontBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLACK);
 
-        Chunk title = new Chunk("DAFTAR USULAN\n" + purpose.toUpperCase() + " " + placement.toUpperCase() + " TAHUN " + yearProcurement + "\nBIDANG SARANA DAN PRASARANA", fontBold);
+        Chunk title = new Chunk("DAFTAR USULAN\n" + purpose.toUpperCase() + " TAHUN " + yearProcurement + "\nBIDANG SARANA DAN PRASARANA", fontBold);
         Paragraph paragraphTitle = new Paragraph(title);
         paragraphTitle.setAlignment(Element.ALIGN_CENTER);
 
@@ -576,36 +572,36 @@ public class AddReportFragment extends Fragment {
 
             document.close();
 
-            downloadAndUploadPdf(fileName, dateProcurement);
+            downloadAndUploadPdf();
 
         }
     }
 
-    private void downloadAndUploadPdf(String report, String dateProcurement) {
+    private void downloadAndUploadPdf() {
         progressDialog.ShowProgressDialog();
-        String pathPdf = "users/procurement/" + authId + "/report/" + placementId + "/" + report;
-        storageReference.child(pathPdf).putFile(Uri.fromFile(path)).addOnSuccessListener(taskSnapshot -> {
+        String pathReport = "users/procurement/" + authId + "/report/" + placementId + "/" + report;
+        storageReference.child(pathReport).putFile(Uri.fromFile(path)).addOnSuccessListener(taskSnapshot -> {
             progressDialog.DismissProgressDialog();
-            downloadUriPdf(report, dateProcurement, pathPdf);
+            downloadUriPdf(pathReport);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void downloadUriPdf(String report, String dateProcurement, String pathPdf) {
+    private void downloadUriPdf(String pathReport) {
         progressDialog.ShowProgressDialog();
-        storageReference.child(pathPdf).getDownloadUrl().addOnSuccessListener(uri -> {
+        storageReference.child(pathReport).getDownloadUrl().addOnSuccessListener(uri -> {
             progressDialog.DismissProgressDialog();
             String pdfLink = uri.toString();
-            createReport(report, dateProcurement, pdfLink);
+            createReport(pdfLink);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void createReport(String report, String dateProcurement, String pdfLink) {
+    private void createReport(String pdfLink) {
         progressDialog.ShowProgressDialog();
         String reportId = UUID.randomUUID().toString();
 

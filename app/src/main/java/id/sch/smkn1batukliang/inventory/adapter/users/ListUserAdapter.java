@@ -14,10 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.adapter.users.levels.ListLevelAdapter;
 import id.sch.smkn1batukliang.inventory.databinding.ListUserBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
 
@@ -83,7 +81,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
                     .into(binding.imgListUsers);
             binding.tvUsername.setText(users.getUsername());
             binding.tvEmail.setText(users.getEmail());
-            binding.tvPosition.setText(users.getPosition());
+            binding.tvWhatsappNumber.setText(users.getWhatsappNumber());
         }
     }
 

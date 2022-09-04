@@ -23,7 +23,6 @@
         android:id="@+id/tv_empty_data"
         style="@style/TextViewInventory"
         android:layout_gravity="center"
-        android:text="@string/no_data_available_users"
         android:textAlignment="center"
         android:textSize="24sp" />
 

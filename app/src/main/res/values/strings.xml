@@ -116,9 +116,10 @@
     <string name="no_data_available_levels">Tidak ada data tingkat pengguna yang tersedia</string>
     <string name="no_data_available">Tidak ada data yang tersedia</string>
     <string name="not_delete_report">Maaf tidak bisa di hapus, hubungi admin</string>
-    <string name="f_reviewed">%s sedang ditinjau</string>
-    <string name="f_agree">%s sudah disetujui</string>
+    <string name="f_reviewed">%s (sedang ditinjau)</string>
+    <string name="f_agree">%s (sudah disetujui)</string>
     <string name="f_level">Tingkat %s</string>
     <string name="password_confirm_required">Konfirmasi kata sandi diperlukan</string>
     <string name="sign_in_to_sign_up">Belum punya akun?</string>
+    <string name="whatsapp_number">wa.me/</string>
 </resources>

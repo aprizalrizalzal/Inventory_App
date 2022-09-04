@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "");
+        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "","");
         documentReferenceUser
                 .set(users)
                 .addOnSuccessListener(documentReference -> {

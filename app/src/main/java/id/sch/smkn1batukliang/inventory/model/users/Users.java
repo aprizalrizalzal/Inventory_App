@@ -16,7 +16,6 @@ public class Users implements Parcelable {
             return new Users[size];
         }
     };
-
     private String authId;
     private String email;
     private boolean emailVerification;
@@ -26,11 +25,13 @@ public class Users implements Parcelable {
     private String position;
     private String timestamp;
     private String username;
+    private String whatsappNumber;
 
     public Users() {
     }
 
-    public Users(String authId, String email, boolean emailVerification, String employeeIdNumber, String photoLink, String level, String position, String timestamp, String username) {
+
+    public Users(String authId, String email, boolean emailVerification, String employeeIdNumber, String photoLink, String level, String position, String timestamp, String username, String whatsappNumber) {
         this.authId = authId;
         this.email = email;
         this.emailVerification = emailVerification;
@@ -40,6 +41,7 @@ public class Users implements Parcelable {
         this.position = position;
         this.timestamp = timestamp;
         this.username = username;
+        this.whatsappNumber = whatsappNumber;
     }
 
     protected Users(Parcel in) {
@@ -52,6 +54,7 @@ public class Users implements Parcelable {
         position = in.readString();
         timestamp = in.readString();
         username = in.readString();
+        whatsappNumber = in.readString();
     }
 
     @Override
@@ -65,6 +68,7 @@ public class Users implements Parcelable {
         dest.writeString(position);
         dest.writeString(timestamp);
         dest.writeString(username);
+        dest.writeString(whatsappNumber);
     }
 
     @Override
@@ -142,5 +146,13 @@ public class Users implements Parcelable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getWhatsappNumber() {
+        return whatsappNumber;
+    }
+
+    public void setWhatsappNumber(String whatsappNumber) {
+        this.whatsappNumber = whatsappNumber;
     }
 }

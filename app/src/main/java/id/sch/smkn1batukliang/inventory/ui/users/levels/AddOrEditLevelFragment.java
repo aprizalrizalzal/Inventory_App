@@ -28,8 +28,8 @@ import java.util.UUID;
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddOrEditLevelBinding;
-import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class AddOrEditLevelFragment extends Fragment {
 
@@ -78,7 +78,7 @@ public class AddOrEditLevelFragment extends Fragment {
         } else {
             collectionReferenceUsers.orderBy("username").get().addOnSuccessListener(queryDocumentSnapshots -> {
                 listUser.clear();
-                if (queryDocumentSnapshots.isEmpty()){
+                if (queryDocumentSnapshots.isEmpty()) {
                     Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
                 } else {
                     for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
@@ -220,7 +220,7 @@ public class AddOrEditLevelFragment extends Fragment {
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users lUser = new Users(users.getAuthId(), users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), dateId, users.getUsername());
+        Users lUser = new Users(users.getAuthId(), users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), dateId, users.getUsername(), users.getWhatsappNumber());
         Levels levels = new Levels(levelId, lUser);
         databaseReferenceLevels.child(levelId).setValue(levels).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -238,7 +238,7 @@ public class AddOrEditLevelFragment extends Fragment {
     private void updateLevels(Users users, String userAuthId) {
         progressDialog.ShowProgressDialog();
 
-        Users lUsers = new Users(userAuthId, users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), extraLevels.getUsers().getTimestamp(), users.getUsername());
+        Users lUsers = new Users(userAuthId, users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), extraLevels.getUsers().getTimestamp(), users.getUsername(), users.getWhatsappNumber());
         Levels levels = new Levels(extraLevels.getLevelId(), lUsers);
         databaseReferenceLevels.child(extraLevels.getLevelId()).setValue(levels).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

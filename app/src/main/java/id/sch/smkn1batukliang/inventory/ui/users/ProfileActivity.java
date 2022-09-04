@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser user;
     private DocumentReference documentReferenceUser;
     private StorageReference storageReference;
-    private String authId, username, employeeIdNumber, position;
+    private String authId, username, employeeIdNumber, whatsappNumber, position;
     private boolean emailVerified;
     private CustomProgressDialog progressDialog;
 
@@ -182,6 +182,30 @@ public class ProfileActivity extends AppCompatActivity {
                         binding.tilEmail.setErrorEnabled(false);
                     }
 
+                    binding.tietWhatsappNumber.setText(users.getWhatsappNumber());
+                    binding.tietWhatsappNumber.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            if (s.length() >= users.getWhatsappNumber().length() || s.length() <= users.getWhatsappNumber().length()) {
+                                binding.tilWhatsappNumber.setEndIconDrawable(R.drawable.ic_baseline_save);
+                                binding.tilWhatsappNumber.setEndIconOnClickListener(v -> {
+                                    whatsappNumber = Objects.requireNonNull(binding.tietWhatsappNumber.getText()).toString().trim();
+                                    updateWhatsappNumber();
+                                });
+                            }
+                        }
+                    });
+
                     binding.tietLevel.setText(users.getLevel());
                     binding.tietLevel.setEnabled(false);
 
@@ -240,6 +264,8 @@ public class ProfileActivity extends AppCompatActivity {
         binding.tietEmployeeIdNumber.setEnabled(false);
         binding.tietEmail.setText(extraUser.getEmail());
         binding.tietEmail.setEnabled(false);
+        binding.tietWhatsappNumber.setText(extraUser.getWhatsappNumber());
+        binding.tietWhatsappNumber.setEnabled(false);
 
         if (!extraUser.isEmailVerification()) {
             binding.tilEmail.setError(getString(R.string.email_not_verified));
@@ -349,6 +375,18 @@ public class ProfileActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void updateWhatsappNumber() {
+        progressDialog.ShowProgressDialog();
+        documentReferenceUser.update("whatsappNumber", whatsappNumber).addOnSuccessListener(unused -> {
+            progressDialog.DismissProgressDialog();
+            binding.tilWhatsappNumber.setEndIconVisible(false);
+            Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         });
     }
 

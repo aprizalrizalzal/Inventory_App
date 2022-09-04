@@ -9,13 +9,19 @@
         android:id="@+id/nav_home"
         android:name="id.sch.smkn1batukliang.inventory.ui.home.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_grid_placement_for_procurement"
-            app:destination="@id/nav_grid_placement_for_procurement" />
+            app:destination="@id/nav_grid_placement_for_procurement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_home" />
         <action
             android:id="@+id/action_nav_home_to_nav_help"
-            app:destination="@id/nav_help" />
+            app:destination="@id/nav_help"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_home" />
     </fragment>
 
     <fragment
@@ -25,16 +31,28 @@
         tools:layout="@layout/fragment_list_procurement">
         <action
             android:id="@+id/action_nav_list_procurement_to_nav_grid_placement_for_procurement"
-            app:destination="@id/nav_grid_placement_for_procurement" />
+            app:destination="@id/nav_grid_placement_for_procurement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_procurement" />
         <action
             android:id="@+id/action_nav_list_procurement_to_nav_add_or_edit_procurement"
-            app:destination="@id/nav_add_or_edit_procurement" />
+            app:destination="@id/nav_add_or_edit_procurement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_procurement" />
         <action
             android:id="@+id/action_nav_list_procurement_to_nav_add_report"
-            app:destination="@id/nav_add_report" />
+            app:destination="@id/nav_add_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_procurement" />
         <action
             android:id="@+id/action_nav_list_procurement_to_nav_list_report"
-            app:destination="@id/nav_list_report" />
+            app:destination="@id/nav_list_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_procurement" />
     </fragment>
 
     <fragment
@@ -44,10 +62,22 @@
         tools:layout="@layout/fragment_grid_placement_for_procurement">
         <action
             android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_add_or_edit_procurement"
-            app:destination="@id/nav_add_or_edit_procurement" />
+            app:destination="@id/nav_add_or_edit_procurement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_grid_placement_for_procurement" />
         <action
             android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_list_procurement"
-            app:destination="@id/nav_list_procurement" />
+            app:destination="@id/nav_list_procurement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_grid_placement_for_procurement" />
+        <action
+            android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_help"
+            app:destination="@id/nav_help"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_grid_placement_for_procurement" />
     </fragment>
 
     <fragment
@@ -132,7 +162,10 @@
         tools:layout="@layout/fragment_list_report">
         <action
             android:id="@+id/action_nav_list_report_to_nav_edit_report"
-            app:destination="@id/nav_edit_report" />
+            app:destination="@id/nav_edit_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_list_report" />
     </fragment>
 
     <fragment

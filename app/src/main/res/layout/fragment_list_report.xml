@@ -23,7 +23,6 @@
         style="@style/TextViewInventory"
         android:textSize="24sp"
         android:layout_gravity="center"
-        android:textAlignment="center"
-        android:text="@string/no_data_available_report"/>
+        android:textAlignment="center"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

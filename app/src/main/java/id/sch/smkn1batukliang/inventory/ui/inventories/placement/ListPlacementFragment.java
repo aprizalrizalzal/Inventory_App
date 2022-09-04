@@ -65,6 +65,7 @@ public class ListPlacementFragment extends Fragment {
         });
 
         adapter = new ListPlacementAdapter();
+        binding.tvEmptyData.setText(getString(R.string.no_data_available_placement));
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvListPlacement, binding.tvEmptyData));
 
         binding.rvListPlacement.setHasFixedSize(true);

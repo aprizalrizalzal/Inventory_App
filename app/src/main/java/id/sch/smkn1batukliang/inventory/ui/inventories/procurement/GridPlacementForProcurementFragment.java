@@ -1,5 +1,7 @@
 package id.sch.smkn1batukliang.inventory.ui.inventories.procurement;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import id.sch.smkn1batukliang.inventory.adapter.inventories.placement.GridPlacem
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentGridPlacementForProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class GridPlacementForProcurementFragment extends Fragment {
 
@@ -38,6 +41,7 @@ public class GridPlacementForProcurementFragment extends Fragment {
     private DatabaseReference databaseReferencePlacement;
     private GridPlacementForProcurementAdapter adapter;
     private CustomProgressDialog progressDialog;
+    private DatabaseReference referenceLevels;
 
     public GridPlacementForProcurementFragment() {
         // Required empty public constructor
@@ -67,14 +71,15 @@ public class GridPlacementForProcurementFragment extends Fragment {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReferencePlacement = database.getReference("placement");
+        referenceLevels = database.getReference("levels");
 
         adapter = new GridPlacementForProcurementAdapter();
-        adapter.registerAdapterDataObserver(
-                new RecyclerViewEmptyData(binding.rvPlacementForProcurement, binding.tvEmptyData));
+        binding.tvEmptyData.setText(getString(R.string.no_data_available_placement_for_procurement));
+        binding.tvEmptyData.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_grid_placement_for_procurement_to_nav_help));
+        adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvPlacementForProcurement, binding.tvEmptyData));
 
         binding.rvPlacementForProcurement.setHasFixedSize(true);
-        binding.rvPlacementForProcurement.setLayoutManager(
-                new GridLayoutManager(requireContext(), 3));
+        binding.rvPlacementForProcurement.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         binding.rvPlacementForProcurement.setAdapter(adapter);
 
         binding.refreshLayout.setOnRefreshListener(() -> {
@@ -106,8 +111,7 @@ public class GridPlacementForProcurementFragment extends Fragment {
                                     placements.add(placement);
                                     adapter.setGridPlacementForProcurement(placements);
                                 }
-                                adapter.setOnItemClickCallback(placemenForProcurement
-                                        -> selectedPlacement(placemenForProcurement));
+                                adapter.setOnItemClickCallback(placemenForProcurement -> selectedPlacement(placemenForProcurement));
                             }
                         }
                         progressDialog.DismissProgressDialog();

@@ -122,6 +122,7 @@ public class ListProcurementFragment extends Fragment {
         databaseReferenceProcurement = database.getReference("procurement");
 
         adapter = new ListProcurementAdapter();
+        binding.tvEmptyData.setText(getString(R.string.no_data_available_procurement));
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvListProcurement, binding.tvEmptyData));
 
         binding.rvListProcurement.setHasFixedSize(true);

@@ -59,6 +59,7 @@ public class ListLevelFragment extends Fragment {
         progressDialog = new CustomProgressDialog(getActivity());
 
         adapter = new ListLevelAdapter();
+        binding.tvEmptyData.setText(getString(R.string.no_data_available_levels));
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvListLevel, binding.tvEmptyData));
 
         binding.rvListLevel.setHasFixedSize(true);
