@@ -1,5 +1,6 @@
 package id.sch.smkn1batukliang.inventory.ui.inventories.placement;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class ListPlacementFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

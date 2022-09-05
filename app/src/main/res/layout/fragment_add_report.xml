@@ -104,6 +104,6 @@
             android:layout_gravity="end"
             android:text="@string/download"
             tools:ignore="TextContrastCheck" />
-    </LinearLayout>
 
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

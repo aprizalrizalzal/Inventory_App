@@ -61,5 +61,4 @@
             tools:ignore="TextContrastCheck" />
 
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>

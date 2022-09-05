@@ -23,6 +23,6 @@
         style="@style/TextViewInventory"
         android:layout_gravity="center"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textColor="@drawable/text_color_clickable" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

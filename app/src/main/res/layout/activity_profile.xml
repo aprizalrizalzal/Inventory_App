@@ -10,6 +10,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,10 +20,10 @@
             android:layout_width="@dimen/user_image_size"
             android:layout_height="@dimen/user_image_size"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/image_margin"
-            android:layout_marginTop="@dimen/image_margin"
-            android:layout_marginEnd="@dimen/image_margin"
-            android:layout_marginBottom="@dimen/image_margin"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:layout_marginTop="@dimen/horizontal_margin"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:layout_marginBottom="@dimen/horizontal_margin"
             android:background="@android:color/white"
             android:contentDescription="@string/app_name"
             android:elevation="@dimen/elevation_image"
@@ -59,8 +60,8 @@
 
         <LinearLayout
             style="@style/LinearLayoutInventory"
-            android:layout_below="@id/img_users"
-            android:paddingBottom="@dimen/image_margin">
+            android:layout_below="@+id/img_users"
+            android:paddingBottom="@dimen/vertical_padding">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_username"
@@ -74,6 +75,7 @@
                     android:id="@+id/tiet_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_account_circle"
                     android:inputType="text"
                     tools:ignore="TextContrastCheck" />
 
@@ -159,9 +161,6 @@
                     tools:ignore="TextContrastCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
-
     </RelativeLayout>
-
 </androidx.core.widget.NestedScrollView>

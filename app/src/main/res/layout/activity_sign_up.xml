@@ -69,7 +69,15 @@
             android:text="@string/sign_up"
             tools:ignore="TextContrastCheck" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_sign_up_to_sign_in"
+            style="@style/TextViewInventory"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/vertical_margin"
+            android:text="@string/sign_up_to_sign_in"
+            android:textColor="@drawable/text_color_clickable"
+            android:textStyle="bold" />
 
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
 

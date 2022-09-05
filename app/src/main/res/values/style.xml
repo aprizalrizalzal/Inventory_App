@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ShapeAppearanceOverlay.App.CircleImageView" parent="">
         <item name="cornerSize">50%</item>
     </style>
@@ -11,24 +12,25 @@
     <style name="LinearLayoutInventory">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/horizontal_margin</item>
         <item name="android:orientation">vertical</item>
     </style>
 
     <style name="ImageMenuInventory">
-        <item name="android:layout_width">@dimen/image_size</item>
-        <item name="android:layout_height">@dimen/image_size</item>
-        <item name="android:layout_marginStart">@dimen/image_margin</item>
-        <item name="android:layout_marginEnd">@dimen/image_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_width">@dimen/image_list_size</item>
+        <item name="android:layout_height">@dimen/image_list_size</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
     <style name="ImageViewInventory">
         <item name="android:layout_width">@dimen/icon_size</item>
         <item name="android:layout_height">@dimen/icon_size</item>
-        <item name="android:layout_marginStart">@dimen/image_margin</item>
-        <item name="android:layout_marginEnd">@dimen/image_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:src">@mipmap/ic_launcher_foreground</item>
     </style>
@@ -36,50 +38,53 @@
     <style name="TextViewInventory">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextViewDialog">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/image_margin</item>
-        <item name="android:layout_marginEnd">@dimen/image_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextInputLayoutInventory" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/image_margin</item>
-        <item name="android:layout_marginEnd">@dimen/image_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
     </style>
 
     <style name="TextInputLayoutInventoryDropdown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/image_margin</item>
-        <item name="android:layout_marginEnd">@dimen/image_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
     </style>
 
     <style name="ButtonInventory">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginStart">@dimen/image_margin</item>
-        <item name="android:layout_marginEnd">@dimen/image_margin</item>
-        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
     </style>
 
     <style name="ButtonInventoryTextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
     </style>
 
 </resources>

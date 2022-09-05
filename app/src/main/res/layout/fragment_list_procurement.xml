@@ -23,8 +23,7 @@
         android:id="@+id/tv_empty_data"
         style="@style/TextViewInventory"
         android:layout_gravity="center"
-        android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textAlignment="center" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

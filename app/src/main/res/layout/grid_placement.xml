@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_horizontal_padding"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -13,13 +12,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_vertical_margin">
+        android:layout_margin="@dimen/vertical_margin">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_grid_placement"
             android:layout_width="match_parent"
             android:layout_height="@dimen/grid_size"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="@dimen/vertical_margin"
             android:background="@color/white"
             android:contentDescription="@string/placement"
             android:elevation="@dimen/elevation_image"
@@ -47,5 +46,4 @@
             tools:text="Pegawai TU" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.cardview.widget.CardView>

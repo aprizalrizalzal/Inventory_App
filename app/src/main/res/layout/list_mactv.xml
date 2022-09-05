@@ -5,6 +5,6 @@
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:maxLines="1"
-    android:padding="@dimen/inventory_padding"
+    android:padding="@dimen/vertical_padding"
     android:textAppearance="@style/TextAppearance.AppCompat"
     tools:text="@string/level" />

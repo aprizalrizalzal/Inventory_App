@@ -119,7 +119,7 @@ public class ListUserFragment extends Fragment {
 
     private void deleteUsers(Users users) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.sorry, users.getUsername())).setMessage(getString(R.string.firebase_billing_plans, getString(R.string.spark), getString(R.string.blaze))).setCancelable(false)
+        builder.setTitle(getString(R.string.sorry)).setMessage(getString(R.string.firebase_billing_plans, getString(R.string.spark), getString(R.string.blaze))).setCancelable(false)
                 .setNeutralButton(getString(R.string.yes), (dialog, id) -> dialog.cancel());
         builder.show();
     }

@@ -34,16 +34,18 @@ public class SignUpActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         binding.btnSignUp.setOnClickListener(v -> {
             email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
             password = Objects.requireNonNull(binding.tietPassword.getText()).toString();
             confirmPassword = Objects.requireNonNull(binding.tietConfirmPassword.getText()).toString();
 
             isEmptyFields = validateFields(email, password, confirmPassword);
+        });
+
+        binding.tvSignUpToSignIn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -94,15 +96,6 @@ public class SignUpActivity extends AppCompatActivity {
             progressDialog.DismissProgressDialog();
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }

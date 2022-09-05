@@ -3,7 +3,6 @@ package id.sch.smkn1batukliang.inventory;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,32 +85,17 @@ public class HelpFragment extends Fragment {
         Glide.with(requireContext()).load(lUsers.getPhotoLink())
                 .placeholder(R.drawable.ic_baseline_account_circle)
                 .into(binding.imgUsers);
-        binding.tietUsername.setText(lUsers.getUsername());
-        binding.tietUsername.setInputType(InputType.TYPE_NULL);
-        binding.tietEmployeeIdNumber.setText(lUsers.getEmployeeIdNumber());
-        binding.tietEmployeeIdNumber.setInputType(InputType.TYPE_NULL);
-        binding.tietEmail.setText(lUsers.getEmail());
-        binding.tietEmail.setInputType(InputType.TYPE_NULL);
-        binding.tietWhatsappNumber.setText(lUsers.getWhatsappNumber());
-        binding.tietWhatsappNumber.setInputType(InputType.TYPE_NULL);
-        binding.tietWhatsappNumber.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://wa.me/" + lUsers.getWhatsappNumber()));
-                requireActivity().startActivity(intent);
-            }
+        binding.tvUsername.setText(lUsers.getUsername());
+        binding.tvEmployeeIdNumber.setText(lUsers.getEmployeeIdNumber());
+        binding.tvEmail.setText(lUsers.getEmail());
+        binding.tvWhatsappNumber.setText(lUsers.getWhatsappNumber());
+        binding.tvWhatsappNumber.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://wa.me/" + lUsers.getWhatsappNumber()));
+            requireActivity().startActivity(intent);
         });
-
-        if (!lUsers.isEmailVerification()) {
-            binding.tilEmail.setError(getString(R.string.email_not_verified));
-        } else {
-            binding.tilEmail.setErrorEnabled(false);
-        }
-
-        binding.tietLevel.setText(lUsers.getLevel());
-        binding.tietLevel.setInputType(InputType.TYPE_NULL);
-        binding.tietPosition.setText(lUsers.getPosition());
-        binding.tietPosition.setInputType(InputType.TYPE_NULL);
+        binding.tvLevel.setText(lUsers.getLevel());
+        binding.tvPosition.setText(lUsers.getPosition());
     }
 
     @Override
