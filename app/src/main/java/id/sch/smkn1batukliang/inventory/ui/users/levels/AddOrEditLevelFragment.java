@@ -3,6 +3,7 @@ package id.sch.smkn1batukliang.inventory.ui.users.levels;
 import static id.sch.smkn1batukliang.inventory.ui.users.levels.ListLevelFragment.EXTRA_LEVELS;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class AddOrEditLevelFragment extends Fragment {
 
+    private static final String TAG = "AddOrEditLevelFragment";
     private final ArrayList<String> listUser = new ArrayList<>();
     boolean isEmptyFields = false;
     private FragmentAddOrEditLevelBinding binding;
@@ -76,19 +78,20 @@ public class AddOrEditLevelFragment extends Fragment {
             viewFirestoreExtraLevel(extraLevels);
             extraAuthId = extraLevels.getUsers().getAuthId();
         } else {
-            collectionReferenceUsers.orderBy("username").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
                 listUser.clear();
-                if (queryDocumentSnapshots.isEmpty()) {
-                    Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-                } else {
-                    for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                Log.d(TAG, "onCreateView: usersSuccessfully");
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot snapshot : task.getResult()) {
                         listUser.add(snapshot.getString("username"));
                         stringListUserAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_mactv, listUser);
                         binding.mactvUsername.setAdapter(stringListUserAdapter);
                     }
-                    binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> authId = queryDocumentSnapshots.getDocuments().get(position).getString("authId"));
+                    binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> authId = task.getResult().getDocuments().get(position).getString("authId"));
+                } else {
+                    Log.w(TAG, "onCreateView: failure", task.getException());
                 }
-            }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+            });
         }
 
         ArrayAdapter<CharSequence> stringListLevelAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.levels, R.layout.list_mactv);
@@ -198,9 +201,10 @@ public class AddOrEditLevelFragment extends Fragment {
     }
 
     private void changeFirestoreUsers(String authId) {
-        collectionReferenceUsers.document(authId).get().addOnSuccessListener(snapshot -> {
-            if (snapshot.exists()) {
-                Users users = snapshot.toObject(Users.class);
+        collectionReferenceUsers.document(authId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "changeFirestoreUsers: successfully");
+                Users users = task.getResult().toObject(Users.class);
                 if (users != null) {
                     if (extraLevels != null) {
                         updateLevels(users, extraAuthId);
@@ -208,8 +212,10 @@ public class AddOrEditLevelFragment extends Fragment {
                         createLevels(users);
                     }
                 }
+            } else {
+                Log.w(TAG, "changeFirestoreUsers: failure", task.getException());
             }
-        }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+        });
     }
 
     private void createLevels(Users users) {
@@ -222,16 +228,14 @@ public class AddOrEditLevelFragment extends Fragment {
 
         Users lUser = new Users(users.getAuthId(), users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), dateId, users.getUsername(), users.getWhatsappNumber());
         Levels levels = new Levels(levelId, lUser);
-        databaseReferenceLevels.child(levelId).setValue(levels).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                updateLevelUsers(users.getAuthId());
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-            }
+        databaseReferenceLevels.child(levelId).setValue(levels).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "createLevels: successfully");
+            updateLevelUsers(users.getAuthId());
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "createLevels: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -240,25 +244,25 @@ public class AddOrEditLevelFragment extends Fragment {
 
         Users lUsers = new Users(userAuthId, users.getEmail(), users.isEmailVerification(), users.getEmployeeIdNumber(), users.getPhotoLink(), level, users.getPosition(), extraLevels.getUsers().getTimestamp(), users.getUsername(), users.getWhatsappNumber());
         Levels levels = new Levels(extraLevels.getLevelId(), lUsers);
-        databaseReferenceLevels.child(extraLevels.getLevelId()).setValue(levels).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                updateLevelUsers(userAuthId);
-            } else {
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-            }
+        databaseReferenceLevels.child(extraLevels.getLevelId()).setValue(levels).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updateLevels: successfully");
+            updateLevelUsers(userAuthId);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updateLevels: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
     private void updateLevelUsers(String userAuthId) {
-        collectionReferenceUsers.document(userAuthId).update("level", level).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Navigation.findNavController(view).navigateUp();
-                Toast.makeText(requireContext(), getString(R.string.update_level), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(e -> Toast.makeText(requireActivity(), e.toString(), Toast.LENGTH_SHORT).show());
+        collectionReferenceUsers.document(userAuthId).update("level", level).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateLevelUsers: successfully");
+            Navigation.findNavController(view).navigateUp();
+            Toast.makeText(requireContext(), getString(R.string.update_level), Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateLevelUsers: failure", e);
+            Toast.makeText(requireActivity(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+        });
     }
 }

@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.placement;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.inventories.placement.ListPlacementAdapter;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.PlacementItem;
@@ -32,6 +33,7 @@ import id.sch.smkn1batukliang.inventory.model.inventories.placement.PlacementIte
 public class ListPlacementFragment extends Fragment {
 
     public static final String EXTRA_PLACEMENT = "extra_placement";
+    private static final String TAG = "ListPlacementFragment";
     private final ArrayList<Placement> placements = new ArrayList<>();
     private FragmentListPlacementBinding binding;
     private View view;
@@ -84,6 +86,8 @@ public class ListPlacementFragment extends Fragment {
         databaseReferencePlacement.orderByChild("placementItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "onDataChange: placementSuccessfully");
                 placements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -96,13 +100,13 @@ public class ListPlacementFragment extends Fragment {
                         adapter.setOnItemClickCallbackDelete(deletePlacement -> deleteSelectedPlacement(deletePlacement));
                     }
                 }
-                progressDialog.DismissProgressDialog();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "onCancelled: placementFailure", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -126,10 +130,12 @@ public class ListPlacementFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         databaseReferencePlacement.child(placementItem.getPlacementId()).removeValue().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "deletePlacement: successfully");
             listPlacementRealtime();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "deletePlacement: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -3,6 +3,7 @@ package id.sch.smkn1batukliang.inventory;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class HelpFragment extends Fragment {
 
+    private static final String TAG = "HelpFragment";
     private FragmentHelpBinding binding;
     private CustomProgressDialog progressDialog;
     private DatabaseReference referenceLevels;
@@ -62,6 +64,8 @@ public class HelpFragment extends Fragment {
         referenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "onDataChange: adminSuccessfully");
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users lUsers = dataSnapshot.child("users").getValue(Users.class);
@@ -70,12 +74,12 @@ public class HelpFragment extends Fragment {
                         }
                     }
                 }
-                progressDialog.DismissProgressDialog();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
+                Log.w(TAG, "onCancelled: adminFailure", error.toException());
                 Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

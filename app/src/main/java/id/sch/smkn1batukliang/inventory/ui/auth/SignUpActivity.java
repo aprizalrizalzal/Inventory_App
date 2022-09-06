@@ -2,10 +2,9 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +17,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivitySignUpBinding;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private static final String TAG = "SignUpActivity";
     boolean isEmptyFields = false;
     private String email, password, confirmPassword;
     private FirebaseAuth auth;
@@ -85,16 +85,16 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "signUp: successfully");
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
                 finish();
             } else {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "signUp: failure", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.registration_failed), Toast.LENGTH_SHORT).show();
             }
-            progressDialog.DismissProgressDialog();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 

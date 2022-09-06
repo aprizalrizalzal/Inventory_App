@@ -3,6 +3,7 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.placement;
 import static id.sch.smkn1batukliang.inventory.ui.inventories.placement.ListPlacementFragment.EXTRA_PLACEMENT;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,8 @@ import id.sch.smkn1batukliang.inventory.model.inventories.placement.PlacementIte
 
 public class AddOrEditPlacementFragment extends Fragment {
 
-    private final ArrayList<String> listUser = new ArrayList<>();
+    private static final String TAG = "AddOrEditPlacementFragment";
+    private final ArrayList<String> listUsers = new ArrayList<>();
     boolean isEmptyFields = false;
     private FragmentAddOrEditPlacementBinding binding;
     private View view;
@@ -67,7 +69,7 @@ public class AddOrEditPlacementFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         referencePlacement = database.getReference("placement");
 
-        stringAdapter = new ArrayAdapter<>(requireActivity(), R.layout.list_mactv, listUser);
+        stringAdapter = new ArrayAdapter<>(requireActivity(), R.layout.list_mactv, listUsers);
 
         if (getArguments() != null) {
             extraPlacement = getArguments().getParcelable(EXTRA_PLACEMENT);
@@ -78,18 +80,18 @@ public class AddOrEditPlacementFragment extends Fragment {
             extraAuthId = extraPlacement.getAuthId();
             viewExtraPlacement();
         } else {
-            collectionReferenceUsers.orderBy("username").get().addOnSuccessListener(queryDocumentSnapshots -> {
-                listUser.clear();
-                if (queryDocumentSnapshots.isEmpty()){
-                    Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-                }else {
-                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        listUser.add(documentSnapshot.getString("username"));
-                        binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> authId = queryDocumentSnapshots.getDocuments().get(position).getId());
+            collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
+                listUsers.clear();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        listUsers.add(documentSnapshot.getString("username"));
+                        binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> authId = task.getResult().getDocuments().get(position).getId());
                     }
                     binding.mactvUsername.setAdapter(stringAdapter);
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
                 }
-            }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+            });
         }
 
         binding.btnSave.setOnClickListener(v -> {

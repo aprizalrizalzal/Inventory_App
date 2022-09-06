@@ -1,6 +1,7 @@
 package id.sch.smkn1batukliang.inventory.ui.users.levels;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +22,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.users.levels.ListLevelAdapter;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListLevelBinding;
 import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class ListLevelFragment extends Fragment {
 
     public static final String EXTRA_LEVELS = "extra_levels_users";
+    private static final String TAG = "ListLevelFragment";
     private final ArrayList<Levels> listLevel = new ArrayList<>();
     private FragmentListLevelBinding binding;
     private View view;
@@ -82,6 +84,8 @@ public class ListLevelFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listLevel.clear();
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "onDataChange: LevelsSuccessfully");
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Levels levels = dataSnapshot.getValue(Levels.class);
@@ -90,16 +94,16 @@ public class ListLevelFragment extends Fragment {
                             adapter.setListLevel(listLevel);
                         }
                     }
-                    adapter.setOnItemClickCallbackEdit(editLevel ->editSelectedLevels(editLevel));
-                    adapter.setOnItemClickCallbackDelete(deleteLevel ->deleteSelectedLevels(deleteLevel));
+                    adapter.setOnItemClickCallbackEdit(editLevel -> editSelectedLevels(editLevel));
+                    adapter.setOnItemClickCallbackDelete(deleteLevel -> deleteSelectedLevels(deleteLevel));
                 }
-                progressDialog.DismissProgressDialog();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "onCancelled: LevelsFailure", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -123,8 +127,10 @@ public class ListLevelFragment extends Fragment {
     private void deleteLevel(Levels levels) {
         databaseReferenceLevels.child(levels.getLevelId()).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                Log.d(TAG, "deleteLevel: successfully");
                 listLevelRealtime();
             } else {
+                Log.w(TAG, "deleteLevel: failure", task.getException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());

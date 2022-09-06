@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,8 +42,9 @@ import id.sch.smkn1batukliang.inventory.ui.auth.UpdatePasswordActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "ProfileActivity";
     private ActivityProfileBinding binding;
-    private Users extraUser;
+    private Users extraUsers;
     private ActivityResultLauncher<String> resultLauncher;
     private Uri imageUrl;
     private FirebaseAuth auth;
@@ -80,13 +82,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            extraUser = bundle.getParcelable(EXTRA_USERS);
+            extraUsers = bundle.getParcelable(EXTRA_USERS);
         }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if (extraUser != null) {
-                getSupportActionBar().setTitle(extraUser.getUsername());
+            if (extraUsers != null) {
+                getSupportActionBar().setTitle(extraUsers.getUsername());
             }
         }
 
@@ -108,9 +110,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void viewFirestoreUser() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.get().addOnSuccessListener(snapshot -> {
-            if (snapshot.exists()) {
-                Users users = snapshot.toObject(Users.class);
+        documentReferenceUser.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "viewFirestoreUser: successfully");
+                Users users = task.getResult().toObject(Users.class);
                 if (users != null) {
                     Glide.with(getApplicationContext()).load(users.getPhotoLink())
                             .placeholder(R.drawable.ic_baseline_account_circle)
@@ -233,11 +237,10 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     });
                 }
+            } else {
                 progressDialog.DismissProgressDialog();
+                Log.w(TAG, "viewFirestoreUser: failure", task.getException());
             }
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -252,30 +255,30 @@ public class ProfileActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void viewExtraUsers(Users extraUser) {
-        Glide.with(getApplicationContext()).load(extraUser.getPhotoLink())
+    private void viewExtraUsers(Users extraUsers) {
+        Glide.with(getApplicationContext()).load(extraUsers.getPhotoLink())
                 .placeholder(R.drawable.ic_baseline_account_circle)
                 .into(binding.imgUsers);
         binding.fabAddImage.setVisibility(View.GONE);
         binding.fabUploadImage.setVisibility(View.GONE);
-        binding.tietUsername.setText(extraUser.getUsername());
+        binding.tietUsername.setText(extraUsers.getUsername());
         binding.tietUsername.setEnabled(false);
-        binding.tietEmployeeIdNumber.setText(extraUser.getEmployeeIdNumber());
+        binding.tietEmployeeIdNumber.setText(extraUsers.getEmployeeIdNumber());
         binding.tietEmployeeIdNumber.setEnabled(false);
-        binding.tietEmail.setText(extraUser.getEmail());
+        binding.tietEmail.setText(extraUsers.getEmail());
         binding.tietEmail.setEnabled(false);
-        binding.tietWhatsappNumber.setText(extraUser.getWhatsappNumber());
+        binding.tietWhatsappNumber.setText(extraUsers.getWhatsappNumber());
         binding.tietWhatsappNumber.setEnabled(false);
 
-        if (!extraUser.isEmailVerification()) {
+        if (!extraUsers.isEmailVerification()) {
             binding.tilEmail.setError(getString(R.string.email_not_verified));
         } else {
             binding.tilEmail.setErrorEnabled(false);
         }
 
-        binding.tietLevel.setText(extraUser.getLevel());
+        binding.tietLevel.setText(extraUsers.getLevel());
         binding.tietLevel.setEnabled(false);
-        binding.tietPosition.setText(extraUser.getPosition());
+        binding.tietPosition.setText(extraUsers.getPosition());
         binding.tietPosition.setEnabled(false);
     }
 
@@ -293,14 +296,16 @@ public class ProfileActivity extends AppCompatActivity {
         String pathImage = "users/profile/" + authId + "/image/" + authId + ".jpg";
         storageReference.child(pathImage).putFile(imageUrl).addOnSuccessListener(taskSnapshot -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "uploadImage: successfully");
             getUriPhoto(pathImage);
             binding.fabAddImage.setVisibility(View.VISIBLE);
             binding.fabUploadImage.setVisibility(View.GONE);
         }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "uploadImage: failure", e);
             binding.fabAddImage.setVisibility(View.GONE);
             binding.fabUploadImage.setVisibility(View.VISIBLE);
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -308,11 +313,13 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         storageReference.child(pathImage).getDownloadUrl().addOnSuccessListener(uri -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "getUriPhoto: successfully");
             String downloadUri = uri.toString();
             updatePhotoLink(downloadUri);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "getUriPhoto: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -320,10 +327,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("photoLink", downloadUri).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updatePhotoLink: successfully");
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updatePhotoLink: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -331,11 +340,13 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("username", username).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updateUsername: successfully");
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             binding.tilUsername.setEndIconVisible(false);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updateUsername: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -343,11 +354,13 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("employeeIdNumber", employeeIdNumber).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updateEmployeeIdNumber: successfully");
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             binding.tilEmployeeIdNumber.setEndIconVisible(false);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updateEmployeeIdNumber: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -355,6 +368,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         user.sendEmailVerification().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "sendEmailVerification: successfully");
             auth.signOut();
             Toast.makeText(getApplicationContext(), getString(R.string.email_verification_sent, user.getEmail()), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
@@ -362,7 +376,8 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "sendEmailVerification: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -370,11 +385,13 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("emailVerification", true).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updateEmailVerification: successfully");
             binding.tilEmail.setErrorEnabled(false);
             binding.tilEmail.setEndIconOnClickListener(v -> updateEmail(users));
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updateEmailVerification: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -382,11 +399,13 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("whatsappNumber", whatsappNumber).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updateWhatsappNumber: successfully");
             binding.tilWhatsappNumber.setEndIconVisible(false);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updateWhatsappNumber: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -394,11 +413,13 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("position", position).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updatePosition: successfully");
             binding.tilPosition.setEndIconVisible(false);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updatePosition: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -409,7 +430,7 @@ public class ProfileActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_out_nav, menu);
 
         MenuItem itemUpdatePassword = menu.findItem(R.id.action_update_password);
-        if (extraUser != null) {
+        if (extraUsers != null) {
             itemUpdatePassword.setVisible(false);
         } else {
             itemUpdatePassword.setOnMenuItemClickListener(item -> {
@@ -426,8 +447,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         if (user != null) {
-            if (extraUser != null) {
-                viewExtraUsers(extraUser);
+            if (extraUsers != null) {
+                viewExtraUsers(extraUsers);
             } else {
                 viewFirestoreUser();
             }

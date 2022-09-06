@@ -1,6 +1,7 @@
 package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivityForgetPasswordBindin
 
 public class ForgetPasswordActivity extends AppCompatActivity {
 
+    private static final String TAG = "ForgetPasswordActivity";
     boolean isEmptyFields = false;
     private ActivityForgetPasswordBinding binding;
     private String email;
@@ -50,22 +52,22 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         } else {
             binding.tilEmail.setErrorEnabled(false);
         }
-        reset(email);
+        resetPassword(email);
         return true;
     }
 
-    private void reset(String email) {
+    private void resetPassword(String email) {
         progressDialog.ShowProgressDialog();
         auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "resetPassword: successfully");
                 Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             } else {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "resetPassword: failure", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.unregistered_email), Toast.LENGTH_SHORT).show();
             }
-            progressDialog.DismissProgressDialog();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 

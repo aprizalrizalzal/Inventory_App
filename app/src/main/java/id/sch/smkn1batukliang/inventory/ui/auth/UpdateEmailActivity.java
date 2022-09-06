@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity;
 
 public class UpdateEmailActivity extends AppCompatActivity {
 
+    private static final String TAG = "UpdateEmailActivity";
     boolean isEmptyFields = false;
     private FirebaseUser user;
     private String authId, email, newEmail, password;
@@ -89,43 +91,37 @@ public class UpdateEmailActivity extends AppCompatActivity {
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         user.reauthenticate(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                user.updateEmail(newEmail).addOnCompleteListener(command -> {
-                    if (command.isSuccessful()) {
-                        updateNewEmail();
-                        Toast.makeText(getApplicationContext(), getString(R.string.successfully) + newEmail, Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
-                    }
+                user.updateEmail(newEmail).addOnSuccessListener(unused -> {
                     progressDialog.DismissProgressDialog();
+                    Log.d(TAG, "updateEmail: successfully");
+                    updateNewEmail(newEmail);
+                    Toast.makeText(getApplicationContext(), getString(R.string.successfully) + newEmail, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "updateEmail: failure", e);
+                    Toast.makeText(getApplicationContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
                 });
             } else {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "updateEmail: failure", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
             }
-            progressDialog.DismissProgressDialog();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void updateNewEmail() {
+    private void updateNewEmail(String newEmail) {
         progressDialog.ShowProgressDialog();
         DocumentReference documentReference = firestore.collection("users").document(authId);
-        documentReference.update("email", newEmail)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    progressDialog.DismissProgressDialog();
-                }).addOnFailureListener(e -> {
-                    progressDialog.DismissProgressDialog();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+        documentReference.update("email", newEmail).addOnSuccessListener(unused -> {
+            progressDialog.DismissProgressDialog();
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
+            finish();
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "Error updating document", e);
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

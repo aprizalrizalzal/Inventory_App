@@ -1,6 +1,7 @@
 package id.sch.smkn1batukliang.inventory.ui.inventories.procurement;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 public class GridPlacementForProcurementFragment extends Fragment {
 
     public static final String EXTRA_PLACEMENT_FOR_PROCUREMENT = "extra_placement_for_procurement";
+    private static final String TAG = "GridPlacementForProcurementFragment";
     private final ArrayList<Placement> placements = new ArrayList<>();
     private FragmentGridPlacementForProcurementBinding binding;
     private View view;
@@ -93,32 +95,31 @@ public class GridPlacementForProcurementFragment extends Fragment {
 
     private void gridPlacementForProcurementRealtime() {
         progressDialog.ShowProgressDialog();
-        databaseReferencePlacement
-                .orderByChild("placementItem/placement")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        placements.clear();
-                        if (snapshot.exists()) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Placement placement = dataSnapshot.getValue(Placement.class);
-                                if (placement != null && placement.getAuthId().equals(authId)) {
-                                    placements.add(placement);
-                                    adapter.setGridPlacementForProcurement(placements);
-                                }
-                                adapter.setOnItemClickCallback(placemenForProcurement -> selectedPlacement(placemenForProcurement));
-                            }
+        databaseReferencePlacement.orderByChild("placementItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "onDataChange: placementForProcurementSuccessfully");
+                placements.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Placement placement = dataSnapshot.getValue(Placement.class);
+                        if (placement != null && placement.getAuthId().equals(authId)) {
+                            placements.add(placement);
+                            adapter.setGridPlacementForProcurement(placements);
                         }
-                        progressDialog.DismissProgressDialog();
+                        adapter.setOnItemClickCallback(placemenForProcurement -> selectedPlacement(placemenForProcurement));
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        progressDialog.DismissProgressDialog();
-                        Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "onCancelled: placementForProcurementFailure", error.toException());
+                Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

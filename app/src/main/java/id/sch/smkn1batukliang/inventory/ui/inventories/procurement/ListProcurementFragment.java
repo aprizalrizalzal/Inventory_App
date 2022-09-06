@@ -3,6 +3,7 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.procurement;
 import static id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,9 +32,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.inventories.procurement.ListProcurementAdapter;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procurement;
@@ -41,6 +42,7 @@ import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procuremen
 
 public class ListProcurementFragment extends Fragment {
 
+    private static final String TAG = "ListProcurementFragment";
     public static final String EXTRA_PROCUREMENT = "extra_procurement";
     private final ArrayList<Procurement> procurements = new ArrayList<>();
     private double total, totalAmount = 0.0;
@@ -148,41 +150,40 @@ public class ListProcurementFragment extends Fragment {
 
     private void listProcurementRealtime() {
         progressDialog.ShowProgressDialog();
-        databaseReferenceProcurement
-                .orderByChild("procurementItem/procurement")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        procurements.clear();
-                        if (snapshot.exists()) {
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Procurement procurement = dataSnapshot.getValue(Procurement.class);
-                                String placementId = extraPlacementForProcurement
-                                        .getPlacementItem().getPlacementId();
-                                if (procurement != null
-                                        && authId.equals(procurement.getAuthId())
-                                        && placementId.equals(procurement.getPlacementId())) {
-                                    total = procurement.getProcurementItem().getAmount();
-                                    totalAmount = totalAmount + total;
-                                    procurements.add(procurement);
-                                    adapter.setListProcurement(procurements);
-                                }
-                                adapter.setOnItemClickCallbackEdit(procurementEdit
-                                        -> editSelectedProcurement(procurementEdit));
-                                adapter.setOnItemClickCallbackDelete(procurementDelete
-                                        -> deleteSelectedProcurement(procurementDelete));
-                            }
+        databaseReferenceProcurement.orderByChild("procurementItem/procurement").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "onDataChange: procurementSuccessfully");
+                procurements.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Procurement procurement = dataSnapshot.getValue(Procurement.class);
+                        String placementId = extraPlacementForProcurement
+                                .getPlacementItem().getPlacementId();
+                        if (procurement != null
+                                && authId.equals(procurement.getAuthId())
+                                && placementId.equals(procurement.getPlacementId())) {
+                            total = procurement.getProcurementItem().getAmount();
+                            totalAmount = totalAmount + total;
+                            procurements.add(procurement);
+                            adapter.setListProcurement(procurements);
                         }
-                        progressDialog.DismissProgressDialog();
+                        adapter.setOnItemClickCallbackEdit(procurementEdit
+                                -> editSelectedProcurement(procurementEdit));
+                        adapter.setOnItemClickCallbackDelete(procurementDelete
+                                -> deleteSelectedProcurement(procurementDelete));
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        progressDialog.DismissProgressDialog();
-                        Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "onCancelled: procurementFailure", error.toException());
+                Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void editSelectedProcurement(Procurement procurement) {
@@ -208,16 +209,15 @@ public class ListProcurementFragment extends Fragment {
 
     private void deleteGoods(ProcurementItem model) {
         progressDialog.ShowProgressDialog();
-        databaseReferenceProcurement.child(model.getProcurementId()).removeValue()
-                .addOnSuccessListener(unused -> {
-                    progressDialog.DismissProgressDialog();
-                    listProcurementRealtime();
-                })
-                .addOnFailureListener(e -> {
-                    progressDialog.DismissProgressDialog();
-                    Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT)
-                            .show();
-                });
+        databaseReferenceProcurement.child(model.getProcurementId()).removeValue().addOnSuccessListener(unused -> {
+            progressDialog.DismissProgressDialog();
+            Log.d(TAG, "deleteGoods: successfully");
+            listProcurementRealtime();
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "deleteGoods: failure", e);
+            Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
+        });
     }
 
 

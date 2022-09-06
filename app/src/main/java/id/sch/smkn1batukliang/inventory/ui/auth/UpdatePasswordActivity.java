@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity;
 
 public class UpdatePasswordActivity extends AppCompatActivity {
 
+    private static final String TAG = "UpdatePasswordActivity";
     boolean isEmptyFields = false;
     private FirebaseUser user;
     private String email, password, newPassword;
@@ -83,27 +85,24 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         user.reauthenticate(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                user.updatePassword(newPassword).addOnCompleteListener(command -> {
-                    if (command.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                    }
+                user.updatePassword(newPassword).addOnSuccessListener(unused -> {
                     progressDialog.DismissProgressDialog();
+                    Log.d(TAG, "updatePassword: successfully");
+                    Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "updatePassword : failure", e);
+                    Toast.makeText(getApplicationContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
                 });
             } else {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "updatePassword: failure", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
             }
-            progressDialog.DismissProgressDialog();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileUriExposedException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,14 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,6 +82,7 @@ import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class AddReportFragment extends Fragment {
 
+    private static final String TAG = "AddReportFragment";
     private final Calendar calendar = Calendar.getInstance();
     private final ArrayList<Procurement> procurements = new ArrayList<>();
     private final ArrayList<String> listUser = new ArrayList<>();
@@ -88,6 +92,7 @@ public class AddReportFragment extends Fragment {
     private SimpleDateFormat simpleDateFormatId;
     private View viewBinding;
     private CustomProgressDialog progressDialog;
+    private CollectionReference collectionReferenceUsers;
     private DatabaseReference databaseReferenceProcurement, databaseReferenceReport;
     private StorageReference storageReference;
     private double total, totalAmount = 0.0;
@@ -102,7 +107,8 @@ public class AddReportFragment extends Fragment {
             try {
                 purposeProcurement();
             } catch (IOException | DocumentException e) {
-                Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "createPurposeProcurement: failure", e);
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
             Toast.makeText(requireContext(), getString(R.string.download_report), Toast.LENGTH_SHORT).show();
         } else {
@@ -145,49 +151,10 @@ public class AddReportFragment extends Fragment {
         stringAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_mactv, listUser);
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceUsers = firestore.collection("users");
+        collectionReferenceUsers = firestore.collection("users");
 
-        collectionReferenceUsers.orderBy("username").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (queryDocumentSnapshots.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-            } else {
-                for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                    Users users = snapshot.toObject(Users.class);
-                    if (users != null) {
-                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.team_leader))) {
-                            binding.mactvTeamLeader.setText(users.getUsername());
-                            einTeamLeader = users.getEmployeeIdNumber();
-                        }
-                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.vice_principal))) {
-                            binding.mactvVicePrincipal.setText(users.getUsername());
-                            einVicePrincipal = users.getEmployeeIdNumber();
-                        }
-                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.principal))) {
-                            binding.mactvPrincipal.setText(users.getUsername());
-                            einPrincipal = users.getEmployeeIdNumber();
-                        }
-                    }
-                }
-            }
-        }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
-
-        collectionReferenceUsers.orderBy("username").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            listUser.clear();
-            if (queryDocumentSnapshots.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-            } else {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    listUser.add(documentSnapshot.getString("username"));
-                    binding.mactvTeamLeader.setOnItemClickListener((parent, view, position, id) -> einTeamLeader = queryDocumentSnapshots.getDocuments().get(position).getString("employeeIdNumber"));
-                    binding.mactvVicePrincipal.setOnItemClickListener((parent, view, position, id) -> einVicePrincipal = queryDocumentSnapshots.getDocuments().get(position).getString("employeeIdNumber"));
-                    binding.mactvPrincipal.setOnItemClickListener((parent, view, position, id) -> einPrincipal = queryDocumentSnapshots.getDocuments().get(position).getString("employeeIdNumber"));
-                }
-                binding.mactvTeamLeader.setAdapter(stringAdapter);
-                binding.mactvVicePrincipal.setAdapter(stringAdapter);
-                binding.mactvPrincipal.setAdapter(stringAdapter);
-            }
-        }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
-
+        automaticTextInputEditText();
+        selectManualTextInputEditText();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReferenceProcurement = database.getReference("procurement");
@@ -231,7 +198,60 @@ public class AddReportFragment extends Fragment {
         return viewBinding;
     }
 
-    private void listProcurementRealtime() {
+    private void automaticTextInputEditText() {
+        collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "automaticTextInputEditText: successfully");
+                for (DocumentSnapshot snapshot : task.getResult()) {
+                    Users users = snapshot.toObject(Users.class);
+                    if (users != null) {
+                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.team_leader))) {
+                            binding.mactvTeamLeader.setText(users.getUsername());
+                            einTeamLeader = users.getEmployeeIdNumber();
+                        }
+                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.vice_principal))) {
+                            binding.mactvVicePrincipal.setText(users.getUsername());
+                            einVicePrincipal = users.getEmployeeIdNumber();
+                        }
+                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.principal))) {
+                            binding.mactvPrincipal.setText(users.getUsername());
+                            einPrincipal = users.getEmployeeIdNumber();
+                        }
+                    }
+                }
+            } else {
+                Log.w(TAG, "automaticTextInputEditText: failure", task.getException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void selectManualTextInputEditText() {
+        collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "selectManualTextInputEditText: successfully");
+                for (DocumentSnapshot snapshot : task.getResult()) {
+                    Users users = snapshot.toObject(Users.class);
+                    if (users != null) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            listUser.add(documentSnapshot.getString("username"));
+                            binding.mactvTeamLeader.setOnItemClickListener((parent, view, position, id) -> einTeamLeader = task.getResult().getDocuments().get(position).getString("employeeIdNumber"));
+                            binding.mactvVicePrincipal.setOnItemClickListener((parent, view, position, id) -> einVicePrincipal = task.getResult().getDocuments().get(position).getString("employeeIdNumber"));
+                            binding.mactvPrincipal.setOnItemClickListener((parent, view, position, id) -> einPrincipal = task.getResult().getDocuments().get(position).getString("employeeIdNumber"));
+                        }
+                        binding.mactvTeamLeader.setAdapter(stringAdapter);
+                        binding.mactvVicePrincipal.setAdapter(stringAdapter);
+                        binding.mactvPrincipal.setAdapter(stringAdapter);
+                    }
+                }
+            } else {
+                Log.w(TAG, "selectManualTextInputEditText: failure", task.getException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void listDatabaseProcurementReference() {
         progressDialog.ShowProgressDialog();
         databaseReferenceProcurement.orderByChild("procurementItem/procurement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -582,10 +602,12 @@ public class AddReportFragment extends Fragment {
         String pathReport = "users/procurement/" + authId + "/report/" + placementId + "/" + report;
         storageReference.child(pathReport).putFile(Uri.fromFile(path)).addOnSuccessListener(taskSnapshot -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "downloadAndUploadPdf: successfully");
             downloadUriPdf(pathReport);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "downloadAndUploadPdf: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -593,11 +615,13 @@ public class AddReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         storageReference.child(pathReport).getDownloadUrl().addOnSuccessListener(uri -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "downloadUriPdf: successfully");
             String pdfLink = uri.toString();
             createReport(pdfLink);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "downloadUriPdf: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -609,11 +633,43 @@ public class AddReportFragment extends Fragment {
         Report model = new Report(authId, placementId, modelItem);
         databaseReferenceReport.child(reportId).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();
-            listProcurementRealtime();
+            Log.d(TAG, "createReport: successfully");
+            listDatabaseProcurementReference();
+            changeDatabaseReportReference();
             previewPdf();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "createReport: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void changeDatabaseReportReference() {
+        databaseReferenceReport.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "onChildAdded:" + snapshot.getKey());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "onChildChanged:" + snapshot.getKey());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onChildRemoved:" + snapshot.getKey());
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "onChildMoved:" + snapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled:" + error.toException());
+            }
         });
     }
 
@@ -627,14 +683,14 @@ public class AddReportFragment extends Fragment {
                 requireActivity().startActivity(intent);
             } catch (FileUriExposedException e) {
                 Navigation.findNavController(viewBinding).navigateUp();
-                Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "previewPdf: failure", e);
             }
         }
     }
 
     @Override
     public void onStart() {
-        listProcurementRealtime();
+        listDatabaseProcurementReference();
         super.onStart();
     }
 }

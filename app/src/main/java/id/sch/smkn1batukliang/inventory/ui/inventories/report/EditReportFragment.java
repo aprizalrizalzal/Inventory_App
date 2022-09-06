@@ -5,6 +5,7 @@ import static id.sch.smkn1batukliang.inventory.ui.inventories.report.ListReportF
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class EditReportFragment extends Fragment {
 
+    private static final String TAG = "EditReportFragment";
     private FragmentEditReportBinding binding;
     private View view;
     private CustomProgressDialog progressDialog;
@@ -95,6 +97,7 @@ public class EditReportFragment extends Fragment {
             databaseReferenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d(TAG, "onDataChange: levelsSuccessfully");
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users users = dataSnapshot.child("users").getValue(Users.class);
                         if (users != null && authId.equals(users.getAuthId())) {
@@ -111,7 +114,8 @@ public class EditReportFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.w(TAG, "onCancelled: levelsFailure", error.toException());
+                    Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -135,14 +139,21 @@ public class EditReportFragment extends Fragment {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "onCreateView: executeFailure", e);
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
 
             InputStream finalInputStream = inputStream;
             handler.post(() -> pdfView.fromStream(finalInputStream)
                     .scrollHandle(new DefaultScrollHandle(requireContext()))
-                    .onLoad(loadPages -> progressDialog.DismissProgressDialog())
-                    .onError(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show())
+                    .onLoad(loadPages -> {
+                        Log.d(TAG, "onCreateView: pdfSuccessfully");
+                        progressDialog.DismissProgressDialog();
+                    })
+                    .onError(e -> {
+                        Log.w(TAG, "onCreateView: pdfFailure", e);
+                        Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                    })
                     .load());
         });
 
@@ -170,36 +181,38 @@ public class EditReportFragment extends Fragment {
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
         databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "rejectReport: successfully");
             Navigation.findNavController(view).navigateUp();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "rejectReport: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
     private void deleteReport(ReportItem reportItem) {
         progressDialog.ShowProgressDialog();
-        databaseReferenceReport.child(reportItem.getReportId()).removeValue()
-                .addOnSuccessListener(unused -> {
-                    progressDialog.DismissProgressDialog();
-                    deleteStorageReport(reportItem);
-                })
-                .addOnFailureListener(e -> {
-                    progressDialog.DismissProgressDialog();
-                    Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT)
-                            .show();
-                });
+        databaseReferenceReport.child(reportItem.getReportId()).removeValue().addOnSuccessListener(unused -> {
+            progressDialog.DismissProgressDialog();
+            Log.d(TAG, "deleteReport: successfully");
+            deleteStorageReport(reportItem);
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "deleteReport: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void deleteStorageReport(ReportItem reportItem) {
         progressDialog.ShowProgressDialog();
         storageReferenceReport.child(extraReport.getAuthId() + "/report/" + extraReport.getPlacementId() + "/" + reportItem.getReport()).delete().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "deleteStorageReport: successfully");
             Navigation.findNavController(view).navigateUp();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT)
-                    .show();
+            Log.w(TAG, "deleteStorageReport: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -219,10 +232,12 @@ public class EditReportFragment extends Fragment {
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
         databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "agreeReport: successfully");
             Navigation.findNavController(view).navigateUp();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "agreeReport: failure", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 }

@@ -3,6 +3,7 @@ package id.sch.smkn1batukliang.inventory;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +45,7 @@ import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private CustomProgressDialog progressDialog;
     private MenuItem itemUpDownReport, itemReport, itemSignOut;
     private NavigationView navigationView;
@@ -109,14 +112,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeFirestoreUser() {
-        documentReferenceUser.get().addOnSuccessListener(snapshot -> {
-            Users users = snapshot.toObject(Users.class);
-            if (users != null) {
-                viewFirestoreUsers();
+        documentReferenceUser.get().addOnCompleteListener(task -> {
+            Users users = task.getResult().toObject(Users.class);
+            if (task.isSuccessful()) {
+                Log.d(TAG, "changeFirestoreUser: successfully");
+                if (users != null) {
+                    viewFirestoreUsers();
+                } else {
+                    createFirestoreUsers();
+                }
             } else {
-                createFirestoreUsers();
+                Log.w(TAG, "changeFirestoreUser: failure", task.getException());
             }
-        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        });
     }
 
     private void createFirestoreUsers() {
@@ -126,25 +135,24 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "","");
-        documentReferenceUser
-                .set(users)
-                .addOnSuccessListener(documentReference -> {
-                    progressDialog.DismissProgressDialog();
-                    viewFirestoreUsers();
-                })
-                .addOnFailureListener(e -> {
-                    progressDialog.DismissProgressDialog();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "", "");
+        documentReferenceUser.set(users).addOnSuccessListener(documentReference -> {
+            Log.d(TAG, "createFirestoreUsers: successfully");
+            progressDialog.DismissProgressDialog();
+            viewFirestoreUsers();
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "createFirestoreUsers: failure", e);
+        });
     }
 
     private void viewFirestoreUsers() {
         progressDialog.ShowProgressDialog();
         Menu nav_Menu = navigationView.getMenu();
-        documentReferenceUser.get().addOnSuccessListener(snapshot -> {
-            if (snapshot.exists()) {
-                Users users = snapshot.toObject(Users.class);
+        documentReferenceUser.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "viewFirestoreUsers: successfully");
+                Users users = task.getResult().toObject(Users.class);
                 if (users != null) {
                     Glide.with(getApplicationContext())
                             .load(users.getPhotoLink())
@@ -160,11 +168,11 @@ public class MainActivity extends AppCompatActivity {
                         changeLevel(nav_Menu, users);
                     }
                 }
+                progressDialog.DismissProgressDialog();
+            } else {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "viewFirestoreUsers: failure", task.getException());
             }
-            progressDialog.DismissProgressDialog();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -172,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         referenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: levelsSuccessfully");
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users lUsers = dataSnapshot.child("users").getValue(Users.class);
@@ -211,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: failureLevels", error.toException());
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

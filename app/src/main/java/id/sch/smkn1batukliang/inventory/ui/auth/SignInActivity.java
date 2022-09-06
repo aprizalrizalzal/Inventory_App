@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivitySignInBinding;
 
 public class SignInActivity extends AppCompatActivity {
 
+    private static final String TAG = "SignInActivity";
     boolean isEmptyFields = false;
     private String email, password;
     private FirebaseAuth auth;
@@ -76,16 +78,16 @@ public class SignInActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "signIn: successfully");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "signIn: failure", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
             }
-            progressDialog.DismissProgressDialog();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 }
