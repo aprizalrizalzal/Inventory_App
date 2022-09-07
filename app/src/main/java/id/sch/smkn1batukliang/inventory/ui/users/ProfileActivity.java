@@ -113,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
         documentReferenceUser.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "viewFirestoreUser: successfully");
+                Log.d(TAG, "viewFirestoreUser: successfully " + documentReferenceUser.getId());
                 Users users = task.getResult().toObject(Users.class);
                 if (users != null) {
                     Glide.with(getApplicationContext()).load(users.getPhotoLink())
@@ -239,7 +239,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "viewFirestoreUser: failure", task.getException());
+                Log.w(TAG, "viewFirestoreUser: failure ", task.getException());
             }
         });
     }
@@ -296,13 +296,13 @@ public class ProfileActivity extends AppCompatActivity {
         String pathImage = "users/profile/" + authId + "/image/" + authId + ".jpg";
         storageReference.child(pathImage).putFile(imageUrl).addOnSuccessListener(taskSnapshot -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "uploadImage: successfully");
+            Log.d(TAG, "uploadImage: successfully " + storageReference.getPath());
             getUriPhoto(pathImage);
             binding.fabAddImage.setVisibility(View.VISIBLE);
             binding.fabUploadImage.setVisibility(View.GONE);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "uploadImage: failure", e);
+            Log.w(TAG, "uploadImage: failure ", e);
             binding.fabAddImage.setVisibility(View.GONE);
             binding.fabUploadImage.setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
@@ -313,12 +313,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         storageReference.child(pathImage).getDownloadUrl().addOnSuccessListener(uri -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "getUriPhoto: successfully");
+            Log.d(TAG, "getUriPhoto: successfully " + pathImage);
             String downloadUri = uri.toString();
             updatePhotoLink(downloadUri);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "getUriPhoto: failure", e);
+            Log.w(TAG, "getUriPhoto: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -327,11 +327,11 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("photoLink", downloadUri).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updatePhotoLink: successfully");
+            Log.d(TAG, "updatePhotoLink: successfully " + downloadUri);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updatePhotoLink: failure", e);
+            Log.w(TAG, "updatePhotoLink: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -340,12 +340,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("username", username).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateUsername: successfully");
+            Log.d(TAG, "updateUsername: successfully " + username);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             binding.tilUsername.setEndIconVisible(false);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateUsername: failure", e);
+            Log.w(TAG, "updateUsername: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -354,12 +354,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("employeeIdNumber", employeeIdNumber).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateEmployeeIdNumber: successfully");
+            Log.d(TAG, "updateEmployeeIdNumber: successfully " + employeeIdNumber);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             binding.tilEmployeeIdNumber.setEndIconVisible(false);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateEmployeeIdNumber: failure", e);
+            Log.w(TAG, "updateEmployeeIdNumber: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -368,7 +368,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         user.sendEmailVerification().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "sendEmailVerification: successfully");
+            Log.d(TAG, "sendEmailVerification: successfully " + user.getEmail());
             auth.signOut();
             Toast.makeText(getApplicationContext(), getString(R.string.email_verification_sent, user.getEmail()), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
@@ -376,7 +376,7 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "sendEmailVerification: failure", e);
+            Log.w(TAG, "sendEmailVerification: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -385,12 +385,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("emailVerification", true).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateEmailVerification: successfully");
+            Log.d(TAG, "updateEmailVerification: successfully " + true);
             binding.tilEmail.setErrorEnabled(false);
             binding.tilEmail.setEndIconOnClickListener(v -> updateEmail(users));
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateEmailVerification: failure", e);
+            Log.w(TAG, "updateEmailVerification: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -399,12 +399,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("whatsappNumber", whatsappNumber).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateWhatsappNumber: successfully");
+            Log.d(TAG, "updateWhatsappNumber: successfully " + whatsappNumber);
             binding.tilWhatsappNumber.setEndIconVisible(false);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateWhatsappNumber: failure", e);
+            Log.w(TAG, "updateWhatsappNumber: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -413,12 +413,12 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog.ShowProgressDialog();
         documentReferenceUser.update("position", position).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updatePosition: successfully");
+            Log.d(TAG, "updatePosition: successfully " + position);
             binding.tilPosition.setEndIconVisible(false);
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updatePosition: failure", e);
+            Log.w(TAG, "updatePosition: failure ", e);
             Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }

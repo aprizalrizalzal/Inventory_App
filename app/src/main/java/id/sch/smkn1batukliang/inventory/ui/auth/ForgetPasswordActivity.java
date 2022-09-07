@@ -61,11 +61,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "resetPassword: successfully");
+                Log.d(TAG, "resetPassword: successfully " + email);
                 Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "resetPassword: failure", task.getException());
+                Log.w(TAG, "resetPassword: failure ", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.unregistered_email), Toast.LENGTH_SHORT).show();
             }
         });

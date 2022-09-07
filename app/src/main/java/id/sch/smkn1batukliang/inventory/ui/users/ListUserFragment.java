@@ -88,7 +88,7 @@ public class ListUserFragment extends Fragment {
         collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "listUserFirestore: successfully");
+                Log.d(TAG, "listUserFirestore: successfully " + collectionReferenceUsers.getId());
                 for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                     users = documentSnapshot.toObject(Users.class);
                     listUser.add(users);

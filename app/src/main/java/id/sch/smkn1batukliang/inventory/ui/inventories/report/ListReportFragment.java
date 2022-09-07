@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +46,6 @@ public class ListReportFragment extends Fragment {
     private View view;
     private String authId;
     private Placement extraPlacementForReport;
-    private Report report;
     private DatabaseReference databaseReferenceReport;
     private StorageReference storageReferenceReport;
     private ListReportAdapter adapter;
@@ -86,7 +87,7 @@ public class ListReportFragment extends Fragment {
         storageReferenceReport = storage.getReference("users/procurement/");
 
         binding.refreshLayout.setOnRefreshListener(() -> {
-            gridReportRealtime();
+            listReportRealtime();
             binding.refreshLayout.setRefreshing(false);
         });
 
@@ -101,17 +102,17 @@ public class ListReportFragment extends Fragment {
         return view;
     }
 
-    private void gridReportRealtime() {
+    private void listReportRealtime() {
         progressDialog.ShowProgressDialog();
-        databaseReferenceReport.orderByChild("reportItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceReport.orderByChild("reportItem/placement").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: reportSuccessfully");
+                Log.d(TAG, "onDataChange: reportSuccessfully " + databaseReferenceReport.getKey());
                 reports.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        report = dataSnapshot.getValue(Report.class);
+                        Report report = dataSnapshot.getValue(Report.class);
                         if (extraPlacementForReport == null) {
                             if (report != null) {
                                 reports.add(report);
@@ -123,8 +124,8 @@ public class ListReportFragment extends Fragment {
                                 adapter.setListReport(reports);
                             }
                         }
-                        adapter.setOnItemClickCallback(showReport -> showSelectedReport());
-                        adapter.setOnItemClickCallbackDelete(deleteReport -> deleteSelectedReport());
+                        adapter.setOnItemClickCallback(showReport -> showSelectedReport(showReport));
+                        adapter.setOnItemClickCallbackDelete(deleteReport -> deleteSelectedReport(deleteReport));
                     }
                 }
             }
@@ -132,26 +133,26 @@ public class ListReportFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: reportFailure", error.toException());
+                Log.w(TAG, "onCancelled: reportFailure ", error.toException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void showSelectedReport() {
+    private void showSelectedReport(Report report) {
         Bundle bundle = new Bundle();
 
         bundle.putParcelable(EXTRA_REPORT, report);
         Navigation.findNavController(view).navigate(R.id.action_nav_list_report_to_nav_edit_report, bundle);
     }
 
-    private void deleteSelectedReport() {
+    private void deleteSelectedReport(Report report) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(getString(R.string.delete)).setMessage(getString(R.string.f_delete_report, report.getReportItem().getReport())).setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
                 .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
                     if (extraPlacementForReport == null) {
-                        deleteReport();
+                        deleteReport(report);
                     } else {
                         Toast.makeText(requireContext(), getString(R.string.not_delete_report), Toast.LENGTH_SHORT).show();
                     }
@@ -159,24 +160,24 @@ public class ListReportFragment extends Fragment {
         builder.show();
     }
 
-    private void deleteReport() {
+    private void deleteReport(Report report) {
         progressDialog.ShowProgressDialog();
         databaseReferenceReport.child(report.getReportItem().getReportId()).removeValue().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "deleteReport: successfully");
-            deleteStorageReport();
+            Log.d(TAG, "deleteReport: successfully " + report.getReportItem().getReportId());
+            deleteStorageReport(report);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "deleteReport: ", e);
         });
     }
 
-    private void deleteStorageReport() {
+    private void deleteStorageReport(Report report) {
         progressDialog.ShowProgressDialog();
         storageReferenceReport.child(report.getAuthId() + "/report/" + report.getPlacementId() + "/" + report.getReportItem().getReport()).delete().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "deleteStorageReport: successfully");
-            gridReportRealtime();
+            Log.d(TAG, "deleteStorageReport: successfully " + storageReferenceReport.getPath());
+            listReportRealtime();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "deleteStorageReport: ", e);
@@ -185,7 +186,7 @@ public class ListReportFragment extends Fragment {
 
     @Override
     public void onStart() {
-        gridReportRealtime();
+        listReportRealtime();
         super.onStart();
     }
 }

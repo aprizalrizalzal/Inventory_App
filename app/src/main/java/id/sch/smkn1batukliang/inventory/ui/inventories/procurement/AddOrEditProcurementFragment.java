@@ -204,12 +204,12 @@ public class AddOrEditProcurementFragment extends Fragment {
 
         databaseReferenceExtraProcurement.child(procurementId).setValue(procurement).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "createProcurement: Successfully");
+            Log.d(TAG, "createProcurement: successfully " + procurementId);
             Navigation.findNavController(view).navigateUp();
             Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "createProcurement: failure", e);
+            Log.w(TAG, "createProcurement: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -226,12 +226,12 @@ public class AddOrEditProcurementFragment extends Fragment {
 
         databaseReferenceExtraProcurement.child(extraProcurement.getProcurementItem().getProcurementId()).setValue(procurement).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateProcurement: successfully");
+            Log.d(TAG, "updateProcurement: successfully " + extraProcurement.getProcurementItem().getProcurementId());
             Navigation.findNavController(view).navigateUp();
             Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateProcurement: failure", e);
+            Log.w(TAG, "updateProcurement: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }

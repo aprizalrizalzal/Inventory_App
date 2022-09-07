@@ -76,7 +76,7 @@ public class GridPlacementForProcurementFragment extends Fragment {
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvPlacementForProcurement, binding.tvEmptyData));
 
         binding.rvPlacementForProcurement.setHasFixedSize(true);
-        binding.rvPlacementForProcurement.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        binding.rvPlacementForProcurement.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.rvPlacementForProcurement.setAdapter(adapter);
 
         binding.refreshLayout.setOnRefreshListener(() -> {
@@ -99,7 +99,7 @@ public class GridPlacementForProcurementFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: placementForProcurementSuccessfully");
+                Log.d(TAG, "onDataChange: placementForProcurementSuccessfully " + databaseReferencePlacement.getKey());
                 placements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -116,7 +116,7 @@ public class GridPlacementForProcurementFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: placementForProcurementFailure", error.toException());
+                Log.w(TAG, "onCancelled: placementForProcurementFailure ", error.toException());
                 Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

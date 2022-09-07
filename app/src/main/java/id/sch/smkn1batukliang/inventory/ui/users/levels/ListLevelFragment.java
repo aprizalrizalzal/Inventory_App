@@ -85,7 +85,7 @@ public class ListLevelFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listLevel.clear();
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: LevelsSuccessfully");
+                Log.d(TAG, "onDataChange: LevelsSuccessfully " +databaseReferenceLevels.getKey());
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Levels levels = dataSnapshot.getValue(Levels.class);
@@ -102,7 +102,7 @@ public class ListLevelFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: LevelsFailure", error.toException());
+                Log.w(TAG, "onCancelled: LevelsFailure ", error.toException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
@@ -127,10 +127,10 @@ public class ListLevelFragment extends Fragment {
     private void deleteLevel(Levels levels) {
         databaseReferenceLevels.child(levels.getLevelId()).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "deleteLevel: successfully");
+                Log.d(TAG, "deleteLevel: successfully " + levels.getLevelId());
                 listLevelRealtime();
             } else {
-                Log.w(TAG, "deleteLevel: failure", task.getException());
+                Log.w(TAG, "deleteLevel: failure ", task.getException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());

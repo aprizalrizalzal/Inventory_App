@@ -93,17 +93,17 @@ public class UpdateEmailActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 user.updateEmail(newEmail).addOnSuccessListener(unused -> {
                     progressDialog.DismissProgressDialog();
-                    Log.d(TAG, "updateEmail: successfully");
+                    Log.d(TAG, "updateEmail: successfully " + email);
                     updateNewEmail(newEmail);
                     Toast.makeText(getApplicationContext(), getString(R.string.successfully) + newEmail, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
-                    Log.w(TAG, "updateEmail: failure", e);
+                    Log.w(TAG, "updateEmail: failure ", e);
                     Toast.makeText(getApplicationContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
                 });
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "updateEmail: failure", task.getException());
+                Log.w(TAG, "updateEmail: failure ", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
             }
         });
@@ -114,13 +114,14 @@ public class UpdateEmailActivity extends AppCompatActivity {
         DocumentReference documentReference = firestore.collection("users").document(authId);
         documentReference.update("email", newEmail).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "updateNewEmail: successfully " + newEmail);
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
             finish();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "Error updating document", e);
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "updateNewEmail: failure", e);
+            Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 

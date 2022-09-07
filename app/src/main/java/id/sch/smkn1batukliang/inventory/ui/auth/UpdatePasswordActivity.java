@@ -87,7 +87,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 user.updatePassword(newPassword).addOnSuccessListener(unused -> {
                     progressDialog.DismissProgressDialog();
-                    Log.d(TAG, "updatePassword: successfully");
+                    Log.d(TAG, "updatePassword: successfully " + email);
                     Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                     startActivity(intent);
@@ -95,12 +95,12 @@ public class UpdatePasswordActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
-                    Log.w(TAG, "updatePassword : failure", e);
+                    Log.w(TAG, "updatePassword : failure ", e);
                     Toast.makeText(getApplicationContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
                 });
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "updatePassword: failure", task.getException());
+                Log.w(TAG, "updatePassword: failure ", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
             }
         });

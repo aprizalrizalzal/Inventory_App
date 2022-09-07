@@ -81,6 +81,7 @@ public class AddOrEditPlacementFragment extends Fragment {
             viewExtraPlacement();
         } else {
             collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
+                Log.d(TAG, "onCreateView: successfully " + collectionReferenceUsers.getId());
                 listUsers.clear();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
@@ -89,7 +90,7 @@ public class AddOrEditPlacementFragment extends Fragment {
                     }
                     binding.mactvUsername.setAdapter(stringAdapter);
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    Log.w(TAG, "onCreateView: failure ", task.getException());
                 }
             });
         }
@@ -170,26 +171,28 @@ public class AddOrEditPlacementFragment extends Fragment {
 
         PlacementItem modelItem = new PlacementItem("", placementId, placement, dateId, username);
         Placement model = new Placement(authId, modelItem);
-        referencePlacement.child(placementId).setValue(model).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Navigation.findNavController(view).navigateUp();
-                Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
-            }
+        referencePlacement.child(placementId).setValue(model).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
+            Log.d(TAG, "createPlacement: successfully " + placementId);
+            Navigation.findNavController(view).navigateUp();
+            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "createPlacement: failure ", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
     private void updatePlacement(PlacementItem placementItem) {
         PlacementItem modelItem = new PlacementItem(placementItem.getPhotoLink(), placementItem.getPlacementId(), placement, placementItem.getTimestamp(), placementItem.getUsername());
         Placement model = new Placement(extraAuthId, modelItem);
-        referenceExtraPlacement.setValue(model).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+        referenceExtraPlacement.setValue(model).addOnSuccessListener(unused -> {
+                Log.d(TAG, "updatePlacement: successfully " + extraAuthId);
                 Navigation.findNavController(view).navigateUp();
                 Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updatePlacement: failure ", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+        });
     }
 }

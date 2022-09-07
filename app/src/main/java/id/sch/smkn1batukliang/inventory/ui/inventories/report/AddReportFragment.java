@@ -25,14 +25,16 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,6 +61,9 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -66,7 +71,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -83,6 +90,8 @@ import id.sch.smkn1batukliang.inventory.model.users.Users;
 public class AddReportFragment extends Fragment {
 
     private static final String TAG = "AddReportFragment";
+    private static final String NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send";
+    private static final String SERVER_KEY = "AAAApKT5jU0:APA91bGra6NJFk8aN2mL5EGrZlml9uS0hWG8MThlbrBbmSP_vwg8SVE8DUOrXSz457a1RTGXaYkWvsP3a3mFzNj6bHqUrzriKrVNO9kpgiMqMgEtFIXbqXlO08rf3P_QWIhpTYYLk2G5";
     private final Calendar calendar = Calendar.getInstance();
     private final ArrayList<Procurement> procurements = new ArrayList<>();
     private final ArrayList<String> listUser = new ArrayList<>();
@@ -94,7 +103,7 @@ public class AddReportFragment extends Fragment {
     private CustomProgressDialog progressDialog;
     private CollectionReference collectionReferenceUsers;
     private DatabaseReference databaseReferenceProcurement, databaseReferenceReport;
-    private StorageReference storageReference;
+    private StorageReference storageReferenceReport;
     private double total, totalAmount = 0.0;
     private Placement extraPlacementForReport;
     private String placementId, placement;
@@ -107,7 +116,7 @@ public class AddReportFragment extends Fragment {
             try {
                 purposeProcurement();
             } catch (IOException | DocumentException e) {
-                Log.w(TAG, "createPurposeProcurement: failure", e);
+                Log.w(TAG, "createPurposeProcurement: failure ", e);
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
             Toast.makeText(requireContext(), getString(R.string.download_report), Toast.LENGTH_SHORT).show();
@@ -161,7 +170,7 @@ public class AddReportFragment extends Fragment {
         databaseReferenceReport = database.getReference("report");
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        storageReferenceReport = storage.getReference("users/procurement/");
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -201,7 +210,7 @@ public class AddReportFragment extends Fragment {
     private void automaticTextInputEditText() {
         collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "automaticTextInputEditText: successfully");
+                Log.d(TAG, "automaticTextInputEditText: successfully " + collectionReferenceUsers.getId());
                 for (DocumentSnapshot snapshot : task.getResult()) {
                     Users users = snapshot.toObject(Users.class);
                     if (users != null) {
@@ -220,7 +229,7 @@ public class AddReportFragment extends Fragment {
                     }
                 }
             } else {
-                Log.w(TAG, "automaticTextInputEditText: failure", task.getException());
+                Log.w(TAG, "automaticTextInputEditText: failure ", task.getException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
@@ -229,7 +238,7 @@ public class AddReportFragment extends Fragment {
     private void selectManualTextInputEditText() {
         collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "selectManualTextInputEditText: successfully");
+                Log.d(TAG, "selectManualTextInputEditText: successfully " + collectionReferenceUsers.getId());
                 for (DocumentSnapshot snapshot : task.getResult()) {
                     Users users = snapshot.toObject(Users.class);
                     if (users != null) {
@@ -245,7 +254,7 @@ public class AddReportFragment extends Fragment {
                     }
                 }
             } else {
-                Log.w(TAG, "selectManualTextInputEditText: failure", task.getException());
+                Log.w(TAG, "selectManualTextInputEditText: failure ", task.getException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
@@ -599,28 +608,28 @@ public class AddReportFragment extends Fragment {
 
     private void downloadAndUploadPdf() {
         progressDialog.ShowProgressDialog();
-        String pathReport = "users/procurement/" + authId + "/report/" + placementId + "/" + report;
-        storageReference.child(pathReport).putFile(Uri.fromFile(path)).addOnSuccessListener(taskSnapshot -> {
+        String pathReport = authId + "/report/" + placementId + "/" + report;
+        storageReferenceReport.child(pathReport).putFile(Uri.fromFile(path)).addOnSuccessListener(taskSnapshot -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "downloadAndUploadPdf: successfully");
+            Log.d(TAG, "downloadAndUploadPdf: successfully " + storageReferenceReport.getPath());
             downloadUriPdf(pathReport);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "downloadAndUploadPdf: failure", e);
+            Log.w(TAG, "downloadAndUploadPdf: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
     private void downloadUriPdf(String pathReport) {
         progressDialog.ShowProgressDialog();
-        storageReference.child(pathReport).getDownloadUrl().addOnSuccessListener(uri -> {
+        storageReferenceReport.child(pathReport).getDownloadUrl().addOnSuccessListener(uri -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "downloadUriPdf: successfully");
+            Log.d(TAG, "downloadUriPdf: successfully " + pathReport);
             String pdfLink = uri.toString();
             createReport(pdfLink);
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "downloadUriPdf: failure", e);
+            Log.w(TAG, "downloadUriPdf: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -633,45 +642,84 @@ public class AddReportFragment extends Fragment {
         Report model = new Report(authId, placementId, modelItem);
         databaseReferenceReport.child(reportId).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "createReport: successfully");
+            Log.d(TAG, "createReport: successfully " + reportId);
             listDatabaseProcurementReference();
-            changeDatabaseReportReference();
+            getTokenForNotification(model);
             previewPdf();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "createReport: failure", e);
+            Log.w(TAG, "createReport: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
-    private void changeDatabaseReportReference() {
-        databaseReferenceReport.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d(TAG, "onChildAdded:" + snapshot.getKey());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d(TAG, "onChildChanged:" + snapshot.getKey());
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "onChildRemoved:" + snapshot.getKey());
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d(TAG, "onChildMoved:" + snapshot.getKey());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "onCancelled:" + error.toException());
+    private void getTokenForNotification(Report model) {
+        collectionReferenceUsers.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
+                for (DocumentSnapshot snapshot : task.getResult()) {
+                    Users users = snapshot.toObject(Users.class);
+                    String tokenId = snapshot.getString("tokenId");
+                    if (users != null && users.getLevel().equals(getString(R.string.admin))) {
+                        Log.d(TAG, "getTokenForNotification: Admin" + tokenId);
+                        sendDataReportAndUser(model, tokenId);
+                    } else if (users != null && users.getLevel().equals(getString(R.string.team_leader))) {
+                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
+                        sendDataReportAndUser(model, tokenId);
+                    } else if (users != null && users.getLevel().equals(getString(R.string.vice_principal))) {
+                        Log.d(TAG, "getTokenForNotification: vicePrincipal" + tokenId);
+                        sendDataReportAndUser(model, tokenId);
+                    } else if (users != null && users.getLevel().equals(getString(R.string.principal))) {
+                        Log.d(TAG, "getTokenForNotification: principal" + tokenId);
+                        sendDataReportAndUser(model, tokenId);
+                    }
+                }
+            } else {
+                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void sendDataReportAndUser(Report model, String tokenId) {
+        JSONObject to = new JSONObject();
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("title", getString(R.string.app_name));
+            data.put("message", model.getReportItem().getReport());
+
+            to.put("to", tokenId);
+            to.put("data", data);
+
+            sendNotification(to);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendNotification(JSONObject to) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NOTIFICATION_URL, to, response -> Log.d(TAG, "sendNotification: " + response), error -> Log.e(TAG, "sendNotification: ", error)) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> map = new HashMap<>();
+                map.put("Authorization", "key=" + SERVER_KEY);
+                map.put("Content-type", "application/json");
+                return map;
+            }
+
+            @Override
+            public String getBodyContentType() {
+
+                return "application/json";
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(request);
+    }
+
 
     private void previewPdf() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -682,8 +730,7 @@ public class AddReportFragment extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 requireActivity().startActivity(intent);
             } catch (FileUriExposedException e) {
-                Navigation.findNavController(viewBinding).navigateUp();
-                Log.w(TAG, "previewPdf: failure", e);
+                Log.w(TAG, "previewPdf: failure ", e);
             }
         }
     }

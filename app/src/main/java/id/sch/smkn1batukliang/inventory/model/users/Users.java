@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Users implements Parcelable {
 
+
     public static final Creator<Users> CREATOR = new Creator<Users>() {
         @Override
         public Users createFromParcel(Parcel in) {
@@ -16,6 +17,7 @@ public class Users implements Parcelable {
             return new Users[size];
         }
     };
+
     private String authId;
     private String email;
     private boolean emailVerification;
@@ -24,14 +26,15 @@ public class Users implements Parcelable {
     private String level;
     private String position;
     private String timestamp;
+    private String tokenId;
     private String username;
     private String whatsappNumber;
+
 
     public Users() {
     }
 
-
-    public Users(String authId, String email, boolean emailVerification, String employeeIdNumber, String photoLink, String level, String position, String timestamp, String username, String whatsappNumber) {
+    public Users(String authId, String email, boolean emailVerification, String employeeIdNumber, String photoLink, String level, String position, String timestamp, String tokenId, String username, String whatsappNumber) {
         this.authId = authId;
         this.email = email;
         this.emailVerification = emailVerification;
@@ -40,6 +43,7 @@ public class Users implements Parcelable {
         this.level = level;
         this.position = position;
         this.timestamp = timestamp;
+        this.tokenId = tokenId;
         this.username = username;
         this.whatsappNumber = whatsappNumber;
     }
@@ -53,27 +57,9 @@ public class Users implements Parcelable {
         level = in.readString();
         position = in.readString();
         timestamp = in.readString();
+        tokenId = in.readString();
         username = in.readString();
         whatsappNumber = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(authId);
-        dest.writeString(email);
-        dest.writeByte((byte) (emailVerification ? 1 : 0));
-        dest.writeString(employeeIdNumber);
-        dest.writeString(photoLink);
-        dest.writeString(level);
-        dest.writeString(position);
-        dest.writeString(timestamp);
-        dest.writeString(username);
-        dest.writeString(whatsappNumber);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public String getAuthId() {
@@ -140,6 +126,14 @@ public class Users implements Parcelable {
         this.timestamp = timestamp;
     }
 
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -154,5 +148,25 @@ public class Users implements Parcelable {
 
     public void setWhatsappNumber(String whatsappNumber) {
         this.whatsappNumber = whatsappNumber;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(authId);
+        dest.writeString(email);
+        dest.writeByte((byte) (emailVerification ? 1 : 0));
+        dest.writeString(employeeIdNumber);
+        dest.writeString(photoLink);
+        dest.writeString(level);
+        dest.writeString(position);
+        dest.writeString(timestamp);
+        dest.writeString(tokenId);
+        dest.writeString(username);
+        dest.writeString(whatsappNumber);
     }
 }

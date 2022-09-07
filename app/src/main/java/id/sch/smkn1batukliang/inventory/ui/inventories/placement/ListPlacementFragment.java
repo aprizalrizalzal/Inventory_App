@@ -87,7 +87,7 @@ public class ListPlacementFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: placementSuccessfully");
+                Log.d(TAG, "onDataChange: placementSuccessfully " + databaseReferencePlacement.getKey());
                 placements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -105,7 +105,7 @@ public class ListPlacementFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: placementFailure", error.toException());
+                Log.w(TAG, "onCancelled: placementFailure ", error.toException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
@@ -130,11 +130,11 @@ public class ListPlacementFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         databaseReferencePlacement.child(placementItem.getPlacementId()).removeValue().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "deletePlacement: successfully");
+            Log.d(TAG, "deletePlacement: successfully " + placementItem.getPlacementId());
             listPlacementRealtime();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "deletePlacement: failure", e);
+            Log.w(TAG, "deletePlacement: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }

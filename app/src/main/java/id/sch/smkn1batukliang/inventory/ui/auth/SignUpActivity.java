@@ -86,13 +86,13 @@ public class SignUpActivity extends AppCompatActivity {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "signUp: successfully");
+                Log.d(TAG, "signUp: successfully " + email);
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
                 finish();
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "signUp: failure", task.getException());
+                Log.w(TAG, "signUp: failure ", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.registration_failed), Toast.LENGTH_SHORT).show();
             }
         });

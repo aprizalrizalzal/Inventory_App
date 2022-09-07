@@ -42,8 +42,8 @@ import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procuremen
 
 public class ListProcurementFragment extends Fragment {
 
-    private static final String TAG = "ListProcurementFragment";
     public static final String EXTRA_PROCUREMENT = "extra_procurement";
+    private static final String TAG = "ListProcurementFragment";
     private final ArrayList<Procurement> procurements = new ArrayList<>();
     private double total, totalAmount = 0.0;
     private Placement extraPlacementForProcurement;
@@ -154,7 +154,7 @@ public class ListProcurementFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: procurementSuccessfully");
+                Log.d(TAG, "onDataChange: procurementSuccessfully " + databaseReferenceProcurement.getKey());
                 procurements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -180,7 +180,7 @@ public class ListProcurementFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: procurementFailure", error.toException());
+                Log.w(TAG, "onCancelled: procurementFailure ", error.toException());
                 Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -211,11 +211,11 @@ public class ListProcurementFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         databaseReferenceProcurement.child(model.getProcurementId()).removeValue().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "deleteGoods: successfully");
+            Log.d(TAG, "deleteGoods: successfully " + model.getProcurementId());
             listProcurementRealtime();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "deleteGoods: failure", e);
+            Log.w(TAG, "deleteGoods: failure ", e);
             Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show();
         });
     }

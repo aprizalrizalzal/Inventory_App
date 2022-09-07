@@ -22,7 +22,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private FirebaseAuth auth;
     private FirebaseUser user;
-    private String authId, authEmail;
+    private FirebaseMessaging messaging;
+    private String authId, authEmail, tokenId;
     private ImageView imgNavUser;
     private TextView username, email;
     private DocumentReference documentReferenceUser;
@@ -69,10 +70,12 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new CustomProgressDialog(MainActivity.this);
 
         auth = FirebaseAuth.getInstance();
+        messaging = FirebaseMessaging.getInstance();
         user = auth.getCurrentUser();
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference collectionReferenceUsers = firestore.collection("users");
+
 
         if (user != null) {
             authId = user.getUid();
@@ -115,34 +118,52 @@ public class MainActivity extends AppCompatActivity {
         documentReferenceUser.get().addOnCompleteListener(task -> {
             Users users = task.getResult().toObject(Users.class);
             if (task.isSuccessful()) {
-                Log.d(TAG, "changeFirestoreUser: successfully");
+                Log.d(TAG, "changeFirestoreUser: successfully " + documentReferenceUser.getId());
                 if (users != null) {
                     viewFirestoreUsers();
                 } else {
                     createFirestoreUsers();
                 }
             } else {
-                Log.w(TAG, "changeFirestoreUser: failure", task.getException());
+                Log.w(TAG, "changeFirestoreUser: failure ", task.getException());
             }
 
         });
     }
 
+    private void refreshTokenIdUser() {
+        messaging.getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                tokenId = task.getResult();
+                updateTokenId(tokenId);
+            } else {
+                Log.w(TAG, "createTokenIdUser: failure", task.getException());
+            }
+        });
+    }
+
+    private void updateTokenId(String tokenId) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        CollectionReference collectionReferenceUsers = firestore.collection("users");
+        DocumentReference documentReferenceUser = collectionReferenceUsers.document(authId);
+
+        documentReferenceUser.update("tokenId", tokenId).addOnSuccessListener(unused -> Log.d(TAG, "updateUsername: successfully " + tokenId)).addOnFailureListener(e -> Log.w(TAG, "updateUsername: failure ", e));
+    }
+
     private void createFirestoreUsers() {
         progressDialog.ShowProgressDialog();
-
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "", "");
+        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "", "", "");
         documentReferenceUser.set(users).addOnSuccessListener(documentReference -> {
-            Log.d(TAG, "createFirestoreUsers: successfully");
+            Log.d(TAG, "createFirestoreUsers: successfully " + documentReferenceUser.getId());
             progressDialog.DismissProgressDialog();
             viewFirestoreUsers();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "createFirestoreUsers: failure", e);
+            Log.w(TAG, "createFirestoreUsers: failure ", e);
         });
     }
 
@@ -151,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
         Menu nav_Menu = navigationView.getMenu();
         documentReferenceUser.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "viewFirestoreUsers: successfully");
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "viewFirestoreUsers: successfully " + documentReferenceUser.getId());
                 Users users = task.getResult().toObject(Users.class);
                 if (users != null) {
                     Glide.with(getApplicationContext())
@@ -167,11 +189,11 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         changeLevel(nav_Menu, users);
                     }
+                    refreshTokenIdUser();
                 }
-                progressDialog.DismissProgressDialog();
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "viewFirestoreUsers: failure", task.getException());
+                Log.w(TAG, "viewFirestoreUsers: failure ", task.getException());
             }
         });
     }
@@ -180,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         referenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "onDataChange: levelsSuccessfully");
+                Log.d(TAG, "onDataChange: levelsSuccessfully " + referenceLevels.getKey());
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users lUsers = dataSnapshot.child("users").getValue(Users.class);
@@ -191,8 +213,8 @@ public class MainActivity extends AppCompatActivity {
                                 nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                             } else if (users.getAuthId().equals(lUsers.getAuthId())
                                     && lUsers.getLevel().equals(getString(R.string.vice_principal))
-                                    || users.getLevel().equals(getString(R.string.team_leader))
-                                    || users.getLevel().equals(getString(R.string.principal))) {
+                                    || lUsers.getLevel().equals(getString(R.string.team_leader))
+                                    || lUsers.getLevel().equals(getString(R.string.principal))) {
                                 nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
                                 nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);

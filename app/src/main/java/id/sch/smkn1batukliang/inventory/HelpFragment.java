@@ -65,7 +65,7 @@ public class HelpFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: adminSuccessfully");
+                Log.d(TAG, "onDataChange: adminSuccessfully " + referenceLevels.getKey());
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users lUsers = dataSnapshot.child("users").getValue(Users.class);
@@ -79,7 +79,7 @@ public class HelpFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: adminFailure", error.toException());
+                Log.w(TAG, "onCancelled: adminFailure ", error.toException());
                 Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

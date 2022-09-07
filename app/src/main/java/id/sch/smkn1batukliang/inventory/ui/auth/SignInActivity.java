@@ -79,13 +79,13 @@ public class SignInActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "signIn: successfully");
+                Log.d(TAG, "signIn: successfully " + email);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "signIn: failure", task.getException());
+                Log.w(TAG, "signIn: failure ", task.getException());
                 Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
             }
         });
