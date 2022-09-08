@@ -58,6 +58,7 @@ public class ListUserFragment extends Fragment {
         progressDialog = new CustomProgressDialog(getActivity());
 
         auth = FirebaseAuth.getInstance();
+
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         collectionReferenceUsers = firestore.collection("users");
 
@@ -84,6 +85,7 @@ public class ListUserFragment extends Fragment {
     }
 
     private void listUserFirestore() {
+        listUser.clear();
         progressDialog.ShowProgressDialog();
         collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

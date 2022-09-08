@@ -3,8 +3,6 @@ package id.sch.smkn1batukliang.inventory.model.users.levels;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import id.sch.smkn1batukliang.inventory.model.users.Users;
-
 public class Levels implements Parcelable {
 
 
@@ -20,26 +18,24 @@ public class Levels implements Parcelable {
         }
     };
 
-    private String levelId;
-    private Users users;
+    private String authId;
+    private LevelsItem levelsItem;
 
     public Levels() {
     }
 
-    public Levels(String levelId, Users users) {
-        this.levelId = levelId;
-        this.users = users;
+    public Levels(String authId, LevelsItem levelsItem) {
+        this.authId = authId;
+        this.levelsItem = levelsItem;
     }
 
     protected Levels(Parcel in) {
-        levelId = in.readString();
-        users = in.readParcelable(Users.class.getClassLoader());
+        authId = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(levelId);
-        dest.writeParcelable(users, flags);
+        dest.writeString(authId);
     }
 
     @Override
@@ -47,21 +43,19 @@ public class Levels implements Parcelable {
         return 0;
     }
 
-    public String getLevelId() {
-        return levelId;
+    public String getAuthId() {
+        return authId;
     }
 
-    public void setLevelId(String levelId) {
-        this.levelId = levelId;
+    public void setAuthId(String authId) {
+        this.authId = authId;
     }
 
-    public Users getUsers() {
-        return users;
+    public LevelsItem getLevelsItem() {
+        return levelsItem;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setLevelsItem(LevelsItem levelsItem) {
+        this.levelsItem = levelsItem;
     }
-
-
 }

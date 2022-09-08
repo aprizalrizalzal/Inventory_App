@@ -1,6 +1,7 @@
 package id.sch.smkn1batukliang.inventory.adapter.users.levels;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.ListLevelBinding;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.ViewHolder> {
 
+    private static final String TAG = "ListReportAdapter";
     private final List<Levels> levels = new ArrayList<>();
     private OnItemClickCallbackEdit onItemClickCallbackEdit;
     private OnItemClickCallbackDelete onItemClickCallbackDelete;
@@ -74,12 +79,25 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
         }
 
         public void bind(Levels levels) {
-            Glide.with(itemView)
-                    .load(levels.getUsers().getPhotoLink())
-                    .placeholder(R.drawable.ic_baseline_label)
-                    .into(binding.imgListLevels);
-            binding.tvUsername.setText(levels.getUsers().getUsername());
-            binding.tvLevel.setText(itemView.getResources().getString(R.string.f_level,levels.getUsers().getLevel()));
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            CollectionReference collectionReferenceUsers = firestore.collection("users");
+
+            collectionReferenceUsers.document(levels.getAuthId()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "bind: tvUsernameSuccessfully " + collectionReferenceUsers.document(levels.getAuthId()));
+                    Users users = task.getResult().toObject(Users.class);
+                    if (users != null) {
+                        Glide.with(itemView)
+                                .load(users.getPhotoLink())
+                                .placeholder(R.drawable.ic_baseline_label)
+                                .into(binding.imgListLevels);
+                        binding.tvUsername.setText(users.getUsername());
+                    }
+                } else {
+                    Log.w(TAG, "bind: tvUsernameFailure ", task.getException());
+                }
+            });
+            binding.tvLevel.setText(itemView.getResources().getString(R.string.f_level, levels.getLevelsItem().getLevel()));
         }
     }
 }

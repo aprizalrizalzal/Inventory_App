@@ -103,13 +103,13 @@ public class ListReportFragment extends Fragment {
     }
 
     private void listReportRealtime() {
+        reports.clear();
         progressDialog.ShowProgressDialog();
-        databaseReferenceReport.orderByChild("reportItem/placement").addValueEventListener(new ValueEventListener() {
+        databaseReferenceReport.orderByChild("reportItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
                 Log.d(TAG, "onDataChange: reportSuccessfully " + databaseReferenceReport.getKey());
-                reports.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Report report = dataSnapshot.getValue(Report.class);

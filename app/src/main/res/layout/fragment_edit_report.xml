@@ -12,15 +12,6 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/btn_reject"
-        style="@style/ButtonInventoryTextButton"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="@dimen/fab_margin_end_bottom"
-        android:text="@string/reject"
-        android:visibility="gone"
-        app:icon="@drawable/ic_baseline_reject" />
-
-    <Button
         android:id="@+id/btn_agree"
         style="@style/ButtonInventoryTextButton"
         android:layout_gravity="end|bottom"

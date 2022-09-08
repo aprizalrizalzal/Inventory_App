@@ -80,9 +80,9 @@ public class AddOrEditPlacementFragment extends Fragment {
             extraAuthId = extraPlacement.getAuthId();
             viewExtraPlacement();
         } else {
+            listUsers.clear();
             collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
                 Log.d(TAG, "onCreateView: successfully " + collectionReferenceUsers.getId());
-                listUsers.clear();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         listUsers.add(documentSnapshot.getString("username"));
@@ -187,9 +187,9 @@ public class AddOrEditPlacementFragment extends Fragment {
         PlacementItem modelItem = new PlacementItem(placementItem.getPhotoLink(), placementItem.getPlacementId(), placement, placementItem.getTimestamp(), placementItem.getUsername());
         Placement model = new Placement(extraAuthId, modelItem);
         referenceExtraPlacement.setValue(model).addOnSuccessListener(unused -> {
-                Log.d(TAG, "updatePlacement: successfully " + extraAuthId);
-                Navigation.findNavController(view).navigateUp();
-                Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "updatePlacement: successfully " + extraAuthId);
+            Navigation.findNavController(view).navigateUp();
+            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             Log.w(TAG, "updatePlacement: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();

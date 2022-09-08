@@ -7,17 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHelpBinding;
@@ -28,7 +25,7 @@ public class HelpFragment extends Fragment {
     private static final String TAG = "HelpFragment";
     private FragmentHelpBinding binding;
     private CustomProgressDialog progressDialog;
-    private DatabaseReference referenceLevels;
+    private CollectionReference collectionReferenceUsers;
 
     public HelpFragment() {
         // Required empty public constructor
@@ -46,8 +43,8 @@ public class HelpFragment extends Fragment {
         binding = FragmentHelpBinding.inflate(getLayoutInflater(), container, false);
         View view = binding.getRoot();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        referenceLevels = database.getReference("levels");
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        collectionReferenceUsers = firestore.collection("users");
 
         progressDialog = new CustomProgressDialog(requireActivity());
 
@@ -61,45 +58,38 @@ public class HelpFragment extends Fragment {
 
     private void contactAdmin() {
         progressDialog.ShowProgressDialog();
-        referenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        collectionReferenceUsers.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "onDataChange: adminSuccessfully " + referenceLevels.getKey());
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Users lUsers = dataSnapshot.child("users").getValue(Users.class);
-                        if (lUsers != null && lUsers.getLevel().equals(getString(R.string.admin))) {
-                            viewHelp(lUsers);
-                        }
+                Log.d(TAG, "listUserFirestore: successfully " + collectionReferenceUsers.getId());
+                for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                    Users users = documentSnapshot.toObject(Users.class);
+                    if (users != null && users.getLevel().equals(getString(R.string.admin))) {
+                        viewHelp(users);
                     }
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            } else {
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "onCancelled: adminFailure ", error.toException());
-                Toast.makeText(requireActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "get failed with " + task.getException());
             }
         });
     }
 
-    private void viewHelp(Users lUsers) {
-        Glide.with(requireContext()).load(lUsers.getPhotoLink())
+    private void viewHelp(Users users) {
+        Glide.with(requireContext()).load(users.getPhotoLink())
                 .placeholder(R.drawable.ic_baseline_account_circle)
                 .into(binding.imgUsers);
-        binding.tvUsername.setText(lUsers.getUsername());
-        binding.tvEmployeeIdNumber.setText(lUsers.getEmployeeIdNumber());
-        binding.tvEmail.setText(lUsers.getEmail());
-        binding.tvWhatsappNumber.setText(lUsers.getWhatsappNumber());
+        binding.tvUsername.setText(users.getUsername());
+        binding.tvEmployeeIdNumber.setText(users.getEmployeeIdNumber());
+        binding.tvEmail.setText(users.getEmail());
+        binding.tvWhatsappNumber.setText(users.getWhatsappNumber());
         binding.tvWhatsappNumber.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://wa.me/" + lUsers.getWhatsappNumber()));
+            intent.setData(Uri.parse("https://wa.me/" + users.getWhatsappNumber()));
             requireActivity().startActivity(intent);
         });
-        binding.tvLevel.setText(lUsers.getLevel());
-        binding.tvPosition.setText(lUsers.getPosition());
+        binding.tvLevel.setText(users.getLevel());
+        binding.tvPosition.setText(users.getPosition());
     }
 
     @Override

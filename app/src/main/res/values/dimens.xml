@@ -5,6 +5,8 @@
     <dimen name="vertical_margin">8dp</dimen>
     <dimen name="horizontal_margin">8dp</dimen>
 
+    <dimen name="vertical_horizontal_margin">4dp</dimen>
+
     <dimen name="list_three_line_item">88dp</dimen>
     <dimen name="list_two_line_item">72dp</dimen>
 

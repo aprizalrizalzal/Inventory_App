@@ -236,6 +236,7 @@ public class AddReportFragment extends Fragment {
     }
 
     private void selectManualTextInputEditText() {
+        listUser.clear();
         collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d(TAG, "selectManualTextInputEditText: successfully " + collectionReferenceUsers.getId());
@@ -261,11 +262,11 @@ public class AddReportFragment extends Fragment {
     }
 
     private void listDatabaseProcurementReference() {
+        procurements.clear();
         progressDialog.ShowProgressDialog();
         databaseReferenceProcurement.orderByChild("procurementItem/procurement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                procurements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Procurement model = dataSnapshot.getValue(Procurement.class);
@@ -661,7 +662,7 @@ public class AddReportFragment extends Fragment {
                     Users users = snapshot.toObject(Users.class);
                     String tokenId = snapshot.getString("tokenId");
                     if (users != null && users.getLevel().equals(getString(R.string.admin))) {
-                        Log.d(TAG, "getTokenForNotification: Admin" + tokenId);
+                        Log.d(TAG, "getTokenForNotification: admin" + tokenId);
                         sendDataReportAndUser(model, tokenId);
                     } else if (users != null && users.getLevel().equals(getString(R.string.team_leader))) {
                         Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
@@ -686,7 +687,7 @@ public class AddReportFragment extends Fragment {
         JSONObject data = new JSONObject();
 
         try {
-            data.put("title", getString(R.string.app_name));
+            data.put("title", model.getReportItem().getPurpose());
             data.put("message", model.getReportItem().getReport());
 
             to.put("to", tokenId);

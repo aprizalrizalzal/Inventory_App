@@ -1,6 +1,7 @@
 package id.sch.smkn1batukliang.inventory.adapter.inventories.report;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +19,11 @@ import java.util.List;
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.ListReportBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.report.Report;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.ViewHolder> {
 
+    private static final String TAG = "ListReportAdapter";
     private final List<Report> reports = new ArrayList<>();
     private OnItemClickCallback onItemClickCallback;
     private OnItemClickCallbackDelete onItemClickCallbackDelete;
@@ -74,6 +79,21 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
         }
 
         public void bind(Report model) {
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            CollectionReference collectionReferenceUsers = firestore.collection("users");
+
+            collectionReferenceUsers.document(model.getAuthId()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "bind: tvUsernameSuccessfully " + collectionReferenceUsers.document(model.getAuthId()));
+                    Users users = task.getResult().toObject(Users.class);
+                    if (users != null) {
+                        binding.tvUsername.setText(users.getUsername());
+                    }
+                } else {
+                    Log.w(TAG, "bind: tvUsernameFailure ", task.getException());
+                }
+            });
+
             if (model.getReportItem().isStatus()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_verified)

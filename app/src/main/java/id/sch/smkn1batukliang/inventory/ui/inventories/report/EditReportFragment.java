@@ -105,7 +105,6 @@ public class EditReportFragment extends Fragment {
                                     || users.getLevel().equals(getString(R.string.team_leader))
                                     || users.getLevel().equals(getString(R.string.vice_principal))
                                     || users.getLevel().equals(getString(R.string.principal))) {
-                                binding.btnReject.setVisibility(View.VISIBLE);
                                 binding.btnAgree.setVisibility(View.VISIBLE);
                             }
                         }
@@ -157,64 +156,9 @@ public class EditReportFragment extends Fragment {
                     .load());
         });
 
-        binding.btnReject.setOnClickListener(v -> rejectProcurement());
-
         binding.btnAgree.setOnClickListener(v -> agreeProcurement());
 
         return view;
-    }
-
-    private void rejectProcurement() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.reject))
-                .setMessage(getString(R.string.f_reject_report, extraReport.getReportItem().getReport()))
-                .setCancelable(false)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.reject), (dialog, id) -> rejectReport())
-                .setNeutralButton(getString(R.string.delete), (dialog, id) -> deleteReport(extraReport.getReportItem()));
-        builder.show();
-    }
-
-    private void rejectReport() {
-        progressDialog.ShowProgressDialog();
-        ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), false, extraReport.getReportItem().getTimestamp());
-        Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
-        databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
-            progressDialog.DismissProgressDialog();
-            Log.d(TAG, "rejectReport: successfully " + extraReport.getReportItem().getReportId());
-            Navigation.findNavController(view).navigateUp();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Log.w(TAG, "rejectReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void deleteReport(ReportItem reportItem) {
-        progressDialog.ShowProgressDialog();
-        databaseReferenceReport.child(reportItem.getReportId()).removeValue().addOnSuccessListener(unused -> {
-            progressDialog.DismissProgressDialog();
-            Log.d(TAG, "deleteReport: successfully " + reportItem.getReportId());
-            deleteStorageReport(reportItem);
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Log.w(TAG, "deleteReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    private void deleteStorageReport(ReportItem reportItem) {
-        progressDialog.ShowProgressDialog();
-        String pathReport = "users/procurement/" + extraReport.getAuthId() + "/report/" + extraReport.getPlacementId() + "/" + reportItem.getReport();
-        storageReferenceReport.child(pathReport).delete().addOnSuccessListener(unused -> {
-            progressDialog.DismissProgressDialog();
-            Log.d(TAG, "deleteStorageReport: successfully " + pathReport);
-            Navigation.findNavController(view).navigateUp();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Log.w(TAG, "deleteStorageReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-        });
     }
 
     private void agreeProcurement() {

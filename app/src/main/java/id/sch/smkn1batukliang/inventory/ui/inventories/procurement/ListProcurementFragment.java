@@ -149,13 +149,13 @@ public class ListProcurementFragment extends Fragment {
     }
 
     private void listProcurementRealtime() {
+        procurements.clear();
         progressDialog.ShowProgressDialog();
         databaseReferenceProcurement.orderByChild("procurementItem/procurement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
                 Log.d(TAG, "onDataChange: procurementSuccessfully " + databaseReferenceProcurement.getKey());
-                procurements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Procurement procurement = dataSnapshot.getValue(Procurement.class);

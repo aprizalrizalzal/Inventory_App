@@ -82,13 +82,13 @@ public class ListPlacementFragment extends Fragment {
     }
 
     private void listPlacementRealtime() {
+        placements.clear();
         progressDialog.ShowProgressDialog();
         databaseReferencePlacement.orderByChild("placementItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
                 Log.d(TAG, "onDataChange: placementSuccessfully " + databaseReferencePlacement.getKey());
-                placements.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Placement placement = dataSnapshot.getValue(Placement.class);

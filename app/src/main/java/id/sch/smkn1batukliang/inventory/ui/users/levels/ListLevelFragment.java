@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ public class ListLevelFragment extends Fragment {
     private final ArrayList<Levels> listLevel = new ArrayList<>();
     private FragmentListLevelBinding binding;
     private View view;
+    private CollectionReference collectionReferenceUsers;
     private DatabaseReference databaseReferenceLevels;
     private ListLevelAdapter adapter;
     private CustomProgressDialog progressDialog;
@@ -54,6 +57,9 @@ public class ListLevelFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentListLevelBinding.inflate(getLayoutInflater(), container, false);
         view = binding.getRoot();
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        collectionReferenceUsers = firestore.collection("users");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReferenceLevels = database.getReference("levels");
@@ -79,11 +85,11 @@ public class ListLevelFragment extends Fragment {
     }
 
     private void listLevelRealtime() {
+        listLevel.clear();
         progressDialog.ShowProgressDialog();
-        databaseReferenceLevels.orderByChild("users/username").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceLevels.orderByChild("levelsItem/level").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listLevel.clear();
                 progressDialog.DismissProgressDialog();
                 Log.d(TAG, "onDataChange: LevelsSuccessfully " +databaseReferenceLevels.getKey());
                 if (snapshot.exists()) {
@@ -109,31 +115,41 @@ public class ListLevelFragment extends Fragment {
 
     }
 
-    private void editSelectedLevels(Levels model) {
+    private void editSelectedLevels(Levels levels) {
         Bundle bundle = new Bundle();
 
-        bundle.putParcelable(EXTRA_LEVELS, model);
+        bundle.putParcelable(EXTRA_LEVELS, levels);
         Navigation.findNavController(view).navigate(R.id.action_nav_list_level_to_nav_add_or_edit_level, bundle);
     }
 
     private void deleteSelectedLevels(Levels model) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.delete)).setMessage(getString(R.string.f_delete_level, model.getUsers().getLevel())).setCancelable(false)
+        builder.setTitle(getString(R.string.delete)).setMessage(getString(R.string.f_delete_level, "model.getUsers().getLevel()")).setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
                 .setPositiveButton(getString(R.string.yes), (dialog, id) -> deleteLevel(model));
         builder.show();
     }
 
     private void deleteLevel(Levels levels) {
-        databaseReferenceLevels.child(levels.getLevelId()).removeValue().addOnCompleteListener(task -> {
+        databaseReferenceLevels.child(levels.getLevelsItem().getLevelId()).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d(TAG, "deleteLevel: successfully " + levels.getLevelId());
-                listLevelRealtime();
+                Log.d(TAG, "deleteLevel: successfully " + levels.getLevelsItem().getLevelId());
+                updateLevelUsers(levels.getAuthId());
             } else {
                 Log.w(TAG, "deleteLevel: failure ", task.getException());
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private void updateLevelUsers(String authId) {
+        collectionReferenceUsers.document(authId).update("level", "").addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateLevelUsers: successfully " + authId);
+            listLevelRealtime();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateLevelUsers: failure ", e);
+            Toast.makeText(requireActivity(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
