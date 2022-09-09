@@ -41,6 +41,7 @@ import java.util.Locale;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                         nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
                         nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
                     } else {
-                        changeLevel(nav_Menu, users);
+                        changeLevel(nav_Menu);
                     }
                     refreshTokenIdUser();
                 }
@@ -198,52 +199,57 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void changeLevel(Menu nav_Menu, Users users) {
+    private void changeLevel(Menu nav_Menu) {
         referenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d(TAG, "onDataChange: levelsSuccessfully " + referenceLevels.getKey());
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Users lUsers = dataSnapshot.child("users").getValue(Users.class);
-                        if (lUsers != null) {
-                            if (users.getAuthId().equals(lUsers.getAuthId())) {
-                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                        Levels levels = dataSnapshot.getValue(Levels.class);
+                        if (levels != null) {
+                            nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                            nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
+                            nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                            if (authId.equals(levels.getAuthId())) {
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
-                            } else if (users.getAuthId().equals(lUsers.getAuthId())
-                                    && lUsers.getLevel().equals(getString(R.string.vice_principal))
-                                    || lUsers.getLevel().equals(getString(R.string.team_leader))
-                                    || lUsers.getLevel().equals(getString(R.string.principal))) {
-                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
-                            } else if (users.getAuthId().equals(lUsers.getAuthId())
-                                    && lUsers.getLevel().equals(getString(R.string.admin))) {
-                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                                if (levels.getLevelsItem().getLevel().equals(getString(R.string.admin))) {
+                                    nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
+                                } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.principal))
+                                        || levels.getLevelsItem().getLevel().equals(getString(R.string.team_leader))
+                                        || levels.getLevelsItem().getLevel().equals(getString(R.string.vice_principal))) {
+                                    nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
+                                } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.teacher))) {
+                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
+                                } else {
+                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
+                                    Toast.makeText(getApplicationContext(), getString(R.string.contact_admin_for_level), Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
+                                Toast.makeText(getApplicationContext(), getString(R.string.contact_admin_for_level), Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                            nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
+                            Toast.makeText(getApplicationContext(), getString(R.string.contact_admin_for_level), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
                     nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
                     nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(false);
                     nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                    Toast.makeText(getApplicationContext(), getString(R.string.contact_admin_for_level), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "onCancelled: failureLevels", error.toException());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
         });
 

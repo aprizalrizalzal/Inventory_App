@@ -125,4 +125,5 @@
     <string name="new_password_required">Kata Sandi baru diperlukan</string>
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
     <string name="error_writing">Kesalahan menulis dokumen</string>
+    <string name="contact_admin_for_level">Hubungi Admin untuk peningkatan Akun</string>
 </resources>
