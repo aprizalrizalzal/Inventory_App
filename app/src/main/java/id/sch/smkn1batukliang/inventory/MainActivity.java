@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         CollectionReference collectionReferenceUsers = firestore.collection("users");
         DocumentReference documentReferenceUser = collectionReferenceUsers.document(authId);
 
-        documentReferenceUser.update("tokenId", tokenId).addOnSuccessListener(unused -> Log.d(TAG, "updateUsername: successfully " + tokenId)).addOnFailureListener(e -> Log.w(TAG, "updateUsername: failure ", e));
+        documentReferenceUser.update("tokenId", tokenId).addOnSuccessListener(unused -> Log.d(TAG, "updateTokenId: successfully " + tokenId)).addOnFailureListener(e -> Log.w(TAG, "updateTokenId: failure ", e));
     }
 
     private void createFirestoreUsers() {
@@ -184,9 +184,14 @@ public class MainActivity extends AppCompatActivity {
                     username.setText(users.getUsername());
                     email.setText(users.getEmail());
                     if (users.getEmail().equals("getString(R.string.default_email)")) {
-                        nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_home).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_help).setVisible(true);
+
                     } else {
                         changeLevel(nav_Menu);
                     }
@@ -209,23 +214,29 @@ public class MainActivity extends AppCompatActivity {
                         Levels levels = dataSnapshot.getValue(Levels.class);
                         if (levels != null) {
                             if (authId.equals(levels.getAuthId())) {
-                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_home).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_help).setVisible(true);
                                 if (levels.getLevelsItem().getLevel().equals(getString(R.string.admin))) {
                                     nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
-                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
                                 } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.principal))
                                         || levels.getLevelsItem().getLevel().equals(getString(R.string.team_leader))
                                         || levels.getLevelsItem().getLevel().equals(getString(R.string.vice_principal))) {
-                                    nav_Menu.findItem(R.id.nav_sub_manage).setVisible(true);
                                     nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
+                                } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.teacher))) {
+                                    nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_list_report).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
                                 }
                             } else {
-                                nav_Menu.findItem(R.id.nav_sub_data).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_sub_addition).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_home).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_help).setVisible(true);
                             }
                         }
                     }

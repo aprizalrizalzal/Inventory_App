@@ -7,58 +7,62 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_baseline_home"
-            android:title="@string/home" />
+            android:title="@string/home"
+            android:visible="false" />
     </group>
 
     <item
         android:id="@+id/nav_sub_data"
-        android:title="@string/sub_menu_data"
-        android:visible="false">
+        android:title="@string/sub_menu_data" >
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_grid_placement_for_procurement"
                     android:icon="@drawable/ic_baseline_procurement"
-                    android:title="@string/procurement" />
+                    android:title="@string/procurement"
+                    android:visible="false" />
                 <item
                     android:id="@+id/nav_list_placement"
                     android:icon="@drawable/ic_baseline_placement"
-                    android:title="@string/placement" />
+                    android:title="@string/placement"
+                    android:visible="false" />
             </group>
         </menu>
     </item>
 
     <item
         android:id="@+id/nav_sub_manage"
-        android:title="@string/sub_menu_manage"
-        android:visible="false">
+        android:title="@string/sub_menu_manage" >
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_list_user"
                     android:icon="@drawable/ic_baseline_manage_accounts"
-                    android:title="@string/user" />
+                    android:title="@string/user"
+                    android:visible="false" />
                 <item
                     android:id="@+id/nav_list_report"
                     android:icon="@drawable/ic_baseline_report"
-                    android:title="@string/report" />
+                    android:title="@string/report"
+                    android:visible="false" />
                 <item
                     android:id="@+id/nav_list_level"
                     android:icon="@drawable/ic_baseline_label"
-                    android:title="@string/level" />
+                    android:title="@string/level"
+                    android:visible="false" />
             </group>
         </menu>
     </item>
     <item
         android:id="@+id/nav_sub_addition"
-        android:title="@string/sub_menu_addition"
-        android:visible="false">
+        android:title="@string/sub_menu_addition" >
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/ic_baseline_help"
-                    android:title="@string/help" />
+                    android:title="@string/help"
+                    android:visible="false" />
             </group>
         </menu>
     </item>
