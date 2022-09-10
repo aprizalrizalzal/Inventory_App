@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.adapter.inventories.report;
+package id.sch.smkn1batukliang.inventory.adapter.inventories.procurement.report;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -18,7 +18,7 @@ import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.ListReportBinding;
-import id.sch.smkn1batukliang.inventory.model.inventories.report.Report;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.Report;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.ViewHolder> {
@@ -94,16 +94,21 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
                 }
             });
 
-            if (model.getReportItem().isStatus()) {
+            if (model.getReportItem().isKnown() && !model.getReportItem().isApproved()) {
                 Glide.with(itemView)
-                        .load(R.drawable.ic_baseline_verified)
+                        .load(R.drawable.ic_baseline_known)
                         .into(binding.imgListReport);
-                binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_agree, model.getReportItem().getPurpose()));
+                binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_known, model.getReportItem().getPurpose()));
+            } else if (model.getReportItem().isKnown() && model.getReportItem().isApproved()) {
+                Glide.with(itemView)
+                        .load(R.drawable.ic_baseline_approved)
+                        .into(binding.imgListReport);
+                binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_approved, model.getReportItem().getPurpose()));
             } else {
                 Glide.with(itemView)
-                        .load(R.drawable.ic_baseline_help)
+                        .load(R.drawable.ic_baseline_report)
                         .into(binding.imgListReport);
-                binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_reviewed, model.getReportItem().getPurpose()));
+                binding.tvPurpose.setText(model.getReportItem().getPurpose());
             }
             binding.tvReport.setText(model.getReportItem().getReport());
         }

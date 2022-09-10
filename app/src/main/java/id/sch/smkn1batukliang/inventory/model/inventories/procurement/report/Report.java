@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.model.inventories.report;
+package id.sch.smkn1batukliang.inventory.model.inventories.procurement.report;
 
 import android.os.Parcel;
 import android.os.Parcelable;

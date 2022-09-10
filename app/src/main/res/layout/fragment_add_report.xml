@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inventories.report.AddReportFragment">
+    tools:context=".ui.inventories.procurement.report.AddReportFragment">
 
     <LinearLayout style="@style/LinearLayoutInventory">
 
@@ -81,7 +81,7 @@
 
         <TextView
             style="@style/TextViewDialog"
-            android:text="@string/approve" />
+            android:text="@string/agree" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_principal"

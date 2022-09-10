@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home,
                 R.id.nav_grid_placement_for_procurement,
                 R.id.nav_list_placement,
+                R.id.nav_list_inventories,
                 R.id.nav_home).setOpenableLayout(drawerLayout).build();
 
         navController = Navigation.findNavController(
@@ -217,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
+                                nav_Menu.findItem(R.id.nav_list_inventories).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_inventories).setVisible(false);
                                 nav_Menu.findItem(R.id.nav_help).setVisible(true);
                             }
                         }
@@ -280,6 +283,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.nav_home
                     || id == R.id.nav_grid_placement_for_procurement
                     || id == R.id.nav_list_placement
+                    || id == R.id.nav_list_inventories
                     || id == R.id.nav_list_user
                     || id == R.id.nav_list_report
                     || id == R.id.nav_list_level) {

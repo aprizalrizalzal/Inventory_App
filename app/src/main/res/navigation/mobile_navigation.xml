@@ -106,6 +106,12 @@
         tools:layout="@layout/fragment_add_or_edit_placement" />
 
     <fragment
+        android:id="@+id/nav_list_inventories"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.ListInventoriesFragment"
+        android:label="@string/inventories"
+        tools:layout="@layout/fragment_list_inventories" />
+
+    <fragment
         android:id="@+id/nav_list_user"
         android:name="id.sch.smkn1batukliang.inventory.ui.users.ListUserFragment"
         android:label="@string/user"
@@ -157,7 +163,7 @@
 
     <fragment
         android:id="@+id/nav_list_report"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.report.ListReportFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.ListReportFragment"
         android:label="@string/report"
         tools:layout="@layout/fragment_list_report">
         <action
@@ -170,13 +176,13 @@
 
     <fragment
         android:id="@+id/nav_edit_report"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.report.EditReportFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.EditReportFragment"
         android:label="@string/report"
         tools:layout="@layout/fragment_edit_report" />
 
     <fragment
         android:id="@+id/nav_add_report"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.report.AddReportFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.AddReportFragment"
         android:label="@string/report"
         tools:layout="@layout/fragment_add_report" />
 

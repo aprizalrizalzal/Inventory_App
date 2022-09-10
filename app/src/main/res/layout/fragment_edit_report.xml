@@ -4,21 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inventories.report.EditReportFragment">
+    tools:context=".ui.inventories.procurement.report.EditReportFragment">
 
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/btn_agree"
-        style="@style/ButtonInventoryTextButton"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/fab_margin_end_bottom"
-        android:text="@string/agree"
-        android:visibility="gone"
-        app:icon="@drawable/ic_baseline_verified"
-        tools:ignore="TextContrastCheck" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_known"
+            style="@style/ButtonInventoryTextButton"
+            android:text="@string/yes"
+            android:visibility="gone"
+            app:icon="@drawable/ic_baseline_known"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btn_approved"
+            style="@style/ButtonInventoryTextButton"
+            android:text="@string/yes"
+            android:visibility="gone"
+            app:icon="@drawable/ic_baseline_approved"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btn_received"
+            style="@style/ButtonInventoryTextButton"
+            android:text="@string/yes"
+            android:visibility="gone"
+            app:icon="@drawable/ic_baseline_received"
+            tools:ignore="TextContrastCheck" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

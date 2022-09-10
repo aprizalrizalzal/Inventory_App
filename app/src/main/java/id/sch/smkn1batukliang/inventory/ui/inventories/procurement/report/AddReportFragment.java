@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.ui.inventories.report;
+package id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -83,8 +83,8 @@ import id.sch.smkn1batukliang.inventory.addition.MoneyTextWatcher;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddReportBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procurement;
-import id.sch.smkn1batukliang.inventory.model.inventories.report.Report;
-import id.sch.smkn1batukliang.inventory.model.inventories.report.ReportItem;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.Report;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.ReportItem;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class AddReportFragment extends Fragment {
@@ -639,7 +639,7 @@ public class AddReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         String reportId = UUID.randomUUID().toString();
 
-        ReportItem modelItem = new ReportItem(pdfLink, purpose, report, reportId, false, dateProcurement);
+        ReportItem modelItem = new ReportItem(false, false, pdfLink, purpose, false, report, reportId, dateProcurement);
         Report model = new Report(authId, placementId, modelItem);
         databaseReferenceReport.child(reportId).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();

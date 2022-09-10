@@ -26,6 +26,11 @@
                     android:icon="@drawable/ic_baseline_placement"
                     android:title="@string/placement"
                     android:visible="false" />
+                <item
+                    android:id="@+id/nav_list_inventories"
+                    android:icon="@drawable/ic_baseline_inventories"
+                    android:title="@string/inventories"
+                    android:visible="false" />
             </group>
         </menu>
     </item>

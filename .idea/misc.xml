@@ -112,6 +112,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_add_level.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_add_placement.xml" value="0.104" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_add_user.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_approved.xml" value="0.1" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_calendar.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_call.xml" value="0.104" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_check_circle.xml" value="0.104" />
@@ -126,6 +127,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_help.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_home.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_inventory.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_known.xml" value="0.1" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_label.xml" value="0.104" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_lock.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_manage_accounts.xml" value="0.184" />
@@ -133,6 +135,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_placement.xml" value="0.104" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_procurement.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_procurement_add.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_received.xml" value="0.1" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_reject.xml" value="0.197" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_report.xml" value="0.1825" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/drawable/ic_baseline_report_pdf.xml" value="0.184" />
@@ -191,7 +194,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_download_and_send_list_goods.xml" value="0.1" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_download_and_send_list_item.xml" value="0.1" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_download_and_send_list_procurement.xml" value="0.33" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_edit_report.xml" value="0.1644021739130435" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_edit_report.xml" value="0.15" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_generate_procurement_pdf.xml" value="0.22" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_gennerate_procurement_pdf.xml" value="0.18" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Inventory_App/app/src/main/res/layout/fragment_grid_placement_for_procurement.xml" value="0.20416666666666666" />

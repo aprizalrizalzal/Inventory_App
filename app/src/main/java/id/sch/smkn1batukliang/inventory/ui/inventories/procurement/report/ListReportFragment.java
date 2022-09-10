@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.ui.inventories.report;
+package id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report;
 
 import static id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,12 +28,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.adapter.inventories.report.ListReportAdapter;
+import id.sch.smkn1batukliang.inventory.adapter.inventories.procurement.report.ListReportAdapter;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListReportBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
-import id.sch.smkn1batukliang.inventory.model.inventories.report.Report;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.Report;
 
 public class ListReportFragment extends Fragment {
 
