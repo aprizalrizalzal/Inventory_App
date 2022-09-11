@@ -2,6 +2,8 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static id.sch.smkn1batukliang.inventory.addition.firebase.InventoryMessagingService.NOTIFICATION_URL;
+import static id.sch.smkn1batukliang.inventory.addition.firebase.InventoryMessagingService.SERVER_KEY;
 import static id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
 import android.app.DatePickerDialog;
@@ -90,8 +92,6 @@ import id.sch.smkn1batukliang.inventory.model.users.Users;
 public class AddReportFragment extends Fragment {
 
     private static final String TAG = "AddReportFragment";
-    private static final String NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send";
-    private static final String SERVER_KEY = "AAAApKT5jU0:APA91bGra6NJFk8aN2mL5EGrZlml9uS0hWG8MThlbrBbmSP_vwg8SVE8DUOrXSz457a1RTGXaYkWvsP3a3mFzNj6bHqUrzriKrVNO9kpgiMqMgEtFIXbqXlO08rf3P_QWIhpTYYLk2G5";
     private final Calendar calendar = Calendar.getInstance();
     private final ArrayList<Procurement> procurements = new ArrayList<>();
     private final ArrayList<String> listUser = new ArrayList<>();

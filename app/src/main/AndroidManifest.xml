@@ -86,7 +86,7 @@
         </activity>
 
         <service
-            android:name=".addition.InventoryMessagingService"
+            android:name=".addition.firebase.InventoryMessagingService"
             android:directBootAware="true"
             android:exported="false">
             <intent-filter>

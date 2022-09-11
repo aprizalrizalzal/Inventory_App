@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.addition;
+package id.sch.smkn1batukliang.inventory.adapter;
 
 import android.view.View;
 import android.widget.TextView;

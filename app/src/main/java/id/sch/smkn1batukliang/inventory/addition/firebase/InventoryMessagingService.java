@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.addition;
+package id.sch.smkn1batukliang.inventory.addition.firebase;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -23,10 +23,13 @@ import id.sch.smkn1batukliang.inventory.SplashScreenActivity;
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class InventoryMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "InventoryMessagingService";
+    public static final String NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send";
+    public static final String SERVER_KEY = "AAAApKT5jU0:APA91bGra6NJFk8aN2mL5EGrZlml9uS0hWG8MThlbrBbmSP_vwg8SVE8DUOrXSz457a1RTGXaYkWvsP3a3mFzNj6bHqUrzriKrVNO9kpgiMqMgEtFIXbqXlO08rf3P_QWIhpTYYLk2G5";
+
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "channel_1";
     private static final CharSequence CHANNEL_NAME = "inventory_smk_n_1_batukliang";
+    private static final String TAG = "InventoryMessagingService";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.users.ListUserAdapter;
 import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.addition.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.adapter.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListUsersBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 
