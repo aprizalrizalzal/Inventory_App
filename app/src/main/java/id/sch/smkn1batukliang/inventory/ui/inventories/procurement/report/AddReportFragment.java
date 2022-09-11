@@ -99,7 +99,6 @@ public class AddReportFragment extends Fragment {
     private ArrayAdapter<String> stringAdapter;
     private FragmentAddReportBinding binding;
     private SimpleDateFormat simpleDateFormatId;
-    private View viewBinding;
     private CustomProgressDialog progressDialog;
     private CollectionReference collectionReferenceUsers;
     private DatabaseReference databaseReferenceProcurement, databaseReferenceReport;
@@ -137,7 +136,7 @@ public class AddReportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddReportBinding.inflate(getLayoutInflater(), container, false);
-        viewBinding = binding.getRoot();
+        View view = binding.getRoot();
 
         progressDialog = new CustomProgressDialog(getActivity());
 
@@ -204,7 +203,7 @@ public class AddReportFragment extends Fragment {
 
         });
 
-        return viewBinding;
+        return view;
     }
 
     private void automaticTextInputEditText() {
