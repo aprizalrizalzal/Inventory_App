@@ -4,6 +4,8 @@
     <string name="firebase_billing_plans">Paket penagihan Firebase masih menggunakan %s, harus ditingkatkan ke %s</string>
     <string name="spark">Spark (Tanpa biaya $0/bulan)</string>
     <string name="blaze">Blaze (Bayar sesuai pemakaian)</string>
+    <string name="reminder">Pengingat!</string>
+    <string name="do_not_change_the_default_email">Anda masuk menggunakan <b>email</b> default, silahkan perbarui <b>kata sandi</b> default-nya!, dan daftarkan <b>email baru</b> ke tingkat <b>Admin</b>!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_title">SMK Negeri 1 Batukliang</string>
@@ -80,6 +82,8 @@
     <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan pengadaan laporan %s</string>
     <string name="cancel">Batal</string>
     <string name="yes">Ya</string>
+    <string name="agree">Menyetujui</string>
+    <string name="call">Hubungi</string>
     <string name="placement_required">Penempatan diperlukan</string>
     <string name="username_required">Nama Pengguna diperlukan</string>
     <string name="select_listed_username">Pilih nama pengguna yang sesuai dan sudah terdaftar</string>
@@ -128,5 +132,4 @@
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
     <string name="error_writing">Kesalahan menulis dokumen</string>
     <string name="contact_admin_for_level">Hubungi Admin untuk peningkatan Akun</string>
-    <string name="agree">Menyetujui</string>
 </resources>

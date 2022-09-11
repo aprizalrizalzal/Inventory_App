@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,6 +44,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
+import id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -184,15 +186,12 @@ public class MainActivity extends AppCompatActivity {
                             .into(imgNavUser);
                     username.setText(users.getUsername());
                     email.setText(users.getEmail());
-                    if (users.getEmail().equals("getString(R.string.default_email)")) {
-                        nav_Menu.findItem(R.id.nav_home).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
-                        nav_Menu.findItem(R.id.nav_help).setVisible(true);
-
+                    if (users.getEmail().equals(getString(R.string.default_email))) {
+                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+                        builder.setTitle(getString(R.string.reminder)).setMessage(R.string.do_not_change_the_default_email).setCancelable(false)
+                                .setNeutralButton(getString(R.string.yes), (dialog, id) -> dialog.cancel());
+                        builder.show();
+                        menuAdmin(nav_Menu);
                     } else {
                         changeLevel(nav_Menu);
                     }
@@ -203,6 +202,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "viewFirestoreUsers: failure ", task.getException());
             }
         });
+    }
+
+    private void menuAdmin(Menu nav_Menu) {
+        nav_Menu.findItem(R.id.nav_home).setVisible(true);
+        nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_inventories).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
+        nav_Menu.findItem(R.id.nav_help).setVisible(true);
     }
 
     private void changeLevel(Menu nav_Menu) {
@@ -238,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_list_inventories).setVisible(false);
                                 nav_Menu.findItem(R.id.nav_help).setVisible(true);
                             }
                         }

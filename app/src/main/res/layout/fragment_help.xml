@@ -51,7 +51,8 @@
                 android:layout_marginEnd="@dimen/horizontal_margin"
                 android:layout_marginBottom="@dimen/vertical_margin"
                 android:paddingBottom="@dimen/vertical_padding"
-                app:cardCornerRadius="@dimen/card_corner_radius">
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:contentPaddingBottom="@dimen/vertical_padding">
 
                 <LinearLayout style="@style/LinearLayoutInventory">
 

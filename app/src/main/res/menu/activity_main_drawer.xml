@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/nav_sub_data"
-        android:title="@string/sub_menu_data" >
+        android:title="@string/sub_menu_data">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -37,7 +37,7 @@
 
     <item
         android:id="@+id/nav_sub_manage"
-        android:title="@string/sub_menu_manage" >
+        android:title="@string/sub_menu_manage">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -60,7 +60,7 @@
     </item>
     <item
         android:id="@+id/nav_sub_addition"
-        android:title="@string/sub_menu_addition" >
+        android:title="@string/sub_menu_addition">
         <menu>
             <group android:checkableBehavior="single">
                 <item
