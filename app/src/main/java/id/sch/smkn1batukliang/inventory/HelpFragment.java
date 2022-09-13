@@ -48,11 +48,6 @@ public class HelpFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(requireActivity());
 
-        binding.refreshLayout.setOnRefreshListener(() -> {
-            contactAdmin();
-            binding.refreshLayout.setRefreshing(false);
-        });
-
         return view;
     }
 

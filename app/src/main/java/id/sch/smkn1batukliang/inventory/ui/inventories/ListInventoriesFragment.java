@@ -42,16 +42,18 @@ public class ListInventoriesFragment extends Fragment {
             binding.refreshLayout.setRefreshing(false);
         });
 
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(getString(R.string.reminder)).setMessage("Masih Dalam pengembangan").setCancelable(false)
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> listInventoriesRealtime());
+        builder.show();
+
         return view;
 
     }
 
     private void listInventoriesRealtime() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.reminder)).setMessage("Masih Dalam pengembangan, pilih Ya untuk keluar").setCancelable(false)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> requireActivity().finish());
-        builder.show();
+
     }
 
     @Override

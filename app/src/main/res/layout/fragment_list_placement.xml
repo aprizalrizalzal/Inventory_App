@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.inventories.placement.ListPlacementFragment">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,24 +17,25 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/list_placement" />
 
-        <TextView
-            android:id="@+id/tv_empty_data"
-            style="@style/TextViewInventory"
-            android:layout_gravity="center"
-            android:textAlignment="center" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="@dimen/fab_margin_end_bottom"
-            android:layout_marginBottom="@dimen/fab_margin_end_bottom"
-            android:clickable="true"
-            android:contentDescription="@string/add_placement"
-            android:focusable="true"
-            android:src="@android:drawable/ic_input_add"
-            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+    <TextView
+        android:id="@+id/tv_empty_data"
+        style="@style/TextViewInventory"
+        android:layout_gravity="center"
+        android:textAlignment="center" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="@dimen/fab_margin_end_bottom"
+        android:layout_marginBottom="@dimen/fab_margin_end_bottom"
+        android:clickable="true"
+        android:contentDescription="@string/add_placement"
+        android:focusable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

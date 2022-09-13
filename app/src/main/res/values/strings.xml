@@ -79,6 +79,7 @@
     <string name="f_known">%s \"Ditinjau\"</string>
     <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan %s</string>
     <string name="f_approved">%s \"Disetujui\"</string>
+    <string name="f_received">%s \"Diterima\"</string>
     <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan pengadaan laporan %s</string>
     <string name="cancel">Batal</string>
     <string name="yes">Ya</string>

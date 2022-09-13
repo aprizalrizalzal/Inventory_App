@@ -94,16 +94,21 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
                 }
             });
 
-            if (model.getReportItem().isKnown() && !model.getReportItem().isApproved()) {
+            if (model.getReportItem().isKnown() && !model.getReportItem().isApproved() && !model.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_known)
                         .into(binding.imgListReport);
                 binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_known, model.getReportItem().getPurpose()));
-            } else if (model.getReportItem().isKnown() && model.getReportItem().isApproved()) {
+            } else if (model.getReportItem().isKnown() && model.getReportItem().isApproved() && !model.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_approved)
                         .into(binding.imgListReport);
                 binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_approved, model.getReportItem().getPurpose()));
+            } else if (model.getReportItem().isKnown() && model.getReportItem().isApproved() && model.getReportItem().isReceived()) {
+                Glide.with(itemView)
+                        .load(R.drawable.ic_baseline_verified)
+                        .into(binding.imgListReport);
+                binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_received, model.getReportItem().getPurpose()));
             } else {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_report)
