@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -97,21 +98,25 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
             if (model.getReportItem().isKnown() && !model.getReportItem().isApproved() && !model.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_known)
+                        .apply(new RequestOptions().override(64,64))
                         .into(binding.imgListReport);
                 binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_known, model.getReportItem().getPurpose()));
             } else if (model.getReportItem().isKnown() && model.getReportItem().isApproved() && !model.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_approved)
+                        .apply(new RequestOptions().override(64,64))
                         .into(binding.imgListReport);
                 binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_approved, model.getReportItem().getPurpose()));
             } else if (model.getReportItem().isKnown() && model.getReportItem().isApproved() && model.getReportItem().isReceived()) {
                 Glide.with(itemView)
-                        .load(R.drawable.ic_baseline_verified)
+                        .load(R.drawable.ic_baseline_received)
+                        .apply(new RequestOptions().override(64,64))
                         .into(binding.imgListReport);
                 binding.tvPurpose.setText(itemView.getResources().getString(R.string.f_received, model.getReportItem().getPurpose()));
             } else {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_report)
+                        .apply(new RequestOptions().override(64,64))
                         .into(binding.imgListReport);
                 binding.tvPurpose.setText(model.getReportItem().getPurpose());
             }

@@ -45,14 +45,9 @@ public class HomeFragment extends Fragment {
 
         binding.cardMenuProcurement.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_grid_placement_for_procurement));
 
-        binding.cardMenuHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_help));
+        binding.cardMenuInventories.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_list_inventories));
 
-        binding.cardMenuSignOut.setOnClickListener(v -> {
-            auth.signOut();
-            Intent intent = new Intent(requireContext(), SignInActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
-        });
+        binding.cardMenuHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_help));
 
         return view;
     }

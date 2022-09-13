@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
             Glide.with(itemView)
                     .load(users.getPhotoLink())
                     .placeholder(R.drawable.ic_baseline_account_circle)
+                    .apply(new RequestOptions().override(128,128))
                     .into(binding.imgListUsers);
             binding.tvUsername.setText(users.getUsername());
             binding.tvEmail.setText(users.getEmail());

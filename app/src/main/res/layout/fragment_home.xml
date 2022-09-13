@@ -44,7 +44,7 @@
             app:layout_constraintStart_toStartOf="@+id/web_view"
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_menu_procurement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,21 +76,19 @@
 
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_menu_help"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_menu_inventories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/horizontal_margin"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/image_list_size"
+                android:layout_marginBottom="@dimen/image_list_size"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/web_view">
+                app:cardCornerRadius="@dimen/card_corner_radius">
 
                 <RelativeLayout
                     android:layout_width="@dimen/icon_size"
@@ -98,32 +96,31 @@
                     android:layout_margin="@dimen/vertical_margin">
 
                     <ImageView
-                        android:id="@+id/img_help"
+                        android:id="@+id/img_sign_out"
                         style="@style/ImageMenuInventory"
                         android:layout_centerHorizontal="true"
-                        android:contentDescription="@string/procurement"
-                        android:src="@drawable/ic_baseline_help"
+                        android:contentDescription="@string/inventories"
+                        android:src="@drawable/ic_baseline_inventories"
                         app:tint="@color/light_green_700" />
 
                     <TextView
                         style="@style/TextViewInventory"
-                        android:layout_below="@id/img_help"
+                        android:layout_below="@id/img_sign_out"
                         android:layout_centerHorizontal="true"
-                        android:text="@string/help" />
+                        android:text="@string/inventories" />
 
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_menu_sign_out"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_menu_help"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/image_list_size"
-            android:layout_marginBottom="@dimen/image_list_size"
+            android:layout_margin="@dimen/horizontal_margin"
+            android:layout_marginTop="8dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -139,20 +136,21 @@
                 android:layout_margin="@dimen/vertical_margin">
 
                 <ImageView
-                    android:id="@+id/img_sign_out"
+                    android:id="@+id/img_help"
                     style="@style/ImageMenuInventory"
                     android:layout_centerHorizontal="true"
-                    android:contentDescription="@string/procurement"
-                    android:src="@drawable/ic_baseline_sign_out"
+                    android:contentDescription="@string/help"
+                    android:src="@drawable/ic_baseline_help"
                     app:tint="@color/light_green_700" />
 
                 <TextView
                     style="@style/TextViewInventory"
-                    android:layout_below="@id/img_sign_out"
+                    android:layout_below="@id/img_help"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/sign_out" />
+                    android:text="@string/help" />
 
             </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

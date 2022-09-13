@@ -22,6 +22,9 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_list_inventories"
+            app:destination="@id/nav_list_inventories" />
     </fragment>
 
     <fragment
@@ -109,11 +112,7 @@
         android:id="@+id/nav_list_inventories"
         android:name="id.sch.smkn1batukliang.inventory.ui.inventories.ListInventoriesFragment"
         android:label="@string/inventories"
-        tools:layout="@layout/fragment_list_inventories" >
-        <action
-            android:id="@+id/action_nav_list_inventories_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
+        tools:layout="@layout/fragment_list_inventories" />
 
     <fragment
         android:id="@+id/nav_list_user"

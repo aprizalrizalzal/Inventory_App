@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ public class ListPlacementAdapter extends RecyclerView.Adapter<ListPlacementAdap
             Glide.with(itemView)
                     .load(model.getPlacementItem().getPhotoLink())
                     .placeholder(R.drawable.ic_baseline_placement)
+                    .apply(new RequestOptions().override(128,128))
                     .into(binding.imgListPlacement);
             binding.tvPlacement.setText(itemView.getResources().getString(R.string.f_placement, model.getPlacementItem().getPlacement()));
             binding.tvUsername.setText(itemView.getResources().getString(R.string.f_username, model.getPlacementItem().getUsername()));

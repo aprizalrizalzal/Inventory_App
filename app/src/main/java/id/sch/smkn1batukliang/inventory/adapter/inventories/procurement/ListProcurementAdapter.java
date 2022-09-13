@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class ListProcurementAdapter extends RecyclerView.Adapter<ListProcurement
             Glide.with(itemView)
                     .load(model.getProcurementItem().getPhotoLink())
                     .placeholder(R.drawable.ic_baseline_procurement)
+                    .apply(new RequestOptions().override(128,128))
                     .into(binding.imgListItem);
             binding.tvNameOfGoods.setText(model.getProcurementItem().getProcurement());
             binding.tvPrice.setText(MoneyTextWatcher.formatCurrency(model.getProcurementItem().getPrice()));

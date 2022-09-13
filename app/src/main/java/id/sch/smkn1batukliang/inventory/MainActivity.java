@@ -44,7 +44,6 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
-import id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -288,6 +287,8 @@ public class MainActivity extends AppCompatActivity {
             int id = navDestination.getId();
             if (id == R.id.nav_grid_placement_for_procurement) {
                 navigationView.setCheckedItem(R.id.nav_grid_placement_for_procurement);
+            } else if (id == R.id.nav_list_inventories) {
+                navigationView.setCheckedItem(R.id.nav_list_inventories);
             }
             if (id == R.id.nav_home
                     || id == R.id.nav_grid_placement_for_procurement
@@ -298,10 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     || id == R.id.nav_list_level) {
                 itemSignOut.setVisible(true);
                 itemSignOut.setOnMenuItemClickListener(item -> {
-                    auth.signOut();
-                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                    startActivity(intent);
-                    finish();
+                    clearToken();
                     return false;
                 });
             } else if (id == R.id.nav_list_procurement) {
@@ -313,6 +311,16 @@ public class MainActivity extends AppCompatActivity {
                 itemSignOut.setVisible(false);
             }
         });
+    }
+
+    private void clearToken() {
+        documentReferenceUser.update("tokenId", "").addOnSuccessListener(unused -> {
+            Log.d(TAG, "clearToken: successfully");
+            auth.signOut();
+            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+            finish();
+        }).addOnFailureListener(e -> Log.w(TAG, "clearToken: failure ", e));
     }
 
     @Override

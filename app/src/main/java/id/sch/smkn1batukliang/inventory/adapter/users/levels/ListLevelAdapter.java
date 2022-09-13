@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -90,6 +91,7 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
                         Glide.with(itemView)
                                 .load(users.getPhotoLink())
                                 .placeholder(R.drawable.ic_baseline_label)
+                                .apply(new RequestOptions().override(128,128))
                                 .into(binding.imgListLevels);
                         binding.tvUsername.setText(users.getUsername());
                     }
