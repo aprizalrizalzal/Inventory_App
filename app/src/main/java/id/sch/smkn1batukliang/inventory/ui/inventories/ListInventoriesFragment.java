@@ -1,20 +1,19 @@
 package id.sch.smkn1batukliang.inventory.ui.inventories;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListInventoriesBinding;
-import id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity;
 
 public class ListInventoriesFragment extends Fragment {
 
@@ -38,27 +37,29 @@ public class ListInventoriesFragment extends Fragment {
         view = binding.getRoot();
 
         binding.refreshLayout.setOnRefreshListener(() -> {
-            listInventoriesRealtime();
+            inventories();
             binding.refreshLayout.setRefreshing(false);
         });
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.reminder)).setMessage("Masih Dalam pengembangan").setCancelable(false)
+        builder.setTitle(getString(R.string.reminder)).setMessage("Anda akan dialihkan ke websitenya langsung").setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> listInventoriesRealtime());
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> inventories());
         builder.show();
 
         return view;
 
     }
 
-    private void listInventoriesRealtime() {
-
+    private void inventories() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://inventaris.smkn1batukliang.sch.id/"));
+        startActivity(intent);
     }
 
     @Override
     public void onStart() {
-        listInventoriesRealtime();
+        inventories();
         super.onStart();
     }
 }

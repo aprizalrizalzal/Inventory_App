@@ -1,6 +1,6 @@
 package id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report;
 
-import static id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
+import static id.sch.smkn1batukliang.inventory.ui.inventories.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
 import android.os.Bundle;
 import android.util.Log;

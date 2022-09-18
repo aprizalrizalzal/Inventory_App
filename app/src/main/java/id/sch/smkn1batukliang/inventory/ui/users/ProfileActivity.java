@@ -87,9 +87,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if (extraUsers != null) {
-                getSupportActionBar().setTitle(extraUsers.getUsername());
-            }
         }
 
         resultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {

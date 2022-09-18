@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_grid_placement_for_procurement"
-            app:destination="@id/nav_grid_placement_for_procurement"
+            app:destination="@id/nav_grid_placement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_home" />
@@ -34,7 +34,7 @@
         tools:layout="@layout/fragment_list_procurement">
         <action
             android:id="@+id/action_nav_list_procurement_to_nav_grid_placement_for_procurement"
-            app:destination="@id/nav_grid_placement_for_procurement"
+            app:destination="@id/nav_grid_placement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_list_procurement" />
@@ -59,28 +59,28 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_grid_placement_for_procurement"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment"
+        android:id="@+id/nav_grid_placement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.GridPlacementFragment"
         android:label="@string/procurement"
-        tools:layout="@layout/fragment_grid_placement_for_procurement">
+        tools:layout="@layout/fragment_grid_placement">
         <action
-            android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_add_or_edit_procurement"
+            android:id="@+id/action_nav_grid_placement_to_nav_add_or_edit_procurement"
             app:destination="@id/nav_add_or_edit_procurement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_grid_placement_for_procurement" />
+            app:popUpTo="@id/nav_grid_placement" />
         <action
-            android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_list_procurement"
+            android:id="@+id/action_nav_grid_placement_to_nav_list_procurement"
             app:destination="@id/nav_list_procurement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_grid_placement_for_procurement" />
+            app:popUpTo="@id/nav_grid_placement" />
         <action
-            android:id="@+id/action_nav_grid_placement_for_procurement_to_nav_help"
+            android:id="@+id/action_nav_grid_placement_to_nav_help"
             app:destination="@id/nav_help"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_grid_placement_for_procurement" />
+            app:popUpTo="@id/nav_grid_placement" />
     </fragment>
 
     <fragment

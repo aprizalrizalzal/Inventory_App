@@ -75,12 +75,11 @@
     <string name="f_delete_procurement">Apakah Anda yakin, ingin menghapus pengadaan %s</string>
     <string name="f_delete_placement">Apakah Anda yakin, ingin menghapus penempatan %s</string>
     <string name="f_delete_report">Apakah Anda yakin ingin menghapus laporan %s</string>
-    <string name="f_known_procurement">Apakah Anda yakin dengan laporan %s</string>
-    <string name="f_known">%s \"Ditinjau\"</string>
-    <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan %s</string>
-    <string name="f_approved">%s \"Disetujui\"</string>
-    <string name="f_received">%s \"Diterima\"</string>
-    <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan pengadaan laporan %s</string>
+    <string name="f_known_procurement">Apakah Anda yakin dengan laporan pengadaan %s</string>
+    <string name="f_procurement_rejected">Apakah Anda yakin, Menolak laporan pengadaan %s</string>
+    <string name="f_report_rejected">Harap berikan deskripsi <b>singkat</b> penolakan</string>
+    <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan pengadaan %s</string>
+    <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan laporan  pengadaan %s</string>
     <string name="cancel">Batal</string>
     <string name="yes">Ya</string>
     <string name="agree">Menyetujui</string>
@@ -133,4 +132,6 @@
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
     <string name="error_writing">Kesalahan menulis dokumen</string>
     <string name="contact_admin_for_level">Hubungi Admin untuk peningkatan Akun</string>
+    <string name="rejected">Ditolak</string>
+    <string name="reject">Tolak</string>
 </resources>

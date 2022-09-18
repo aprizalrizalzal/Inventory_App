@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = binding.navView;
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home,
-                R.id.nav_grid_placement_for_procurement,
+                R.id.nav_grid_placement,
                 R.id.nav_list_placement,
                 R.id.nav_list_inventories,
                 R.id.nav_home).setOpenableLayout(drawerLayout).build();
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void menuAdmin(Menu nav_Menu) {
         nav_Menu.findItem(R.id.nav_home).setVisible(true);
-        nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+        nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_inventories).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                         if (levels != null) {
                             if (authId.equals(levels.getAuthId())) {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
                                 nav_Menu.findItem(R.id.nav_list_inventories).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             } else {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_grid_placement_for_procurement).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_help).setVisible(true);
                             }
                         }
@@ -285,13 +285,13 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             int id = navDestination.getId();
-            if (id == R.id.nav_grid_placement_for_procurement) {
-                navigationView.setCheckedItem(R.id.nav_grid_placement_for_procurement);
+            if (id == R.id.nav_grid_placement) {
+                navigationView.setCheckedItem(R.id.nav_grid_placement);
             } else if (id == R.id.nav_list_inventories) {
                 navigationView.setCheckedItem(R.id.nav_list_inventories);
             }
             if (id == R.id.nav_home
-                    || id == R.id.nav_grid_placement_for_procurement
+                    || id == R.id.nav_grid_placement
                     || id == R.id.nav_list_placement
                     || id == R.id.nav_list_inventories
                     || id == R.id.nav_list_user

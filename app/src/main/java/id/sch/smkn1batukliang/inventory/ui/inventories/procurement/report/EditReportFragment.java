@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report;
 
 import static id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.ListReportFragment.EXTRA_REPORT;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +19,8 @@ import androidx.navigation.Navigation;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,6 +45,9 @@ import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentEditReportBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.Report;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.ReportItem;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response.Principal;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response.TeamLeader;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response.VicePrincipal;
 import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
 
 public class EditReportFragment extends Fragment {
@@ -96,25 +103,40 @@ public class EditReportFragment extends Fragment {
                         Levels levels = dataSnapshot.getValue(Levels.class);
                         if (levels != null && authId.equals(levels.getAuthId())) {
                             if (levels.getLevelsItem().getLevel().equals(getString(R.string.admin))) {
-                                if (!extraReport.getReportItem().isKnown() && !extraReport.getReportItem().isApproved()){
+                                if (!extraReport.getReportItem().getVicePrincipal().isKnown()
+                                        && !extraReport.getReportItem().getTeamLeader().isApproved()
+                                        && !extraReport.getReportItem().getPrincipal().isApproved()) {
                                     binding.btnKnown.setVisibility(View.VISIBLE);
-                                    binding.btnApproved.setVisibility(View.VISIBLE);
-                                } else if (extraReport.getReportItem().isKnown() && !extraReport.getReportItem().isApproved()){
                                     binding.btnApproved.setVisibility(View.VISIBLE);
                                 }
                             } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.vice_principal))) {
-                                if (!extraReport.getReportItem().isKnown() && !extraReport.getReportItem().isApproved()){
+                                if (!extraReport.getReportItem().getVicePrincipal().isKnown()
+                                        && !extraReport.getReportItem().getTeamLeader().isApproved()
+                                        && !extraReport.getReportItem().getPrincipal().isApproved()) {
                                     binding.btnKnown.setVisibility(View.VISIBLE);
                                 }
-                            } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.team_leader))
-                                    || levels.getLevelsItem().getLevel().equals(getString(R.string.principal))) {
-                                if (extraReport.getReportItem().isKnown() && !extraReport.getReportItem().isApproved()){
+                            } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.team_leader))) {
+                                if (extraReport.getReportItem().getVicePrincipal().isKnown()
+                                        && !extraReport.getReportItem().getTeamLeader().isApproved()
+                                        && !extraReport.getReportItem().getPrincipal().isApproved()) {
+                                    binding.btnApproved.setVisibility(View.VISIBLE);
+                                }
+                            } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.principal))) {
+                                if (extraReport.getReportItem().getVicePrincipal().isKnown()
+                                        && extraReport.getReportItem().getTeamLeader().isApproved()
+                                        && !extraReport.getReportItem().getPrincipal().isApproved()) {
+                                    binding.btnApproved.setVisibility(View.VISIBLE);
+                                } else if (extraReport.getReportItem().getVicePrincipal().isKnown()
+                                        && extraReport.getReportItem().getTeamLeader().isApproved()
+                                        && !extraReport.getReportItem().getPrincipal().isApproved()) {
                                     binding.btnApproved.setVisibility(View.VISIBLE);
                                 }
                             } else {
-                                binding.btnReceived.setVisibility(View.VISIBLE);
-                                if (extraReport.getReportItem().isKnown() && extraReport.getReportItem().isApproved() && extraReport.getReportItem().isReceived()){
-                                    binding.btnReceived.setVisibility(View.GONE);
+                                if (extraReport.getReportItem().getVicePrincipal().isKnown()
+                                        && extraReport.getReportItem().getTeamLeader().isApproved()
+                                        && extraReport.getReportItem().getPrincipal().isApproved()
+                                        && !extraReport.getReportItem().isReceived()) {
+                                    binding.btnReceived.setVisibility(View.VISIBLE);
                                 }
                             }
                         }
@@ -178,14 +200,19 @@ public class EditReportFragment extends Fragment {
         builder.setTitle(getString(R.string.verification))
                 .setMessage(getString(R.string.f_known_procurement, extraReport.getReportItem().getReport()))
                 .setCancelable(false)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> knownReport());
+                .setNegativeButton(getString(R.string.reject), (dialog, id) -> alertRejected())
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> knownReport())
+                .setNeutralButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel());
         builder.show();
     }
 
     private void knownReport() {
         progressDialog.ShowProgressDialog();
-        ReportItem reportItem = new ReportItem(extraReport.getReportItem().isApproved(), true, extraReport.getReportItem().getPdfLink(), extraReport.getReportItem().getPurpose(), extraReport.getReportItem().isReceived(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), extraReport.getReportItem().getTimestamp());
+        Principal principal = new Principal(false, "");
+        TeamLeader teamLeader = new TeamLeader(false, "");
+        VicePrincipal vicePrincipal = new VicePrincipal(true, getString(R.string.known));
+
+        ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), extraReport.getReportItem().isReceived(), vicePrincipal);
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
         databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();
@@ -203,14 +230,27 @@ public class EditReportFragment extends Fragment {
         builder.setTitle(getString(R.string.verification))
                 .setMessage(getString(R.string.f_procurement_approved, extraReport.getReportItem().getReport()))
                 .setCancelable(false)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> reportApproved());
+                .setNegativeButton(getString(R.string.reject), (dialog, id) -> alertRejected())
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> reportApproved(extraReport.getReportItem()))
+                .setNeutralButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel());
         builder.show();
     }
 
-    private void reportApproved() {
+    private void reportApproved(ReportItem _reportItem) {
         progressDialog.ShowProgressDialog();
-        ReportItem reportItem = new ReportItem(true, extraReport.getReportItem().isKnown(), extraReport.getReportItem().getPdfLink(), extraReport.getReportItem().getPurpose(), extraReport.getReportItem().isReceived(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), extraReport.getReportItem().getTimestamp());
+        Principal principal = null;
+        TeamLeader teamLeader = null;
+        VicePrincipal vicePrincipal = new VicePrincipal(true, extraReport.getReportItem().getVicePrincipal().getDescription());
+        if (!_reportItem.getTeamLeader().isApproved() && !_reportItem.getPrincipal().isApproved()) {
+            teamLeader = new TeamLeader(true, getString(R.string.approved));
+            principal = new Principal(extraReport.getReportItem().getPrincipal().isApproved(), extraReport.getReportItem().getTeamLeader().getDescription());
+        } else if (_reportItem.getTeamLeader().isApproved() && !_reportItem.getPrincipal().isApproved()) {
+            teamLeader = new TeamLeader(extraReport.getReportItem().getTeamLeader().isApproved(), extraReport.getReportItem().getTeamLeader().getDescription());
+            principal = new Principal(true, getString(R.string.approved));
+        }
+
+
+        ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), extraReport.getReportItem().isReceived(), vicePrincipal);
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
         databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();
@@ -219,6 +259,42 @@ public class EditReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "agreeReport: failure ", e);
+            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    @SuppressLint("InflateParams")
+    private void alertRejected() {
+        View customView;
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        customView = LayoutInflater.from(requireContext()).inflate(R.layout.report_reject, null, false);
+        builder.setTitle(getString(R.string.reject))
+                .setMessage(getString(R.string.f_report_rejected))
+                .setView(customView)
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
+                    TextInputEditText _description = customView.findViewById(R.id.tiet_description);
+                    String description = Objects.requireNonNull(_description.getText()).toString();
+                    reportRejected(description);
+                });
+        builder.show();
+    }
+
+    private void reportRejected(String description) {
+        progressDialog.ShowProgressDialog();
+        Principal principal = new Principal(false, description);
+        TeamLeader teamLeader = new TeamLeader(false, description);
+        VicePrincipal vicePrincipal = new VicePrincipal(false, description);
+
+        ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), extraReport.getReportItem().isReceived(), vicePrincipal);
+        Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
+        databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
+            progressDialog.DismissProgressDialog();
+            Log.d(TAG, "rejectedReport: successfully " + extraReport.getReportItem().getReportId());
+            Navigation.findNavController(view).navigateUp();
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "rejectedReport: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
@@ -235,7 +311,11 @@ public class EditReportFragment extends Fragment {
 
     private void reportReceived() {
         progressDialog.ShowProgressDialog();
-        ReportItem reportItem = new ReportItem(extraReport.getReportItem().isApproved(), extraReport.getReportItem().isKnown(), extraReport.getReportItem().getPdfLink(), extraReport.getReportItem().getPurpose(), true, extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), extraReport.getReportItem().getTimestamp());
+        Principal principal = new Principal(extraReport.getReportItem().getPrincipal().isApproved(), extraReport.getReportItem().getPrincipal().getDescription());
+        TeamLeader teamLeader = new TeamLeader(extraReport.getReportItem().getTeamLeader().isApproved(), extraReport.getReportItem().getTeamLeader().getDescription());
+        VicePrincipal vicePrincipal = new VicePrincipal(extraReport.getReportItem().getVicePrincipal().isKnown(), extraReport.getReportItem().getVicePrincipal().getDescription());
+
+        ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), true, vicePrincipal);
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
         databaseReferenceReport.child(extraReport.getReportItem().getReportId()).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();

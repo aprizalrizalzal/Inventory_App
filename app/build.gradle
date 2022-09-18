@@ -32,21 +32,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'id.sch.smkn1batukliang.inventory'
 }
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.navigation:navigation-fragment:2.5.1'
-    implementation 'androidx.navigation:navigation-ui:2.5.1'
+    implementation 'androidx.navigation:navigation-fragment:2.5.2'
+    implementation 'androidx.navigation:navigation-ui:2.5.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.google.firebase:firebase-analytics:21.1.1'
     implementation 'com.google.firebase:firebase-auth:21.0.8'
-    implementation 'com.google.firebase:firebase-firestore:24.3.0'
+    implementation 'com.google.firebase:firebase-firestore:24.3.1'
     implementation 'com.google.firebase:firebase-database:20.0.6'
     implementation 'com.google.firebase:firebase-storage:20.0.2'
     implementation 'com.google.firebase:firebase-messaging:23.0.8'

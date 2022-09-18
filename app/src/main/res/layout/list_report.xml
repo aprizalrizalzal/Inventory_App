@@ -37,16 +37,27 @@
 
     <TextView
         android:id="@+id/tv_purpose"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/horizontal_margin"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/vertical_horizontal_margin"
         android:maxLines="1"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/img_btn_delete"
         app:layout_constraintStart_toEndOf="@+id/img_list_report"
         app:layout_constraintTop_toBottomOf="@+id/tv_username"
         tools:text="UN" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/vertical_horizontal_margin"
+        android:layout_marginTop="@dimen/vertical_horizontal_margin"
+        android:maxLines="1"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tv_purpose"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username"
+        tools:text="Disetujui" />
 
 
     <TextView
@@ -55,7 +66,7 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/tv_purpose"
+        app:layout_constraintEnd_toEndOf="@+id/img_btn_delete"
         app:layout_constraintStart_toStartOf="@+id/tv_purpose"
         app:layout_constraintTop_toBottomOf="@+id/tv_purpose"
         tools:text="200820221200000-lab rpl" />

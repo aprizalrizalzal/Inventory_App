@@ -4,7 +4,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static id.sch.smkn1batukliang.inventory.addition.firebase.InventoryMessagingService.NOTIFICATION_URL;
 import static id.sch.smkn1batukliang.inventory.addition.firebase.InventoryMessagingService.SERVER_KEY;
-import static id.sch.smkn1batukliang.inventory.ui.inventories.procurement.GridPlacementForProcurementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
+import static id.sch.smkn1batukliang.inventory.ui.inventories.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -87,6 +87,9 @@ import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procurement;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.Report;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.ReportItem;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response.Principal;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response.TeamLeader;
+import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response.VicePrincipal;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class AddReportFragment extends Fragment {
@@ -638,7 +641,10 @@ public class AddReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         String reportId = UUID.randomUUID().toString();
 
-        ReportItem modelItem = new ReportItem(false, false, pdfLink, purpose, false, report, reportId, dateProcurement);
+        Principal principal = new Principal(false, "");
+        TeamLeader teamLeader = new TeamLeader(false, "");
+        VicePrincipal vicePrincipal = new VicePrincipal(false, "");
+        ReportItem modelItem = new ReportItem(pdfLink, principal, purpose, report, reportId, teamLeader, dateProcurement, false, vicePrincipal);
         Report model = new Report(authId, placementId, modelItem);
         databaseReferenceReport.child(reportId).setValue(model).addOnSuccessListener(command -> {
             progressDialog.DismissProgressDialog();

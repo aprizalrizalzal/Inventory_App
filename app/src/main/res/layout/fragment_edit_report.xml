@@ -20,7 +20,7 @@
         <Button
             android:id="@+id/btn_known"
             style="@style/ButtonInventoryTextButton"
-            android:text="@string/yes"
+            android:text="@string/known"
             android:visibility="gone"
             app:icon="@drawable/ic_baseline_known"
             tools:ignore="TextContrastCheck" />
@@ -28,7 +28,7 @@
         <Button
             android:id="@+id/btn_approved"
             style="@style/ButtonInventoryTextButton"
-            android:text="@string/yes"
+            android:text="@string/approved"
             android:visibility="gone"
             app:icon="@drawable/ic_baseline_approved"
             tools:ignore="TextContrastCheck" />
@@ -36,7 +36,7 @@
         <Button
             android:id="@+id/btn_received"
             style="@style/ButtonInventoryTextButton"
-            android:text="@string/yes"
+            android:text="@string/received"
             android:visibility="gone"
             app:icon="@drawable/ic_baseline_received"
             tools:ignore="TextContrastCheck" />
