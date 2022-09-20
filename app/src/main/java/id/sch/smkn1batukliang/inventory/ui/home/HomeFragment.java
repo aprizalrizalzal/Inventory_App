@@ -1,6 +1,5 @@
 package id.sch.smkn1batukliang.inventory.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHomeBinding;
-import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 
 public class HomeFragment extends Fragment {
 
-    private FirebaseAuth auth;
     private View view;
 
     public HomeFragment() {
@@ -32,13 +27,10 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater, container, false);
         view = binding.getRoot();
-
-        auth = FirebaseAuth.getInstance();
 
         WebView webView = binding.webView;
         webView.loadUrl("https://smkn1batukliang.sch.id/");

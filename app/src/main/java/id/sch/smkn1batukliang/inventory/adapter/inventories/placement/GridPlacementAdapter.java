@@ -18,7 +18,7 @@ import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.GridPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 
-public class GridPlacementForProcurementAdapter extends RecyclerView.Adapter<GridPlacementForProcurementAdapter.ViewHolder> {
+public class GridPlacementAdapter extends RecyclerView.Adapter<GridPlacementAdapter.ViewHolder> {
 
     private final List<Placement> placements = new ArrayList<>();
     private OnItemClickCallback onItemClickCallback;
@@ -36,13 +36,13 @@ public class GridPlacementForProcurementAdapter extends RecyclerView.Adapter<Gri
 
     @NonNull
     @Override
-    public GridPlacementForProcurementAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GridPlacementAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_placement, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GridPlacementForProcurementAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GridPlacementAdapter.ViewHolder holder, int position) {
         holder.bind(placements.get(position));
         holder.itemView.setOnClickListener(v -> onItemClickCallback.onItemClicked(placements.get(holder.getAdapterPosition())));
     }

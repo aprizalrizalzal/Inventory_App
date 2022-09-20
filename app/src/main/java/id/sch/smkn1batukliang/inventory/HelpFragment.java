@@ -16,7 +16,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHelpBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 

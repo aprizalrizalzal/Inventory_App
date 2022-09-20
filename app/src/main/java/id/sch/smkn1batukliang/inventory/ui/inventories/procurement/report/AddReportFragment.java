@@ -80,8 +80,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.addition.MoneyTextWatcher;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.MoneyTextWatcher;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddReportBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procurement;
@@ -643,7 +643,7 @@ public class AddReportFragment extends Fragment {
 
         Principal principal = new Principal(false, "");
         TeamLeader teamLeader = new TeamLeader(false, "");
-        VicePrincipal vicePrincipal = new VicePrincipal(false, "");
+        VicePrincipal vicePrincipal = new VicePrincipal("", false);
         ReportItem modelItem = new ReportItem(pdfLink, principal, purpose, report, reportId, teamLeader, dateProcurement, false, vicePrincipal);
         Report model = new Report(authId, placementId, modelItem);
         databaseReferenceReport.child(reportId).setValue(model).addOnSuccessListener(command -> {

@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddOrEditPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.PlacementItem;

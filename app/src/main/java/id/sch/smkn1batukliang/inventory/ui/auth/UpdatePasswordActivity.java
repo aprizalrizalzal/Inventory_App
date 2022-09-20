@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityUpdatePasswordBinding;
 import id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity;
 

@@ -24,8 +24,8 @@ import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.RecyclerViewEmptyData;
-import id.sch.smkn1batukliang.inventory.adapter.inventories.placement.GridPlacementForProcurementAdapter;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.adapter.inventories.placement.GridPlacementAdapter;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentGridPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;
 
@@ -38,7 +38,7 @@ public class GridPlacementFragment extends Fragment {
     private View view;
     private String authId;
     private DatabaseReference databaseReferencePlacement;
-    private GridPlacementForProcurementAdapter adapter;
+    private GridPlacementAdapter adapter;
     private CustomProgressDialog progressDialog;
 
     public GridPlacementFragment() {
@@ -70,7 +70,7 @@ public class GridPlacementFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReferencePlacement = database.getReference("placement");
 
-        adapter = new GridPlacementForProcurementAdapter();
+        adapter = new GridPlacementAdapter();
         binding.tvEmptyData.setText(getString(R.string.no_data_available_placement_for_procurement));
         binding.tvEmptyData.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_grid_placement_to_nav_help));
         adapter.registerAdapterDataObserver(new RecyclerViewEmptyData(binding.rvPlacementForProcurement, binding.tvEmptyData));

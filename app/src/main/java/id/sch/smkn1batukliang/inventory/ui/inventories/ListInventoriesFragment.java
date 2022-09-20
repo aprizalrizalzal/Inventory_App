@@ -18,7 +18,6 @@ import id.sch.smkn1batukliang.inventory.databinding.FragmentListInventoriesBindi
 public class ListInventoriesFragment extends Fragment {
 
     private FragmentListInventoriesBinding binding;
-    private View view;
 
     public ListInventoriesFragment() {
         // Required empty public constructor
@@ -34,7 +33,7 @@ public class ListInventoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentListInventoriesBinding.inflate(getLayoutInflater());
-        view = binding.getRoot();
+        View view = binding.getRoot();
 
         binding.refreshLayout.setOnRefreshListener(() -> {
             inventories();
@@ -42,7 +41,7 @@ public class ListInventoriesFragment extends Fragment {
         });
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.reminder)).setMessage("Anda akan dialihkan ke websitenya langsung").setCancelable(false)
+        builder.setTitle(getString(R.string.reminder)).setMessage("Anda akan dialihkan ke website-nya langsung").setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
                 .setPositiveButton(getString(R.string.yes), (dialog, id) -> inventories());
         builder.show();
@@ -55,11 +54,5 @@ public class ListInventoriesFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("https://inventaris.smkn1batukliang.sch.id/"));
         startActivity(intent);
-    }
-
-    @Override
-    public void onStart() {
-        inventories();
-        super.onStart();
     }
 }

@@ -76,14 +76,12 @@
     <string name="f_delete_placement">Apakah Anda yakin, ingin menghapus penempatan %s</string>
     <string name="f_delete_report">Apakah Anda yakin ingin menghapus laporan %s</string>
     <string name="f_known_procurement">Apakah Anda yakin dengan laporan pengadaan %s</string>
-    <string name="f_procurement_rejected">Apakah Anda yakin, Menolak laporan pengadaan %s</string>
     <string name="f_report_rejected">Harap berikan deskripsi <b>singkat</b> penolakan</string>
     <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan pengadaan %s</string>
     <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan laporan  pengadaan %s</string>
     <string name="cancel">Batal</string>
     <string name="yes">Ya</string>
     <string name="agree">Menyetujui</string>
-    <string name="call">Hubungi</string>
     <string name="placement_required">Penempatan diperlukan</string>
     <string name="username_required">Nama Pengguna diperlukan</string>
     <string name="select_listed_username">Pilih nama pengguna yang sesuai dan sudah terdaftar</string>
@@ -130,8 +128,5 @@
     <string name="whatsapp_number">wa.me/</string>
     <string name="new_password_required">Kata Sandi baru diperlukan</string>
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
-    <string name="error_writing">Kesalahan menulis dokumen</string>
-    <string name="contact_admin_for_level">Hubungi Admin untuk peningkatan Akun</string>
-    <string name="rejected">Ditolak</string>
     <string name="reject">Tolak</string>
 </resources>

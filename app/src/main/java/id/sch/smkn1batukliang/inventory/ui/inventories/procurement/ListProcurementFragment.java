@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.inventories.procurement.ListProcurementAdapter;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.adapter.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.placement.Placement;

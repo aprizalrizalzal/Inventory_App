@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityForgetPasswordBinding;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
@@ -52,11 +52,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         } else {
             binding.tilEmail.setErrorEnabled(false);
         }
-        resetPassword(email);
+        resetPassword();
         return true;
     }
 
-    private void resetPassword(String email) {
+    private void resetPassword() {
         progressDialog.ShowProgressDialog();
         auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

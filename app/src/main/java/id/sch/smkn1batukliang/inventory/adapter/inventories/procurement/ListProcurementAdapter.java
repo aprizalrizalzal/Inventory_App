@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.MoneyTextWatcher;
+import id.sch.smkn1batukliang.inventory.addition.utilities.MoneyTextWatcher;
 import id.sch.smkn1batukliang.inventory.databinding.ListProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.Procurement;
 

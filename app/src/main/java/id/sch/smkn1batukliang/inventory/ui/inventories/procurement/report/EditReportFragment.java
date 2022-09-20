@@ -20,7 +20,6 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +40,7 @@ import java.util.concurrent.Executors;
 import javax.net.ssl.HttpsURLConnection;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentEditReportBinding;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.Report;
 import id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.ReportItem;
@@ -210,7 +209,7 @@ public class EditReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         Principal principal = new Principal(false, "");
         TeamLeader teamLeader = new TeamLeader(false, "");
-        VicePrincipal vicePrincipal = new VicePrincipal(true, getString(R.string.known));
+        VicePrincipal vicePrincipal = new VicePrincipal(getString(R.string.known), true);
 
         ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), extraReport.getReportItem().isReceived(), vicePrincipal);
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
@@ -240,7 +239,7 @@ public class EditReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         Principal principal = null;
         TeamLeader teamLeader = null;
-        VicePrincipal vicePrincipal = new VicePrincipal(true, extraReport.getReportItem().getVicePrincipal().getDescription());
+        VicePrincipal vicePrincipal = new VicePrincipal(extraReport.getReportItem().getVicePrincipal().getDescription(), true);
         if (!_reportItem.getTeamLeader().isApproved() && !_reportItem.getPrincipal().isApproved()) {
             teamLeader = new TeamLeader(true, getString(R.string.approved));
             principal = new Principal(extraReport.getReportItem().getPrincipal().isApproved(), extraReport.getReportItem().getTeamLeader().getDescription());
@@ -284,7 +283,7 @@ public class EditReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         Principal principal = new Principal(false, description);
         TeamLeader teamLeader = new TeamLeader(false, description);
-        VicePrincipal vicePrincipal = new VicePrincipal(false, description);
+        VicePrincipal vicePrincipal = new VicePrincipal(description, false);
 
         ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), extraReport.getReportItem().isReceived(), vicePrincipal);
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);
@@ -313,7 +312,7 @@ public class EditReportFragment extends Fragment {
         progressDialog.ShowProgressDialog();
         Principal principal = new Principal(extraReport.getReportItem().getPrincipal().isApproved(), extraReport.getReportItem().getPrincipal().getDescription());
         TeamLeader teamLeader = new TeamLeader(extraReport.getReportItem().getTeamLeader().isApproved(), extraReport.getReportItem().getTeamLeader().getDescription());
-        VicePrincipal vicePrincipal = new VicePrincipal(extraReport.getReportItem().getVicePrincipal().isKnown(), extraReport.getReportItem().getVicePrincipal().getDescription());
+        VicePrincipal vicePrincipal = new VicePrincipal(extraReport.getReportItem().getVicePrincipal().getDescription(), extraReport.getReportItem().getVicePrincipal().isKnown());
 
         ReportItem reportItem = new ReportItem(extraReport.getReportItem().getPdfLink(), principal, extraReport.getReportItem().getPurpose(), extraReport.getReportItem().getReport(), extraReport.getReportItem().getReportId(), teamLeader, extraReport.getReportItem().getTimestamp(), true, vicePrincipal);
         Report model = new Report(extraReport.getAuthId(), extraReport.getPlacementId(), reportItem);

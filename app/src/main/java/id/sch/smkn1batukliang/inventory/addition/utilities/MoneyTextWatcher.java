@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.addition;
+package id.sch.smkn1batukliang.inventory.addition.utilities;
 
 import android.text.Editable;
 import android.text.TextWatcher;
