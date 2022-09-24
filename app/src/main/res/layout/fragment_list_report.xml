@@ -15,12 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/list_report" />
-
-        <TextView
-            android:id="@+id/tv_empty_data"
-            style="@style/TextViewInventory"
-            android:layout_gravity="center"
-            android:textAlignment="center" />
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_empty_data"
+        style="@style/TextViewInventory"
+        android:layout_gravity="center"
+        android:textAlignment="center" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

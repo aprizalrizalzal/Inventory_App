@@ -23,7 +23,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -134,7 +136,7 @@ public class AddOrEditPlacementFragment extends Fragment {
             return false;
         }
 
-        createPlacement(authId);
+        createPlacement();
 
         return true;
     }
@@ -155,12 +157,12 @@ public class AddOrEditPlacementFragment extends Fragment {
             binding.tilPlacement.setErrorEnabled(false);
         }
 
-        updatePlacement(extraPlacement.getPlacementItem());
+        updatePlacement();
 
         return true;
     }
 
-    private void createPlacement(String authId) {
+    private void createPlacement() {
         progressDialog.ShowProgressDialog();
 
         String placementId = UUID.randomUUID().toString();
@@ -183,14 +185,18 @@ public class AddOrEditPlacementFragment extends Fragment {
         });
     }
 
-    private void updatePlacement(PlacementItem placementItem) {
-        PlacementItem modelItem = new PlacementItem(placementItem.getPhotoLink(), placementItem.getPlacementId(), placement, placementItem.getTimestamp(), placementItem.getUsername());
-        Placement model = new Placement(extraAuthId, modelItem);
-        referenceExtraPlacement.setValue(model).addOnSuccessListener(unused -> {
+    private void updatePlacement() {
+        progressDialog.ShowProgressDialog();
+        Map<String, Object> mapPlacement = new HashMap<>();
+        mapPlacement.put("/placementItem/placement", placement);
+
+        referenceExtraPlacement.updateChildren(mapPlacement).addOnSuccessListener(unused -> {
+            progressDialog.DismissProgressDialog();
             Log.d(TAG, "updatePlacement: successfully " + extraAuthId);
             Navigation.findNavController(view).navigateUp();
             Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
             Log.w(TAG, "updatePlacement: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });

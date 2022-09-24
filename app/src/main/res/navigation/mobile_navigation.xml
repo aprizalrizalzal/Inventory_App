@@ -187,7 +187,14 @@
         android:id="@+id/nav_add_report"
         android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.AddReportFragment"
         android:label="@string/report"
-        tools:layout="@layout/fragment_add_report" />
+        tools:layout="@layout/fragment_add_report" >
+        <action
+            android:id="@+id/action_nav_add_report_to_nav_edit_report"
+            app:destination="@id/nav_edit_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_add_report"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_help"

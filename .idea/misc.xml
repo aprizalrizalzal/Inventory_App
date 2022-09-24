@@ -290,6 +290,7 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0">
       <entry_point TYPE="field" FQNAME="id.sch.smkn1batukliang.inventory.MainActivity appBarConfiguration" />
+      <entry_point TYPE="field" FQNAME="id.sch.smkn1batukliang.inventory.ui.users.levels.AddOrEditLevelFragment authId" />
     </entry_points>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">

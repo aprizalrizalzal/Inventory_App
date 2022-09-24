@@ -7,15 +7,12 @@ import static id.sch.smkn1batukliang.inventory.addition.firebase.InventoryMessag
 import static id.sch.smkn1batukliang.inventory.ui.inventories.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.FileUriExposedException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -101,6 +99,7 @@ public class AddReportFragment extends Fragment {
     boolean isEmptyFields = false;
     private ArrayAdapter<String> stringAdapter;
     private FragmentAddReportBinding binding;
+    private View view;
     private SimpleDateFormat simpleDateFormatId;
     private CustomProgressDialog progressDialog;
     private CollectionReference collectionReferenceUsers;
@@ -139,7 +138,7 @@ public class AddReportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddReportBinding.inflate(getLayoutInflater(), container, false);
-        View view = binding.getRoot();
+        view = binding.getRoot();
 
         progressDialog = new CustomProgressDialog(getActivity());
 
@@ -362,7 +361,7 @@ public class AddReportFragment extends Fragment {
 
     private void purposeProcurement() throws IOException, DocumentException {
 
-        String pathDownload = Environment.getExternalStorageDirectory().getPath() + "/Download/";
+        String pathDownload = Environment.getExternalStorageDirectory().getPath() + "/Documents/";
         report = String.format("%s inventaris %s.pdf", dateProcurement.toLowerCase(), placement.toLowerCase());
         path = new File(pathDownload);
 
@@ -643,7 +642,7 @@ public class AddReportFragment extends Fragment {
 
         Principal principal = new Principal(false, "");
         TeamLeader teamLeader = new TeamLeader(false, "");
-        VicePrincipal vicePrincipal = new VicePrincipal("", false);
+        VicePrincipal vicePrincipal = new VicePrincipal(false, "");
         ReportItem modelItem = new ReportItem(pdfLink, principal, purpose, report, reportId, teamLeader, dateProcurement, false, vicePrincipal);
         Report model = new Report(authId, placementId, modelItem);
         databaseReferenceReport.child(reportId).setValue(model).addOnSuccessListener(command -> {
@@ -651,7 +650,6 @@ public class AddReportFragment extends Fragment {
             Log.d(TAG, "createReport: successfully " + reportId);
             listDatabaseProcurementReference();
             getTokenForNotification(model);
-            previewPdf();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "createReport: failure ", e);
@@ -687,13 +685,13 @@ public class AddReportFragment extends Fragment {
         });
     }
 
-    private void sendDataReportAndUser(Report model, String tokenId) {
+    private void sendDataReportAndUser(Report report, String tokenId) {
         JSONObject to = new JSONObject();
         JSONObject data = new JSONObject();
 
         try {
-            data.put("title", model.getReportItem().getPurpose());
-            data.put("message", model.getReportItem().getReport());
+            data.put("title", report.getReportItem().getPurpose());
+            data.put("message", report.getReportItem().getReport());
 
             to.put("to", tokenId);
             to.put("data", data);
@@ -724,21 +722,9 @@ public class AddReportFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
         request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
-    }
 
+        Navigation.findNavController(view).navigateUp();
 
-    private void previewPdf() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            try {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(path), "application/pdf");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                requireActivity().startActivity(intent);
-            } catch (FileUriExposedException e) {
-                Log.w(TAG, "previewPdf: failure ", e);
-            }
-        }
     }
 
     @Override

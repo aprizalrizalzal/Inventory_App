@@ -220,7 +220,6 @@ public class ListProcurementFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onStart() {
         listProcurementRealtime();

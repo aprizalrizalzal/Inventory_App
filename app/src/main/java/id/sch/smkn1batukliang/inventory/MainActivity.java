@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private CustomProgressDialog progressDialog;
-    private MenuItem itemUpDownReport, itemReport, itemSignOut;
+    private MenuItem itemUpDownReport, itemPrint, itemReport, itemSignOut;
     private NavigationView navigationView;
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeNavDestination(Menu menu) {
         itemUpDownReport = menu.findItem(R.id.action_up_down_report);
+        itemPrint = menu.findItem(R.id.action_open_in_new);
         itemReport = menu.findItem(R.id.action_report);
         itemSignOut = menu.findItem(R.id.action_sign_out);
 
@@ -308,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_edit_report
                     || id == R.id.nav_add_or_edit_placement
                     || id == R.id.nav_add_or_edit_level) {
+                itemPrint.setVisible(true);
                 itemSignOut.setVisible(false);
             }
         });

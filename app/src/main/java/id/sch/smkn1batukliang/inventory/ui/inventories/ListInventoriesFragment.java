@@ -42,12 +42,22 @@ public class ListInventoriesFragment extends Fragment {
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(getString(R.string.reminder)).setMessage("Anda akan dialihkan ke website-nya langsung").setCancelable(false)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> inventories());
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                    dialog.cancel();
+                    back();
+                })
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
+                    inventories();
+                    back();
+                });
         builder.show();
 
         return view;
 
+    }
+
+    private void back() {
+        requireActivity().onBackPressed();
     }
 
     private void inventories() {

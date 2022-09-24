@@ -18,15 +18,23 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_known"
+            android:id="@+id/btn_approved_vice_principal"
             style="@style/ButtonInventoryTextButton"
-            android:text="@string/known"
+            android:text="@string/approved"
             android:visibility="gone"
-            app:icon="@drawable/ic_baseline_known"
+            app:icon="@drawable/ic_baseline_approved"
             tools:ignore="TextContrastCheck" />
 
         <Button
-            android:id="@+id/btn_approved"
+            android:id="@+id/btn_approved_team_leader"
+            style="@style/ButtonInventoryTextButton"
+            android:text="@string/approved"
+            android:visibility="gone"
+            app:icon="@drawable/ic_baseline_approved"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btn_approved_principal"
             style="@style/ButtonInventoryTextButton"
             android:text="@string/approved"
             android:visibility="gone"

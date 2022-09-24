@@ -1,15 +1,23 @@
 package id.sch.smkn1batukliang.inventory.model.inventories.procurement.report.response;
 
 public class VicePrincipal {
+    private Boolean approved;
     private String description;
-    private Boolean known;
 
     public VicePrincipal() {
     }
 
-    public VicePrincipal(String description, Boolean known) {
+    public VicePrincipal(Boolean approved, String description) {
+        this.approved = approved;
         this.description = description;
-        this.known = known;
+    }
+
+    public Boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 
     public String getDescription() {
@@ -18,13 +26,5 @@ public class VicePrincipal {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Boolean isKnown() {
-        return known;
-    }
-
-    public void setKnown(Boolean known) {
-        this.known = known;
     }
 }

@@ -39,7 +39,7 @@
     <string name="team_leader">Ketua Tim Pelaksana BOS</string>
     <string name="vice_principal">Wakil Kepala Sekolah Sarana dan Prasarana</string>
     <string name="approved">Disetujui</string>
-    <string name="known">Diketahui</string>
+    <string name="rejected">Ditolak</string>
     <string name="received">Diterima</string>
     <string name="principal">Kepala Sekolah</string>
     <string name="add_procurement">Tambah Pengadaan</string>
@@ -75,7 +75,6 @@
     <string name="f_delete_procurement">Apakah Anda yakin, ingin menghapus pengadaan %s</string>
     <string name="f_delete_placement">Apakah Anda yakin, ingin menghapus penempatan %s</string>
     <string name="f_delete_report">Apakah Anda yakin ingin menghapus laporan %s</string>
-    <string name="f_known_procurement">Apakah Anda yakin dengan laporan pengadaan %s</string>
     <string name="f_report_rejected">Harap berikan deskripsi <b>singkat</b> penolakan</string>
     <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan pengadaan %s</string>
     <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan laporan  pengadaan %s</string>
@@ -129,4 +128,5 @@
     <string name="new_password_required">Kata Sandi baru diperlukan</string>
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
     <string name="reject">Tolak</string>
+    <string name="print">Cetak</string>
 </resources>

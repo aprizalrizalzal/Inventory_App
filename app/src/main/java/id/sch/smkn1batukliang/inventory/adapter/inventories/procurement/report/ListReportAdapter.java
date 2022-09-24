@@ -79,13 +79,13 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
             binding = ListReportBinding.bind(itemView);
         }
 
-        public void bind(Report model) {
+        public void bind(Report report) {
             FirebaseFirestore firestore = FirebaseFirestore.getInstance();
             CollectionReference collectionReferenceUsers = firestore.collection("users");
 
-            collectionReferenceUsers.document(model.getAuthId()).get().addOnCompleteListener(task -> {
+            collectionReferenceUsers.document(report.getAuthId()).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "bind: tvUsernameSuccessfully " + collectionReferenceUsers.document(model.getAuthId()));
+                    Log.d(TAG, "bind: tvUsernameSuccessfully " + collectionReferenceUsers.document(report.getAuthId()));
                     Users users = task.getResult().toObject(Users.class);
                     if (users != null) {
                         binding.tvUsername.setText(users.getUsername());
@@ -95,60 +95,54 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
                 }
             });
 
-            if (!model.getReportItem().getVicePrincipal().isKnown()
-                    && !model.getReportItem().getTeamLeader().isApproved()
-                    && !model.getReportItem().getPrincipal().isApproved()
-                    && !model.getReportItem().isReceived()) {
+            if (!report.getReportItem().getVicePrincipal().isApproved()
+                    && !report.getReportItem().getTeamLeader().isApproved()
+                    && !report.getReportItem().getPrincipal().isApproved()
+                    && !report.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_report)
                         .apply(new RequestOptions().override(64, 64))
                         .into(binding.imgListReport);
-                binding.tvDescription.setText(model.getReportItem().getPrincipal().getDescription());
-            } else if (model.getReportItem().getVicePrincipal().isKnown()
-                    && !model.getReportItem().getTeamLeader().isApproved()
-                    && !model.getReportItem().getPrincipal().isApproved()
-                    && !model.getReportItem().isReceived()) {
+                binding.tvDescription.setText(report.getReportItem().getPrincipal().getDescription());
+            } else if (report.getReportItem().getVicePrincipal().isApproved()
+                    && !report.getReportItem().getTeamLeader().isApproved()
+                    && !report.getReportItem().getPrincipal().isApproved()
+                    && !report.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_known)
                         .apply(new RequestOptions().override(64, 64))
                         .into(binding.imgListReport);
-                binding.tvDescription.setText(model.getReportItem().getVicePrincipal().getDescription());
-            } else if (model.getReportItem().getVicePrincipal().isKnown()
-                    && model.getReportItem().getTeamLeader().isApproved()
-                    && !model.getReportItem().getPrincipal().isApproved()
-                    && !model.getReportItem().isReceived()) {
+                binding.tvDescription.setText(report.getReportItem().getVicePrincipal().getDescription());
+            } else if (report.getReportItem().getVicePrincipal().isApproved()
+                    && report.getReportItem().getTeamLeader().isApproved()
+                    && !report.getReportItem().getPrincipal().isApproved()
+                    && !report.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_approved)
                         .apply(new RequestOptions().override(64, 64))
                         .into(binding.imgListReport);
-                binding.tvDescription.setText(model.getReportItem().getTeamLeader().getDescription());
-            } else if (model.getReportItem().getVicePrincipal().isKnown()
-                    && model.getReportItem().getTeamLeader().isApproved()
-                    && model.getReportItem().getPrincipal().isApproved()
-                    && !model.getReportItem().isReceived()) {
+                binding.tvDescription.setText(report.getReportItem().getTeamLeader().getDescription());
+            } else if (report.getReportItem().getVicePrincipal().isApproved()
+                    && report.getReportItem().getTeamLeader().isApproved()
+                    && report.getReportItem().getPrincipal().isApproved()
+                    && !report.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_verified)
                         .apply(new RequestOptions().override(64, 64))
                         .into(binding.imgListReport);
-                binding.tvDescription.setText(model.getReportItem().getPrincipal().getDescription());
-            } else if (model.getReportItem().getVicePrincipal().isKnown()
-                    && model.getReportItem().getTeamLeader().isApproved()
-                    && model.getReportItem().getPrincipal().isApproved()
-                    && model.getReportItem().isReceived()) {
+                binding.tvDescription.setText(report.getReportItem().getPrincipal().getDescription());
+            } else if (report.getReportItem().getVicePrincipal().isApproved()
+                    && report.getReportItem().getTeamLeader().isApproved()
+                    && report.getReportItem().getPrincipal().isApproved()
+                    && report.getReportItem().isReceived()) {
                 Glide.with(itemView)
                         .load(R.drawable.ic_baseline_received)
                         .apply(new RequestOptions().override(64, 64))
                         .into(binding.imgListReport);
-                binding.tvDescription.setText(model.getReportItem().getPrincipal().getDescription());
-            } else {
-                Glide.with(itemView)
-                        .load(R.drawable.ic_baseline_help)
-                        .apply(new RequestOptions().override(64, 64))
-                        .into(binding.imgListReport);
-                binding.tvDescription.setText(model.getReportItem().getPrincipal().getDescription());
+                binding.tvDescription.setText(report.getReportItem().getPrincipal().getDescription());
             }
-            binding.tvPurpose.setText(model.getReportItem().getPurpose());
-            binding.tvReport.setText(model.getReportItem().getReport());
+            binding.tvPurpose.setText(report.getReportItem().getPurpose());
+            binding.tvReport.setText(report.getReportItem().getReport());
         }
     }
 }
