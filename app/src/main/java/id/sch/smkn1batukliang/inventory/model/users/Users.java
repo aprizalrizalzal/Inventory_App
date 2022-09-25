@@ -20,7 +20,6 @@ public class Users implements Parcelable {
 
     private String authId;
     private String email;
-    private boolean emailVerification;
     private String employeeIdNumber;
     private String photoLink;
     private String level;
@@ -34,10 +33,9 @@ public class Users implements Parcelable {
     public Users() {
     }
 
-    public Users(String authId, String email, boolean emailVerification, String employeeIdNumber, String photoLink, String level, String position, String timestamp, String tokenId, String username, String whatsappNumber) {
+    public Users(String authId, String email, String employeeIdNumber, String photoLink, String level, String position, String timestamp, String tokenId, String username, String whatsappNumber) {
         this.authId = authId;
         this.email = email;
-        this.emailVerification = emailVerification;
         this.employeeIdNumber = employeeIdNumber;
         this.photoLink = photoLink;
         this.level = level;
@@ -51,7 +49,6 @@ public class Users implements Parcelable {
     protected Users(Parcel in) {
         authId = in.readString();
         email = in.readString();
-        emailVerification = in.readByte() != 0;
         employeeIdNumber = in.readString();
         photoLink = in.readString();
         level = in.readString();
@@ -76,14 +73,6 @@ public class Users implements Parcelable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isEmailVerification() {
-        return emailVerification;
-    }
-
-    public void setEmailVerification(boolean emailVerification) {
-        this.emailVerification = emailVerification;
     }
 
     public String getEmployeeIdNumber() {
@@ -159,7 +148,6 @@ public class Users implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(authId);
         dest.writeString(email);
-        dest.writeByte((byte) (emailVerification ? 1 : 0));
         dest.writeString(employeeIdNumber);
         dest.writeString(photoLink);
         dest.writeString(level);

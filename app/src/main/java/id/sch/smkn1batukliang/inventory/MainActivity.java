@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
-        Users users = new Users(authId, authEmail, false, "", "", "", "", dateId, "", "", "");
+        Users users = new Users(authId, authEmail, "", "", "", "", dateId, "", "", "");
         documentReferenceUser.set(users).addOnSuccessListener(documentReference -> {
             Log.d(TAG, "createFirestoreUsers: successfully " + documentReferenceUser.getId());
             progressDialog.DismissProgressDialog();
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                             .into(imgNavUser);
                     username.setText(users.getUsername());
                     email.setText(users.getEmail());
+
                     if (users.getEmail().equals(getString(R.string.default_email))) {
                         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
                         builder.setTitle(getString(R.string.reminder)).setMessage(R.string.do_not_change_the_default_email).setCancelable(false)
@@ -192,6 +193,16 @@ public class MainActivity extends AppCompatActivity {
                         builder.show();
                         menuAdmin(nav_Menu);
                     } else {
+                        if (!user.isEmailVerified()) {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                            builder.setTitle(getString(R.string.reminder)).setMessage(R.string.email_must_be_verified).setCancelable(false)
+                                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                                        dialog.cancel();
+                                        finish();
+                                    })
+                                    .setPositiveButton(getString(R.string.yes), (dialog, id) -> Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_profile));
+                            builder.show();
+                        }
                         changeLevel(nav_Menu);
                     }
                     refreshTokenIdUser();

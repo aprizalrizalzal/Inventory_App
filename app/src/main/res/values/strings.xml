@@ -125,8 +125,10 @@
     <string name="password_confirm_required">Konfirmasi kata sandi diperlukan</string>
     <string name="sign_in_to_sign_up">Belum punya akun?</string>
     <string name="whatsapp_number">wa.me/</string>
+    <string name="email_must_be_verified">Anda harus verifikasi email terlebih dahulu untuk terus menggunakan aplikasi</string>
+    <string name="no_whatsapp_number">Tidak ada nomor whatsapp</string>
     <string name="new_password_required">Kata Sandi baru diperlukan</string>
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
     <string name="reject">Tolak</string>
-    <string name="print">Cetak</string>
+    <string name="open_in_new">Buka di Baru</string>
 </resources>

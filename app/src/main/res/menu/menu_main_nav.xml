@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_open_in_new"
         android:icon="@drawable/ic_baseline_open_in_new_white"
-        android:title="@string/print"
+        android:title="@string/open_in_new"
         android:visible="false"
         app:showAsAction="ifRoom" />
     <item

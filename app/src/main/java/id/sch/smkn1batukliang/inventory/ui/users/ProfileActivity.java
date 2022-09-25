@@ -168,7 +168,7 @@ public class ProfileActivity extends AppCompatActivity {
                     binding.tietEmail.setText(users.getEmail());
                     binding.tietEmail.setEnabled(false);
 
-                    if (!emailVerified && !users.isEmailVerification()) {
+                    if (!emailVerified && !user.isEmailVerified()) {
                         binding.tilEmail.setError(getString(R.string.email_not_verified));
                         binding.tilEmail.setOnClickListener(v -> {
                             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ProfileActivity.this);
@@ -266,13 +266,6 @@ public class ProfileActivity extends AppCompatActivity {
         binding.tietEmail.setEnabled(false);
         binding.tietWhatsappNumber.setText(extraUsers.getWhatsappNumber());
         binding.tietWhatsappNumber.setEnabled(false);
-
-        if (!extraUsers.isEmailVerification()) {
-            binding.tilEmail.setError(getString(R.string.email_not_verified));
-        } else {
-            binding.tilEmail.setErrorEnabled(false);
-        }
-
         binding.tietLevel.setText(extraUsers.getLevel());
         binding.tietLevel.setEnabled(false);
         binding.tietPosition.setText(extraUsers.getPosition());

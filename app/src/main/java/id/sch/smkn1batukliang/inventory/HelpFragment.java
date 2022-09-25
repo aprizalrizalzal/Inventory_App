@@ -77,7 +77,11 @@ public class HelpFragment extends Fragment {
         binding.tvUsername.setText(users.getUsername());
         binding.tvEmployeeIdNumber.setText(users.getEmployeeIdNumber());
         binding.tvEmail.setText(users.getEmail());
-        binding.tvWhatsappNumber.setText(users.getWhatsappNumber());
+        if (binding.tvWhatsappNumber.getText().equals("")) {
+            binding.tvWhatsappNumber.setText(getString(R.string.no_whatsapp_number));
+        } else {
+            binding.tvWhatsappNumber.setText(users.getWhatsappNumber());
+        }
         binding.tvWhatsappNumber.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://wa.me/" + users.getWhatsappNumber()));
