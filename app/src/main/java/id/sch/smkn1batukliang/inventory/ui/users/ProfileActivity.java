@@ -37,8 +37,6 @@ import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityProfileBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
-import id.sch.smkn1batukliang.inventory.ui.auth.UpdateEmailActivity;
-import id.sch.smkn1batukliang.inventory.ui.auth.UpdatePasswordActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 

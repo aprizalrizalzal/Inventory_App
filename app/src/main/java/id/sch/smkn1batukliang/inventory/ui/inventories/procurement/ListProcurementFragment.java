@@ -203,11 +203,11 @@ public class ListProcurementFragment extends Fragment {
                 .setNegativeButton(getString(R.string.cancel),
                         (dialog, id) -> dialog.cancel())
                 .setPositiveButton(getString(R.string.yes),
-                        (dialog, id) -> deleteGoods(procurement.getProcurementItem()));
+                        (dialog, id) -> deleteProcurement(procurement.getProcurementItem()));
         builder.show();
     }
 
-    private void deleteGoods(ProcurementItem model) {
+    private void deleteProcurement(ProcurementItem model) {
         progressDialog.ShowProgressDialog();
         databaseReferenceProcurement.child(model.getProcurementId()).removeValue().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
