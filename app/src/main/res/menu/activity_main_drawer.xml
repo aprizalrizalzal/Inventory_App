@@ -22,14 +22,14 @@
                     android:title="@string/procurement"
                     android:visible="false" />
                 <item
-                    android:id="@+id/nav_list_placement"
-                    android:icon="@drawable/ic_baseline_placement"
-                    android:title="@string/placement"
-                    android:visible="false" />
-                <item
-                    android:id="@+id/nav_list_inventories"
+                    android:id="@+id/nav_inventories"
                     android:icon="@drawable/ic_baseline_inventories"
                     android:title="@string/inventories"
+                    android:visible="false" />
+                <item
+                    android:id="@+id/nav_list_report"
+                    android:icon="@drawable/ic_baseline_report"
+                    android:title="@string/report"
                     android:visible="false" />
             </group>
         </menu>
@@ -46,9 +46,9 @@
                     android:title="@string/user"
                     android:visible="false" />
                 <item
-                    android:id="@+id/nav_list_report"
-                    android:icon="@drawable/ic_baseline_report"
-                    android:title="@string/report"
+                    android:id="@+id/nav_list_placement"
+                    android:icon="@drawable/ic_baseline_placement"
+                    android:title="@string/placement"
                     android:visible="false" />
                 <item
                     android:id="@+id/nav_list_level"
@@ -63,6 +63,11 @@
         android:title="@string/sub_menu_addition">
         <menu>
             <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@drawable/ic_baseline_settings"
+                    android:title="@string/profile"
+                    android:visible="false" />
                 <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/ic_baseline_help"

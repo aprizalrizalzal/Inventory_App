@@ -16,9 +16,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHelpBinding;
-import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.model.Users;
 
 public class HelpFragment extends Fragment {
 

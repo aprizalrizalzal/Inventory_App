@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
-import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHomeBinding;
+
 
 public class HomeFragment extends Fragment {
 
@@ -32,14 +30,14 @@ public class HomeFragment extends Fragment {
         FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater, container, false);
         view = binding.getRoot();
 
-        WebView webView = binding.webView;
-        webView.loadUrl("https://smkn1batukliang.sch.id/");
-
-        binding.cardMenuProcurement.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_grid_placement_for_procurement));
-
-        binding.cardMenuInventories.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_list_inventories));
-
-        binding.cardMenuHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_help));
+//        WebView webView = binding.webView;
+//        webView.loadUrl("https://smkn1batukliang.sch.id/");
+//
+//        binding.cardMenuProcurement.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_grid_placement_for_procurement));
+//
+//        binding.cardMenuInventories.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_inventories));
+//
+//        binding.cardMenuHelp.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_nav_help));
 
         return view;
     }

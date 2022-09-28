@@ -12,7 +12,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -20,11 +19,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.adapter.users.ListUserAdapter;
-import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.adapter.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.adapter.ListUserAdapter;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListUsersBinding;
-import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.model.Users;
 
 public class ListUserFragment extends Fragment {
 
@@ -34,7 +33,6 @@ public class ListUserFragment extends Fragment {
     private FragmentListUsersBinding binding;
     private Users users;
     private View view;
-    private FirebaseAuth auth;
     private CollectionReference collectionReferenceUsers;
     private ListUserAdapter adapter;
     private CustomProgressDialog progressDialog;
@@ -57,8 +55,6 @@ public class ListUserFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(getActivity());
 
-        auth = FirebaseAuth.getInstance();
-
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         collectionReferenceUsers = firestore.collection("users");
 
@@ -73,12 +69,6 @@ public class ListUserFragment extends Fragment {
         binding.refreshLayout.setOnRefreshListener(() -> {
             listUserFirestore();
             binding.refreshLayout.setRefreshing(false);
-        });
-
-        binding.fab.setOnClickListener(v -> {
-            auth.signOut();
-            Navigation.findNavController(view).navigate(R.id.action_nav_list_user_to_nav_sign_up);
-            requireActivity().finish();
         });
 
         return view;

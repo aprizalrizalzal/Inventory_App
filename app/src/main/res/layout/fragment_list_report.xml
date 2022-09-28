@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inventories.procurement.report.ListReportFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.report.ListReportFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
@@ -22,5 +23,19 @@
         style="@style/TextViewInventory"
         android:layout_gravity="center"
         android:textAlignment="center" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin_end_bottom"
+        android:layout_marginBottom="@dimen/fab_margin_end_bottom"
+        android:clickable="true"
+        android:contentDescription="@string/add_procurement"
+        android:focusable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

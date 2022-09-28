@@ -6,151 +6,156 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/vertical_padding">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:paddingBottom="@dimen/vertical_padding">-->
 
-        <WebView
-            android:id="@+id/web_view"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <WebView-->
+<!--            android:id="@+id/web_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <ImageView
-            android:id="@+id/imageView"
-            style="@style/ImageViewInventory"
-            android:contentDescription="@string/app_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/web_view"
-            app:layout_constraintTop_toBottomOf="@+id/web_view" />
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView"-->
+<!--            style="@style/ImageViewInventory"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/web_view"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/web_view" />-->
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/TextViewInventory"
-            android:layout_gravity="center"
-            android:text="@string/app_name"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView"-->
+<!--            style="@style/TextViewInventory"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="@string/app_name"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/imageView"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/imageView"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/imageView" />-->
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/image_list_size"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@+id/web_view"
-            app:layout_constraintStart_toStartOf="@+id/web_view"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/web_view"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/web_view"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textView">-->
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_menu_procurement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/vertical_margin"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="@dimen/card_corner_radius">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearLayout"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/image_list_size"-->
+<!--                android:orientation="horizontal">-->
 
-                <RelativeLayout
-                    android:layout_width="@dimen/icon_size"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/vertical_margin">
+<!--                <com.google.android.material.card.MaterialCardView-->
+<!--                    android:id="@+id/card_menu_procurement"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_margin="@dimen/vertical_margin"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:foreground="?android:attr/selectableItemBackground"-->
+<!--                    app:cardCornerRadius="@dimen/card_corner_radius">-->
 
-                    <ImageView
-                        android:id="@+id/img_add_procurement"
-                        style="@style/ImageMenuInventory"
-                        android:layout_centerHorizontal="true"
-                        android:contentDescription="@string/procurement"
-                        android:src="@drawable/ic_baseline_procurement"
-                        app:tint="@color/light_green_700" />
+<!--                    <RelativeLayout-->
+<!--                        android:layout_width="@dimen/icon_size"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_margin="@dimen/vertical_margin">-->
 
-                    <TextView
-                        style="@style/TextViewInventory"
-                        android:layout_below="@id/img_add_procurement"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/procurement" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/img_add_procurement"-->
+<!--                            style="@style/ImageMenuInventory"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:contentDescription="@string/procurement"-->
+<!--                            android:src="@drawable/ic_baseline_procurement"-->
+<!--                            app:tint="@color/light_green_700" />-->
 
-                </RelativeLayout>
+<!--                        <TextView-->
+<!--                            style="@style/TextViewInventory"-->
+<!--                            android:layout_below="@id/img_add_procurement"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:text="@string/procurement" />-->
 
-            </com.google.android.material.card.MaterialCardView>
+<!--                    </RelativeLayout>-->
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_menu_inventories"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/image_list_size"
-                android:layout_marginBottom="@dimen/image_list_size"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="@dimen/card_corner_radius">
+<!--                </com.google.android.material.card.MaterialCardView>-->
 
-                <RelativeLayout
-                    android:layout_width="@dimen/icon_size"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/vertical_margin">
+<!--                <com.google.android.material.card.MaterialCardView-->
+<!--                    android:id="@+id/card_menu_inventories"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_margin="@dimen/horizontal_margin"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    android:foreground="?android:attr/selectableItemBackground"-->
+<!--                    app:cardCornerRadius="@dimen/card_corner_radius">-->
 
-                    <ImageView
-                        android:id="@+id/img_sign_out"
-                        style="@style/ImageMenuInventory"
-                        android:layout_centerHorizontal="true"
-                        android:contentDescription="@string/inventories"
-                        android:src="@drawable/ic_baseline_inventories"
-                        app:tint="@color/light_green_700" />
+<!--                    <RelativeLayout-->
+<!--                        android:layout_width="@dimen/icon_size"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_margin="@dimen/vertical_margin">-->
 
-                    <TextView
-                        style="@style/TextViewInventory"
-                        android:layout_below="@id/img_sign_out"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/inventories" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/img_inventories"-->
+<!--                            style="@style/ImageMenuInventory"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:contentDescription="@string/inventories"-->
+<!--                            android:src="@drawable/ic_baseline_inventories"-->
+<!--                            app:tint="@color/light_green_700" />-->
 
-                </RelativeLayout>
-            </com.google.android.material.card.MaterialCardView>
+<!--                        <TextView-->
+<!--                            style="@style/TextViewInventory"-->
+<!--                            android:layout_below="@id/img_inventories"-->
+<!--                            android:layout_centerHorizontal="true"-->
+<!--                            android:text="@string/inventories" />-->
 
-        </LinearLayout>
+<!--                    </RelativeLayout>-->
+<!--                </com.google.android.material.card.MaterialCardView>-->
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_menu_help"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/horizontal_margin"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+<!--            </LinearLayout>-->
 
-            <RelativeLayout
-                android:layout_width="@dimen/icon_size"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/vertical_margin">
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:id="@+id/card_menu_help"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_margin="@dimen/horizontal_margin"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:foreground="?android:attr/selectableItemBackground"-->
+<!--                app:cardCornerRadius="@dimen/card_corner_radius"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/linearLayout"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/linearLayout"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/linearLayout">-->
 
-                <ImageView
-                    android:id="@+id/img_help"
-                    style="@style/ImageMenuInventory"
-                    android:layout_centerHorizontal="true"
-                    android:contentDescription="@string/help"
-                    android:src="@drawable/ic_baseline_help"
-                    app:tint="@color/light_green_700" />
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="@dimen/vertical_margin">-->
 
-                <TextView
-                    style="@style/TextViewInventory"
-                    android:layout_below="@id/img_help"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/help" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/img_help"-->
+<!--                        style="@style/ImageMenuInventory"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:contentDescription="@string/help"-->
+<!--                        android:src="@drawable/ic_baseline_help"-->
+<!--                        app:tint="@color/light_green_700" />-->
 
-            </RelativeLayout>
+<!--                    <TextView-->
+<!--                        style="@style/TextViewInventory"-->
+<!--                        android:layout_below="@id/img_help"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:text="@string/help" />-->
 
-        </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                </RelativeLayout>-->
+
+<!--            </com.google.android.material.card.MaterialCardView>-->
+<!--        </LinearLayout>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 </androidx.core.widget.NestedScrollView>

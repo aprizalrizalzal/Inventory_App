@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.MainActivity;
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivitySignInBinding;
 
 public class SignInActivity extends AppCompatActivity {

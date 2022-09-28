@@ -8,9 +8,9 @@
         android:visible="false"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_open_in_new"
-        android:icon="@drawable/ic_baseline_open_in_new_white"
-        android:title="@string/open_in_new"
+        android:id="@+id/action_download_report"
+        android:icon="@drawable/ic_baseline_download_white"
+        android:title="@string/download"
         android:visible="false"
         app:showAsAction="ifRoom" />
     <item

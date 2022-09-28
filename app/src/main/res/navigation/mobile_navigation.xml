@@ -23,58 +23,27 @@
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_home" />
         <action
-            android:id="@+id/action_nav_home_to_nav_list_inventories"
-            app:destination="@id/nav_list_inventories" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_profile"
-            app:destination="@id/nav_profile" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_list_procurement"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.ListProcurementFragment"
-        android:label="@string/procurement"
-        tools:layout="@layout/fragment_list_procurement">
-        <action
-            android:id="@+id/action_nav_list_procurement_to_nav_grid_placement_for_procurement"
-            app:destination="@id/nav_grid_placement"
+            android:id="@+id/action_nav_home_to_nav_inventories"
+            app:destination="@id/nav_inventories"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_procurement" />
-        <action
-            android:id="@+id/action_nav_list_procurement_to_nav_add_or_edit_procurement"
-            app:destination="@id/nav_add_or_edit_procurement"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_procurement" />
-        <action
-            android:id="@+id/action_nav_list_procurement_to_nav_add_report"
-            app:destination="@id/nav_add_report"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_procurement" />
-        <action
-            android:id="@+id/action_nav_list_procurement_to_nav_list_report"
-            app:destination="@id/nav_list_report"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_procurement" />
+            app:popUpTo="@id/nav_home" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_grid_placement"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.GridPlacementFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.placement.GridPlacementFragment"
         android:label="@string/procurement"
         tools:layout="@layout/fragment_grid_placement">
         <action
-            android:id="@+id/action_nav_grid_placement_to_nav_add_or_edit_procurement"
-            app:destination="@id/nav_add_or_edit_procurement"
+            android:id="@+id/action_nav_grid_placement_to_add_or_edit_procurement"
+            app:destination="@id/add_or_edit_procurement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_grid_placement" />
         <action
-            android:id="@+id/action_nav_grid_placement_to_nav_list_procurement"
-            app:destination="@id/nav_list_procurement"
+            android:id="@+id/action_nav_grid_placement_to_list_procurement"
+            app:destination="@id/list_procurement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_grid_placement" />
@@ -87,35 +56,66 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_add_or_edit_procurement"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.AddOrEditProcurementFragment"
+        android:id="@+id/list_procurement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.procurement.ListProcurementFragment"
+        android:label="@string/procurement"
+        tools:layout="@layout/fragment_list_procurement">
+        <action
+            android:id="@+id/action_list_procurement_to_nav_grid_placement"
+            app:destination="@id/nav_grid_placement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/list_procurement" />
+        <action
+            android:id="@+id/action_list_procurement_to_add_or_edit_procurement"
+            app:destination="@id/add_or_edit_procurement"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/list_procurement" />
+        <action
+            android:id="@+id/action_list_procurement_to_add_report"
+            app:destination="@id/add_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/list_procurement" />
+        <action
+            android:id="@+id/action_list_procurement_to_nav_list_report"
+            app:destination="@id/nav_list_report"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/list_procurement" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_or_edit_procurement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.procurement.AddOrEditProcurementFragment"
         android:label="@string/placement"
         tools:layout="@layout/fragment_add_or_edit_procurement" />
 
     <fragment
         android:id="@+id/nav_list_placement"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.placement.ListPlacementFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.placement.ListPlacementFragment"
         android:label="@string/placement"
         tools:layout="@layout/fragment_list_placement">
         <action
-            android:id="@+id/action_nav_list_placement_to_nav_add_or_edit_placement"
-            app:destination="@id/nav_add_or_edit_placement"
+            android:id="@+id/action_nav_list_placement_to_add_or_edit_placement"
+            app:destination="@id/add_or_edit_placement"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_list_placement" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_add_or_edit_placement"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.placement.AddOrEditPlacementFragment"
+        android:id="@+id/add_or_edit_placement"
+        android:name="id.sch.smkn1batukliang.inventory.ui.placement.AddOrEditPlacementFragment"
         android:label="@string/placement"
         tools:layout="@layout/fragment_add_or_edit_placement" />
 
-    <fragment
-        android:id="@+id/nav_list_inventories"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.ListInventoriesFragment"
+    <activity
+        android:id="@+id/nav_inventories"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.InventoriesActivity"
         android:label="@string/inventories"
-        tools:layout="@layout/fragment_list_inventories" />
+        tools:layout="@layout/activity_inventories" />
 
     <fragment
         android:id="@+id/nav_list_user"
@@ -128,76 +128,89 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_list_user" />
-        <action
-            android:id="@+id/action_nav_list_user_to_nav_sign_up"
-            app:destination="@id/nav_sign_up"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_user" />
     </fragment>
-
-    <activity
-        android:id="@+id/nav_profile"
-        android:name="id.sch.smkn1batukliang.inventory.ui.users.ProfileActivity"
-        android:label="@string/profile"
-        tools:layout="@layout/activity_profile" />
-
-    <activity
-        android:id="@+id/nav_sign_up"
-        android:name="id.sch.smkn1batukliang.inventory.ui.auth.SignUpActivity"
-        android:label="activity_sign_up"
-        tools:layout="@layout/activity_sign_up" />
 
     <fragment
         android:id="@+id/nav_list_level"
-        android:name="id.sch.smkn1batukliang.inventory.ui.users.levels.ListLevelFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.levels.ListLevelFragment"
         android:label="@string/level"
         tools:layout="@layout/fragment_list_level">
         <action
-            android:id="@+id/action_nav_list_level_to_nav_add_or_edit_level"
-            app:destination="@id/nav_add_or_edit_level"
+            android:id="@+id/action_nav_list_level_to_add_or_edit_level"
+            app:destination="@id/add_or_edit_level"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_list_level" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_add_or_edit_level"
-        android:name="id.sch.smkn1batukliang.inventory.ui.users.levels.AddOrEditLevelFragment"
+        android:id="@+id/add_or_edit_level"
+        android:name="id.sch.smkn1batukliang.inventory.ui.levels.AddOrEditLevelFragment"
         android:label="@string/level"
         tools:layout="@layout/fragment_add_or_edit_level" />
 
     <fragment
         android:id="@+id/nav_list_report"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.ListReportFragment"
+        android:name="id.sch.smkn1batukliang.inventory.ui.report.ListReportFragment"
         android:label="@string/report"
         tools:layout="@layout/fragment_list_report">
         <action
-            android:id="@+id/action_nav_list_report_to_nav_edit_report"
-            app:destination="@id/nav_edit_report"
+            android:id="@+id/action_nav_list_report_to_edit_report"
+            app:destination="@id/edit_report"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/nav_list_report" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_edit_report"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.EditReportFragment"
+        android:id="@+id/edit_report"
+        android:name="id.sch.smkn1batukliang.inventory.ui.report.EditReportFragment"
         android:label="@string/report"
         tools:layout="@layout/fragment_edit_report" />
 
     <fragment
-        android:id="@+id/nav_add_report"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.procurement.report.AddReportFragment"
+        android:id="@+id/add_report"
+        android:name="id.sch.smkn1batukliang.inventory.ui.report.AddReportFragment"
         android:label="@string/report"
-        tools:layout="@layout/fragment_add_report" >
+        tools:layout="@layout/fragment_add_report">
         <action
-            android:id="@+id/action_nav_add_report_to_nav_edit_report"
-            app:destination="@id/nav_edit_report"
+            android:id="@+id/action_add_report_to_edit_report"
+            app:destination="@id/edit_report"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_add_report"/>
+            app:popUpTo="@id/add_report" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_update_email"
+            app:destination="@id/update_email"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_profile" />
+        <action
+            android:id="@+id/action_nav_profile_to_update_password"
+            app:destination="@id/update_password"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/nav_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/update_password"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.profile.UpdatePasswordFragment"
+        android:label="@string/update_password"
+        tools:layout="@layout/fragment_update_password" />
+
+    <fragment
+        android:id="@+id/update_email"
+        android:name="id.sch.smkn1batukliang.inventory.ui.users.profile.UpdateEmailFragment"
+        android:label="@string/update_email"
+        tools:layout="@layout/fragment_update_email" />
 
     <fragment
         android:id="@+id/nav_help"

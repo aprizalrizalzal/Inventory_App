@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,17 +38,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import id.sch.smkn1batukliang.inventory.addition.utilities.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
-import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.model.users.levels.Levels;
+import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private CustomProgressDialog progressDialog;
-    private MenuItem itemUpDownReport, itemPrint, itemReport, itemSignOut;
+    private MenuItem itemUpDownReport, itemDownloadReport, itemReport, itemSignOut;
     private NavigationView navigationView;
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
@@ -92,29 +91,25 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawerLayout = binding.drawerLayout;
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         navigationView = binding.navView;
         appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home,
                 R.id.nav_grid_placement,
+                R.id.nav_inventories,
+                R.id.nav_list_report,
+                R.id.nav_list_user,
                 R.id.nav_list_placement,
-                R.id.nav_list_inventories,
-                R.id.nav_home).setOpenableLayout(drawerLayout).build();
+                R.id.nav_list_level
+        ).setOpenableLayout(drawerLayout).build();
 
-        navController = Navigation.findNavController(
-                MainActivity.this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(
-                MainActivity.this, navController, appBarConfiguration);
+        navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main);
+        NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
         imgNavUser = navigationView.getHeaderView(0).findViewById(R.id.img_nav_user);
         username = navigationView.getHeaderView(0).findViewById(R.id.tv_nav_username);
         email = navigationView.getHeaderView(0).findViewById(R.id.tv_nav_email);
-        ImageButton imgBtnSettings = navigationView.getHeaderView(0)
-                .findViewById(R.id.img_btn_nav_settings);
-        imgBtnSettings.setOnClickListener(v -> navController.navigate(R.id.nav_profile));
-
     }
 
     private void changeFirestoreUser() {
@@ -217,11 +212,12 @@ public class MainActivity extends AppCompatActivity {
     private void menuAdmin(Menu nav_Menu) {
         nav_Menu.findItem(R.id.nav_home).setVisible(true);
         nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
-        nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
-        nav_Menu.findItem(R.id.nav_list_inventories).setVisible(true);
-        nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
+        nav_Menu.findItem(R.id.nav_inventories).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
+        nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
+        nav_Menu.findItem(R.id.nav_profile).setVisible(true);
         nav_Menu.findItem(R.id.nav_help).setVisible(true);
     }
 
@@ -237,11 +233,12 @@ public class MainActivity extends AppCompatActivity {
                             if (authId.equals(levels.getAuthId())) {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
-                                nav_Menu.findItem(R.id.nav_list_inventories).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_inventories).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);
                                 nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_profile).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_help).setVisible(true);
                                 if (levels.getLevelsItem().getLevel().equals(getString(R.string.admin))) {
                                     nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
@@ -251,8 +248,9 @@ public class MainActivity extends AppCompatActivity {
                                     nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
                                 } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.teacher))) {
-                                    nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_inventories).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_list_report).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
                                 }
                             } else {
@@ -291,36 +289,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeNavDestination(Menu menu) {
         itemUpDownReport = menu.findItem(R.id.action_up_down_report);
-        itemPrint = menu.findItem(R.id.action_open_in_new);
+        itemDownloadReport = menu.findItem(R.id.action_download_report);
         itemReport = menu.findItem(R.id.action_report);
         itemSignOut = menu.findItem(R.id.action_sign_out);
 
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             int id = navDestination.getId();
-            if (id == R.id.nav_grid_placement) {
-                navigationView.setCheckedItem(R.id.nav_grid_placement);
-            } else if (id == R.id.nav_list_inventories) {
-                navigationView.setCheckedItem(R.id.nav_list_inventories);
-            }
             if (id == R.id.nav_home
                     || id == R.id.nav_grid_placement
-                    || id == R.id.nav_list_placement
-                    || id == R.id.nav_list_inventories
-                    || id == R.id.nav_list_user
+                    || id == R.id.nav_inventories
                     || id == R.id.nav_list_report
+                    || id == R.id.nav_list_user
+                    || id == R.id.nav_list_placement
                     || id == R.id.nav_list_level) {
                 itemSignOut.setVisible(true);
                 itemSignOut.setOnMenuItemClickListener(item -> {
                     clearToken();
                     return false;
                 });
-            } else if (id == R.id.nav_list_procurement) {
+            } else if (id == R.id.list_procurement) {
                 itemReport.setVisible(true);
                 itemUpDownReport.setVisible(true);
-            } else if (id == R.id.nav_edit_report
-                    || id == R.id.nav_add_or_edit_placement
-                    || id == R.id.nav_add_or_edit_level) {
-                itemPrint.setVisible(true);
+            } else if (id == R.id.edit_report
+                    || id == R.id.add_or_edit_placement
+                    || id == R.id.add_or_edit_level) {
+                itemDownloadReport.setVisible(true);
                 itemSignOut.setVisible(false);
             }
         });
