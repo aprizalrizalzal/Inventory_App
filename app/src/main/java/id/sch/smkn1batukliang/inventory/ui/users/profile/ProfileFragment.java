@@ -81,19 +81,30 @@ public class ProfileFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceUsers = firestore.collection("users");
-
         if (user != null) {
             authId = user.getUid();
             emailVerified = user.isEmailVerified();
         } else {
             reload();
         }
+
+        if (getArguments() != null) {
+            extraUsers = getArguments().getParcelable(EXTRA_USERS);
+        }
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        CollectionReference collectionReferenceUsers = firestore.collection("users");
+
         documentReferenceUser = collectionReferenceUsers.document(authId);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        if (extraUsers != null) {
+            viewExtraUsers(extraUsers);
+        } else {
+            viewFirestoreUser();
+        }
 
         MenuHost menuHost = requireActivity();
         menuHost.addMenuProvider(new MenuProvider() {
@@ -102,6 +113,7 @@ public class ProfileFragment extends Fragment {
                 menuInflater.inflate(R.menu.menu_out_nav, menu);
                 if (extraUsers != null) {
                     menu.findItem(R.id.action_update_password).setVisible(false);
+                    menu.findItem(R.id.action_sign_out).setVisible(false);
                 }
             }
 
@@ -110,20 +122,18 @@ public class ProfileFragment extends Fragment {
                 if (menuItem.getItemId() == R.id.action_update_password) {
                     Navigation.findNavController(view).navigate(R.id.action_nav_profile_to_update_password);
 
+                } else if (menuItem.getItemId() == R.id.action_sign_out) {
+                    clearToken();
                 }
                 return false;
             }
 
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
-        if (getArguments() != null) {
-            extraUsers = getArguments().getParcelable(EXTRA_USERS);
-        }
-
         resultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
+            imageUrl = result;
             if (result != null) {
-                imageUrl = result;
-                Glide.with(view).load(result).into(binding.imgUsers);
+                Glide.with(view).load(imageUrl).into(binding.imgUsers);
                 binding.fabAddImage.setVisibility(View.GONE);
                 binding.fabUploadImage.setVisibility(View.VISIBLE);
             } else {
@@ -132,10 +142,21 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        binding.imgUsers.setOnClickListener(v -> selectImage());
         binding.fabAddImage.setOnClickListener(v -> selectImage());
         binding.fabUploadImage.setOnClickListener(v -> uploadImage());
 
         return view;
+    }
+
+    private void clearToken() {
+        documentReferenceUser.update("tokenId", "").addOnSuccessListener(unused -> {
+            Log.d(TAG, "clearToken: successfully");
+            auth.signOut();
+            Intent intent = new Intent(requireContext(), SignInActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        }).addOnFailureListener(e -> Log.w(TAG, "clearToken: failure ", e));
     }
 
     private void viewFirestoreUser() {
@@ -441,15 +462,5 @@ public class ProfileFragment extends Fragment {
             Log.w(TAG, "updatePosition: failure ", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (extraUsers != null) {
-            viewExtraUsers(extraUsers);
-        } else {
-            viewFirestoreUser();
-        }
     }
 }

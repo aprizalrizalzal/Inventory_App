@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,29 +46,27 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private CustomProgressDialog progressDialog;
-    private MenuItem itemUpDownReport, itemDownloadReport, itemReport, itemSignOut;
     private NavigationView navigationView;
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
-    private FirebaseAuth auth;
     private FirebaseUser user;
     private FirebaseMessaging messaging;
     private String authId, authEmail, tokenId;
     private ImageView imgNavUser;
     private TextView username, email;
     private DocumentReference documentReferenceUser;
-    private DatabaseReference referenceLevels;
+    private DatabaseReference databaseReferenceLevels;
 
     @SuppressLint({"UseCompatLoadingForDrawables", "NonConstantResourceId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         progressDialog = new CustomProgressDialog(MainActivity.this);
 
-        auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         messaging = FirebaseMessaging.getInstance();
         user = auth.getCurrentUser();
 
@@ -87,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        referenceLevels = database.getReference("levels");
+        databaseReferenceLevels = database.getReference("levels");
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawerLayout = binding.drawerLayout;
@@ -222,10 +218,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeLevel(Menu nav_Menu) {
-        referenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "onDataChange: levelsSuccessfully " + referenceLevels.getKey());
+                Log.d(TAG, "onDataChange: levelsSuccessfully " + databaseReferenceLevels.getKey());
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Levels levels = dataSnapshot.getValue(Levels.class);
@@ -249,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                                     nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
                                 } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.teacher))) {
                                     nav_Menu.findItem(R.id.nav_inventories).setVisible(false);
-                                    nav_Menu.findItem(R.id.nav_list_report).setVisible(false);
+                                    nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
                                     nav_Menu.findItem(R.id.nav_list_user).setVisible(false);
                                     nav_Menu.findItem(R.id.nav_list_level).setVisible(false);
                                 }
@@ -275,58 +271,6 @@ public class MainActivity extends AppCompatActivity {
     private void reload() {
         startActivity(new Intent(getApplicationContext(), SignInActivity.class));
         finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        MenuInflater inflaterNav = getMenuInflater();
-        inflaterNav.inflate(R.menu.menu_main_nav, menu);
-
-        changeNavDestination(menu);
-
-        return true;
-    }
-
-    private void changeNavDestination(Menu menu) {
-        itemUpDownReport = menu.findItem(R.id.action_up_down_report);
-        itemDownloadReport = menu.findItem(R.id.action_download_report);
-        itemReport = menu.findItem(R.id.action_report);
-        itemSignOut = menu.findItem(R.id.action_sign_out);
-
-        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            int id = navDestination.getId();
-            if (id == R.id.nav_home
-                    || id == R.id.nav_grid_placement
-                    || id == R.id.nav_inventories
-                    || id == R.id.nav_list_report
-                    || id == R.id.nav_list_user
-                    || id == R.id.nav_list_placement
-                    || id == R.id.nav_list_level) {
-                itemSignOut.setVisible(true);
-                itemSignOut.setOnMenuItemClickListener(item -> {
-                    clearToken();
-                    return false;
-                });
-            } else if (id == R.id.list_procurement) {
-                itemReport.setVisible(true);
-                itemUpDownReport.setVisible(true);
-            } else if (id == R.id.edit_report
-                    || id == R.id.add_or_edit_placement
-                    || id == R.id.add_or_edit_level) {
-                itemDownloadReport.setVisible(true);
-                itemSignOut.setVisible(false);
-            }
-        });
-    }
-
-    private void clearToken() {
-        documentReferenceUser.update("tokenId", "").addOnSuccessListener(unused -> {
-            Log.d(TAG, "clearToken: successfully");
-            auth.signOut();
-            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-            startActivity(intent);
-            finish();
-        }).addOnFailureListener(e -> Log.w(TAG, "clearToken: failure ", e));
     }
 
     @Override

@@ -2,16 +2,25 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.card.goods;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import id.sch.smkn1batukliang.inventory.R;
+import id.sch.smkn1batukliang.inventory.databinding.FragmentAddGoodsBinding;
+import id.sch.smkn1batukliang.inventory.databinding.FragmentListGoodsBinding;
 
 
 public class ListGoodsFragment extends Fragment {
+
+    private FragmentListGoodsBinding binding;
+    private View view;
 
     public ListGoodsFragment() {
         // Required empty public constructor
@@ -24,9 +33,12 @@ public class ListGoodsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_goods, container, false);
+        binding = FragmentListGoodsBinding.inflate(getLayoutInflater(), container, false);
+        view = binding.getRoot();
+
+        return view;
     }
 }

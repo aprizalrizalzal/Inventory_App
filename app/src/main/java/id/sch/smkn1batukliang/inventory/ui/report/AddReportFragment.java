@@ -2,9 +2,9 @@ package id.sch.smkn1batukliang.inventory.ui.report;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static id.sch.smkn1batukliang.inventory.ui.placement.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 import static id.sch.smkn1batukliang.inventory.utili.InventoryMessagingService.NOTIFICATION_URL;
 import static id.sch.smkn1batukliang.inventory.utili.InventoryMessagingService.SERVER_KEY;
-import static id.sch.smkn1batukliang.inventory.ui.placement.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
 
 import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
@@ -26,7 +26,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -78,9 +77,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.MoneyTextWatcher;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddReportBinding;
+import id.sch.smkn1batukliang.inventory.model.Users;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.procurement.Procurement;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
@@ -88,7 +86,8 @@ import id.sch.smkn1batukliang.inventory.model.report.ReportItem;
 import id.sch.smkn1batukliang.inventory.model.report.item.Principal;
 import id.sch.smkn1batukliang.inventory.model.report.item.TeamLeader;
 import id.sch.smkn1batukliang.inventory.model.report.item.VicePrincipal;
-import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utili.MoneyTextWatcher;
 
 public class AddReportFragment extends Fragment {
 
@@ -99,7 +98,6 @@ public class AddReportFragment extends Fragment {
     boolean isEmptyFields = false;
     private ArrayAdapter<String> stringAdapter;
     private FragmentAddReportBinding binding;
-    private View view;
     private SimpleDateFormat simpleDateFormatId;
     private CustomProgressDialog progressDialog;
     private CollectionReference collectionReferenceUsers;
@@ -138,7 +136,7 @@ public class AddReportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddReportBinding.inflate(getLayoutInflater(), container, false);
-        view = binding.getRoot();
+        View view = binding.getRoot();
 
         progressDialog = new CustomProgressDialog(getActivity());
 
@@ -723,9 +721,6 @@ public class AddReportFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
         request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
-
-        Navigation.findNavController(view).navigateUp();
-
     }
 
     @Override

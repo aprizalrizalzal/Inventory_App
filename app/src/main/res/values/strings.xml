@@ -154,4 +154,18 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="item_code">Kode Barang</string>
+    <string name="item_name_item_type">Nama Barang/Jenis Barang</string>
+    <string name="register_number">Nomor Register</string>
+    <string name="brand_type">Merk/Type</string>
+    <string name="size_cc">Ukuran/CC</string>
+    <string name="ingredient">Bahan</string>
+    <string name="year_of_purchase">Tahun Pembelian</string>
+    <string name="factory">Pabrik</string>
+    <string name="frame">Rangka</string>
+    <string name="machine">Mesin</string>
+    <string name="police">Polisi</string>
+    <string name="book_vehicle_owners">BPKB</string>
+    <string name="origin">Asal Usul</string>
+    <string name="item_quantity">Jumlah barang</string>
 </resources>

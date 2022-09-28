@@ -14,20 +14,17 @@
             android:id="@+id/action_nav_home_to_nav_grid_placement_for_procurement"
             app:destination="@id/nav_grid_placement"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_home" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_nav_home_to_nav_help"
             app:destination="@id/nav_help"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_home" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_nav_home_to_nav_inventories"
             app:destination="@id/nav_inventories"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_home" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -39,20 +36,17 @@
             android:id="@+id/action_nav_grid_placement_to_add_or_edit_procurement"
             app:destination="@id/add_or_edit_procurement"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_grid_placement" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_nav_grid_placement_to_list_procurement"
             app:destination="@id/list_procurement"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_grid_placement" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_nav_grid_placement_to_nav_help"
             app:destination="@id/nav_help"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_grid_placement" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -64,26 +58,17 @@
             android:id="@+id/action_list_procurement_to_nav_grid_placement"
             app:destination="@id/nav_grid_placement"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/list_procurement" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_list_procurement_to_add_or_edit_procurement"
             app:destination="@id/add_or_edit_procurement"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/list_procurement" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_list_procurement_to_add_report"
             app:destination="@id/add_report"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/list_procurement" />
-        <action
-            android:id="@+id/action_list_procurement_to_nav_list_report"
-            app:destination="@id/nav_list_report"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/list_procurement" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -101,8 +86,7 @@
             android:id="@+id/action_nav_list_placement_to_add_or_edit_placement"
             app:destination="@id/add_or_edit_placement"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_placement" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -111,11 +95,34 @@
         android:label="@string/placement"
         tools:layout="@layout/fragment_add_or_edit_placement" />
 
-    <activity
+    <fragment
         android:id="@+id/nav_inventories"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.InventoriesActivity"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.InventoriesFragment"
         android:label="@string/inventories"
-        tools:layout="@layout/activity_inventories" />
+        tools:layout="@layout/fragment_inventories">
+        <action
+            android:id="@+id/action_nav_inventories_to_add_goods"
+            app:destination="@id/add_goods"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_nav_inventories_to_add_room"
+            app:destination="@id/add_room"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_goods"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.goods.AddGoodsFragment"
+        android:label="@string/goods"
+        tools:layout="@layout/fragment_add_goods" />
+
+    <fragment
+        android:id="@+id/add_room"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.room.AddRoomFragment"
+        android:label="@string/room"
+        tools:layout="@layout/fragment_add_room" />
 
     <fragment
         android:id="@+id/nav_list_user"
@@ -126,8 +133,7 @@
             android:id="@+id/action_nav_list_user_to_nav_profile"
             app:destination="@id/nav_profile"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_user" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -139,8 +145,7 @@
             android:id="@+id/action_nav_list_level_to_add_or_edit_level"
             app:destination="@id/add_or_edit_level"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_level" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -158,8 +163,7 @@
             android:id="@+id/action_nav_list_report_to_edit_report"
             app:destination="@id/edit_report"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_list_report" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -177,8 +181,7 @@
             android:id="@+id/action_add_report_to_edit_report"
             app:destination="@id/edit_report"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/add_report" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -190,14 +193,12 @@
             android:id="@+id/action_nav_profile_to_update_email"
             app:destination="@id/update_email"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_profile" />
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_nav_profile_to_update_password"
             app:destination="@id/update_password"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/nav_profile" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment

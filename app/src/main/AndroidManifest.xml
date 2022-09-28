@@ -23,12 +23,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.inventories.card.InventoriesActivity"
-            android:exported="false"
-            android:label="@string/inventories"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:screenOrientation="portrait"

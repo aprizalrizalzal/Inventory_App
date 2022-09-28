@@ -1,7 +1,5 @@
 package id.sch.smkn1batukliang.inventory.ui.report;
 
-import static id.sch.smkn1batukliang.inventory.ui.placement.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,12 +26,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.ListReportAdapter;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListReportBinding;
-import id.sch.smkn1batukliang.inventory.model.placement.Placement;
+import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
 
 public class ListReportFragment extends Fragment {
 
@@ -43,8 +41,7 @@ public class ListReportFragment extends Fragment {
     private FragmentListReportBinding binding;
     private View view;
     private String authId;
-    private Placement extraPlacementForReport;
-    private DatabaseReference databaseReferenceReport;
+    private DatabaseReference databaseReferenceLevels, databaseReferenceReport;
     private StorageReference storageReferenceReport;
     private ListReportAdapter adapter;
     private CustomProgressDialog progressDialog;
@@ -74,18 +71,15 @@ public class ListReportFragment extends Fragment {
             authId = user.getUid();
         }
 
-        if (getArguments() != null) {
-            extraPlacementForReport = getArguments().getParcelable(EXTRA_PLACEMENT_FOR_PROCUREMENT);
-        }
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceLevels = database.getReference("levels");
         databaseReferenceReport = database.getReference("report");
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReferenceReport = storage.getReference("users/procurement/");
 
         binding.refreshLayout.setOnRefreshListener(() -> {
-            listReportRealtime();
+            changeLevel();
             binding.refreshLayout.setRefreshing(false);
         });
 
@@ -100,6 +94,39 @@ public class ListReportFragment extends Fragment {
         return view;
     }
 
+    private void changeLevel() {
+        databaseReferenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: levelsSuccessfully " + databaseReferenceLevels.getKey());
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Levels levels = dataSnapshot.getValue(Levels.class);
+                        if (levels != null) {
+                            if (levels.getAuthId().equals(authId)) {
+                                if (levels.getLevelsItem().getLevel().equals(getString(R.string.admin))
+                                        || levels.getLevelsItem().getLevel().equals(getString(R.string.principal))
+                                        || levels.getLevelsItem().getLevel().equals(getString(R.string.team_leader))
+                                        || levels.getLevelsItem().getLevel().equals(getString(R.string.vice_principal))) {
+                                    listAllReportRealtime();
+                                } else if (levels.getLevelsItem().getLevel().equals(getString(R.string.teacher))) {
+                                    listReportRealtime();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: failureLevels", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     private void listReportRealtime() {
         reports.clear();
         progressDialog.ShowProgressDialog();
@@ -111,17 +138,39 @@ public class ListReportFragment extends Fragment {
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Report report = dataSnapshot.getValue(Report.class);
-                        if (extraPlacementForReport == null) {
-                            if (report != null) {
-                                reports.add(report);
-                                adapter.setListReport(reports);
-                            }
-                        } else {
-                            if (report != null && authId.equals(report.getAuthId())) {
-                                reports.add(report);
-                                adapter.setListReport(reports);
-                                binding.fab.setVisibility(View.GONE);
-                            }
+                        if (report != null && report.getAuthId().equals(authId)) {
+                            reports.add(report);
+                            adapter.setListReport(reports);
+                        }
+                        adapter.setOnItemClickCallback(showReport -> showSelectedReport(showReport));
+                        adapter.setOnItemClickCallbackDelete(deleteReport -> deleteSelectedReport(deleteReport));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.DismissProgressDialog();
+                Log.w(TAG, "onCancelled: reportFailure ", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void listAllReportRealtime() {
+        reports.clear();
+        progressDialog.ShowProgressDialog();
+        databaseReferenceReport.orderByChild("reportItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                progressDialog.DismissProgressDialog();
+                Log.d(TAG, "onDataChange: reportSuccessfully " + databaseReferenceReport.getKey());
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Report report = dataSnapshot.getValue(Report.class);
+                        if (report != null) {
+                            reports.add(report);
+                            adapter.setListReport(reports);
                         }
                         adapter.setOnItemClickCallback(showReport -> showSelectedReport(showReport));
                         adapter.setOnItemClickCallbackDelete(deleteReport -> deleteSelectedReport(deleteReport));
@@ -149,13 +198,7 @@ public class ListReportFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(getString(R.string.delete)).setMessage(getString(R.string.f_delete_report, report.getReportItem().getReport())).setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
-                    if (extraPlacementForReport == null) {
-                        deleteReport(report);
-                    } else {
-                        Toast.makeText(requireContext(), getString(R.string.not_delete_report), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> deleteReport(report));
         builder.show();
     }
 
@@ -176,7 +219,7 @@ public class ListReportFragment extends Fragment {
         storageReferenceReport.child(report.getAuthId() + "/report/" + report.getPlacementId() + "/" + report.getReportItem().getReport()).delete().addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "deleteStorageReport: successfully " + storageReferenceReport.getPath());
-            listReportRealtime();
+            changeLevel();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "deleteStorageReport: ", e);
@@ -185,7 +228,7 @@ public class ListReportFragment extends Fragment {
 
     @Override
     public void onStart() {
-        listReportRealtime();
+        changeLevel();
         super.onStart();
     }
 }

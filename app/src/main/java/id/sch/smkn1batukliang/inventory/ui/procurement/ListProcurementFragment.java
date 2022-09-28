@@ -76,6 +76,7 @@ public class ListProcurementFragment extends Fragment {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_main_nav, menu);
+                menu.findItem(R.id.action_download_report).setVisible(false);
             }
 
             @Override
@@ -88,16 +89,6 @@ public class ListProcurementFragment extends Fragment {
 
                         bundle.putParcelable(EXTRA_PLACEMENT_FOR_PROCUREMENT, extraPlacementForProcurement);
                         Navigation.findNavController(view).navigate(R.id.action_list_procurement_to_add_report, bundle);
-                    }
-                }
-                if (menuItem.getItemId() == R.id.action_report) {
-                    if (procurements.isEmpty()) {
-                        Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Bundle bundle = new Bundle();
-
-                        bundle.putParcelable(EXTRA_PLACEMENT_FOR_PROCUREMENT, extraPlacementForProcurement);
-                        Navigation.findNavController(view).navigate(R.id.action_list_procurement_to_nav_list_report, bundle);
                     }
                 }
 

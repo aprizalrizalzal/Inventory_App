@@ -108,6 +108,7 @@ public class EditReportFragment extends Fragment {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.menu_main_nav, menu);
+                menu.findItem(R.id.action_up_down_report).setVisible(false);
             }
 
             @Override

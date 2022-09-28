@@ -3,21 +3,22 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.card;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import id.sch.smkn1batukliang.inventory.ui.inventories.card.room.ListRoomFragment;
 import id.sch.smkn1batukliang.inventory.ui.inventories.card.goods.ListGoodsFragment;
+import id.sch.smkn1batukliang.inventory.ui.inventories.card.room.ListRoomFragment;
 
 public class SectionsPagerAdapter extends FragmentStateAdapter {
+    private Fragment fragment = new Fragment();
 
-    public SectionsPagerAdapter(AppCompatActivity activity) {
+    public SectionsPagerAdapter(FragmentActivity activity) {
         super(activity);
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Fragment fragment = null;
         switch (position) {
             case 0:
                 fragment = new ListGoodsFragment();
@@ -26,7 +27,6 @@ public class SectionsPagerAdapter extends FragmentStateAdapter {
                 fragment = new ListRoomFragment();
                 break;
         }
-        assert fragment != null;
         return fragment;
     }
 
@@ -34,4 +34,5 @@ public class SectionsPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 2;
     }
+
 }

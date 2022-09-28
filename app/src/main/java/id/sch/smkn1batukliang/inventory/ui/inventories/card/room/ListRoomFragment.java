@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.inventories.card.room;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,8 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import id.sch.smkn1batukliang.inventory.R;
+import id.sch.smkn1batukliang.inventory.databinding.FragmentListGoodsBinding;
+import id.sch.smkn1batukliang.inventory.databinding.FragmentListRoomBinding;
 
 public class ListRoomFragment extends Fragment {
+
+    private FragmentListRoomBinding binding;
+    private View view;
 
     public ListRoomFragment() {
         // Required empty public constructor
@@ -22,9 +28,12 @@ public class ListRoomFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_room, container, false);
+        binding = FragmentListRoomBinding.inflate(getLayoutInflater(), container, false);
+        view = binding.getRoot();
+
+        return view;
     }
 }

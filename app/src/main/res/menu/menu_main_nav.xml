@@ -5,20 +5,10 @@
         android:id="@+id/action_up_down_report"
         android:icon="@drawable/ic_baseline_up_down_white"
         android:title="@string/up_down_report"
-        android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_download_report"
         android:icon="@drawable/ic_baseline_download_white"
         android:title="@string/download"
-        android:visible="false"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_report"
-        android:title="@string/report"
-        android:visible="false" />
-    <item
-        android:id="@+id/action_sign_out"
-        android:title="@string/sign_out"
-        android:visible="false" />
 </menu>
