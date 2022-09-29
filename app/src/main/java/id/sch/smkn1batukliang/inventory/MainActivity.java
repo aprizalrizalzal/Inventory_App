@@ -252,6 +252,8 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_profile).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_help).setVisible(true);
                             }
                         }
@@ -275,10 +277,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        navController = Navigation.findNavController(
-                MainActivity.this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
     @Override

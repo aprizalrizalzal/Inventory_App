@@ -3,6 +3,7 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivitySignUpBinding;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -52,6 +53,9 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean validateFields(String email, String password, String confirmPassword) {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.setError(getString(R.string.email_format));
             return false;
         } else {
             binding.tilEmail.setErrorEnabled(false);

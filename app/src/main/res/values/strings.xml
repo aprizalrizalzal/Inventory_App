@@ -147,4 +147,5 @@
     <string name="not_good">Kurang Baik</string>
     <string name="heavily_damaged">Rusak Berat</string>
     <string name="number">Nomor</string>
+    <string name="email_format">Format email salah</string>
 </resources>

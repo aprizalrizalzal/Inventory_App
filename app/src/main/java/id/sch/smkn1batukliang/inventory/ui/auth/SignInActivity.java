@@ -2,7 +2,9 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PatternMatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import id.sch.smkn1batukliang.inventory.MainActivity;
 import id.sch.smkn1batukliang.inventory.R;
@@ -58,6 +61,9 @@ public class SignInActivity extends AppCompatActivity {
     private boolean validateFields() {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.setError(getString(R.string.email_format));
             return false;
         } else {
             binding.tilEmail.setErrorEnabled(false);
