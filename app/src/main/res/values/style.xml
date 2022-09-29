@@ -16,6 +16,15 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="ImageMenuInventory">
+        <item name="android:layout_width">@dimen/image_list_size</item>
+        <item name="android:layout_height">@dimen/image_list_size</item>
+        <item name="android:layout_marginTop">@dimen/vertical_margin</item>
+        <item name="android:layout_marginStart">@dimen/horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/horizontal_margin</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
     <style name="ImageViewInventory">
         <item name="android:layout_width">@dimen/icon_size</item>
         <item name="android:layout_height">@dimen/icon_size</item>

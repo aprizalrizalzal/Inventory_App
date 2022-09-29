@@ -126,7 +126,7 @@
     <string name="new_password_required">Kata Sandi baru diperlukan</string>
     <string name="sign_up_to_sign_in">Sudah punya akun</string>
     <string name="reject">Tolak</string>
-    <string name="inventory_card">Karu Inventaris</string>
+    <string name="item_inventory_card">Karu Inventaris Barang</string>
     <string name="room">Ruangan</string>
     <string name="goods">Barang</string>
     <string name="item_code">Kode Barang</string>
@@ -148,4 +148,5 @@
     <string name="heavily_damaged">Rusak Berat</string>
     <string name="number">Nomor</string>
     <string name="email_format">Format email salah</string>
+    <string name="room_inventory_card">Kartu Inventaris Ruangan</string>
 </resources>
