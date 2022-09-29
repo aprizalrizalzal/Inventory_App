@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.databinding.FragmentListGoodsBinding;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListRoomBinding;
 
 public class ListRoomFragment extends Fragment {
