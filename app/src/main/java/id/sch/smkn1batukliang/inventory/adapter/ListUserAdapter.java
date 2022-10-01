@@ -16,7 +16,7 @@ import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.ListUserBinding;
-import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
 

@@ -29,17 +29,21 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentProfileBinding;
-import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 
@@ -53,7 +57,7 @@ public class ProfileFragment extends Fragment {
     private Uri imageUrl;
     private FirebaseAuth auth;
     private FirebaseUser user;
-    private DocumentReference documentReferenceUser;
+    private DatabaseReference databaseReferenceUsers;
     private StorageReference storageReference;
     private String authId, username, employeeIdNumber, whatsappNumber, position;
     private boolean emailVerified;
@@ -81,29 +85,27 @@ public class ProfileFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         if (user != null) {
             authId = user.getUid();
             emailVerified = user.isEmailVerified();
         } else {
-            reload();
+            requireActivity().finish();
         }
 
         if (getArguments() != null) {
             extraUsers = getArguments().getParcelable(EXTRA_USERS);
         }
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceUsers = firestore.collection("users");
-
-        documentReferenceUser = collectionReferenceUsers.document(authId);
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-
         if (extraUsers != null) {
             viewExtraUsers(extraUsers);
         } else {
-            viewFirestoreUser();
+            viewRealtimeDatabaseUsers();
         }
 
         MenuHost menuHost = requireActivity();
@@ -123,7 +125,7 @@ public class ProfileFragment extends Fragment {
                     Navigation.findNavController(view).navigate(R.id.action_nav_profile_to_update_password);
 
                 } else if (menuItem.getItemId() == R.id.action_sign_out) {
-                    clearToken();
+                    updateTokenId();
                 }
                 return false;
             }
@@ -149,23 +151,14 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void clearToken() {
-        documentReferenceUser.update("tokenId", "").addOnSuccessListener(unused -> {
-            Log.d(TAG, "clearToken: successfully");
-            auth.signOut();
-            Intent intent = new Intent(requireContext(), SignInActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
-        }).addOnFailureListener(e -> Log.w(TAG, "clearToken: failure ", e));
-    }
-
-    private void viewFirestoreUser() {
+    private void viewRealtimeDatabaseUsers() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+        databaseReferenceUsers.child(authId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Users");
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "viewFirestoreUser: successfully " + documentReferenceUser.getId());
-                Users users = task.getResult().toObject(Users.class);
+                Users users = snapshot.getValue(Users.class);
                 if (users != null) {
                     Glide.with(view).load(users.getPhotoLink())
                             .placeholder(R.drawable.ic_baseline_account_circle)
@@ -233,7 +226,6 @@ public class ProfileFragment extends Fragment {
                             builder.show();
                         });
                     } else {
-                        updateEmailVerification(users);
                         binding.tilEmail.setErrorEnabled(false);
                     }
 
@@ -288,9 +280,12 @@ public class ProfileFragment extends Fragment {
                         }
                     });
                 }
-            } else {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: Users", error.toException());
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "viewFirestoreUser: failure ", task.getException());
             }
         });
     }
@@ -321,11 +316,6 @@ public class ProfileFragment extends Fragment {
         binding.tietLevel.setEnabled(false);
         binding.tietPosition.setText(extraUsers.getPosition());
         binding.tietPosition.setEnabled(false);
-    }
-
-    private void reload() {
-        startActivity(new Intent(requireActivity(), SignInActivity.class));
-        requireActivity().finish();
     }
 
     private void selectImage() {
@@ -366,42 +356,54 @@ public class ProfileFragment extends Fragment {
 
     private void updatePhotoLink(String downloadUri) {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.update("photoLink", downloadUri).addOnSuccessListener(unused -> {
+
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("photoLink", downloadUri);
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updatePhotoLink: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updatePhotoLink: successfully " + downloadUri);
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "updatePhotoLink: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updatePhotoLink: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
     private void updateUsername() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.update("username", username).addOnSuccessListener(unused -> {
+
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("username", username);
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateUsername: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateUsername: successfully " + username);
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             binding.tilUsername.setEndIconVisible(false);
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateUsername: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateUsername: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
     private void updateEmployeeIdNumber() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.update("employeeIdNumber", employeeIdNumber).addOnSuccessListener(unused -> {
+
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("employeeIdNumber", employeeIdNumber);
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateEmployeeIdNumber: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateEmployeeIdNumber: successfully " + employeeIdNumber);
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
             binding.tilEmployeeIdNumber.setEndIconVisible(false);
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateEmployeeIdNumber: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateEmployeeIdNumber: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -422,45 +424,58 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void updateEmailVerification(Users users) {
+    private void updateTokenId() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.update("emailVerification", true).addOnSuccessListener(unused -> {
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("tokenId", "");
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "clearToken: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateEmailVerification: successfully " + true);
-            binding.tilEmail.setErrorEnabled(false);
-            binding.tilEmail.setEndIconOnClickListener(v -> updateEmail(users));
+            auth.signOut();
+            Intent intent = new Intent(requireContext(), SignInActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "clearToken: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateEmailVerification: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }
 
+
     private void updateWhatsappNumber() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.update("whatsappNumber", whatsappNumber).addOnSuccessListener(unused -> {
+
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("whatsappNumber", whatsappNumber);
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateWhatsappNumber: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateWhatsappNumber: successfully " + whatsappNumber);
             binding.tilWhatsappNumber.setEndIconVisible(false);
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateWhatsappNumber: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateWhatsappNumber: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
     private void updatePosition() {
         progressDialog.ShowProgressDialog();
-        documentReferenceUser.update("position", position).addOnSuccessListener(unused -> {
+
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("position", position);
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updatePosition: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updatePosition: successfully " + position);
             binding.tilPosition.setEndIconVisible(false);
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "updatePosition: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updatePosition: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 }

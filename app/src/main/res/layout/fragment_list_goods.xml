@@ -17,15 +17,6 @@
         app:layout_constraintStart_toStartOf="@+id/web_view"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <ImageView
-            style="@style/ImageViewInventory"
-            android:contentDescription="@string/app_name" />
-
-        <TextView
-            style="@style/TextViewInventory"
-            android:layout_gravity="center"
-            android:text="@string/app_name" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,7 +48,7 @@
                     <TextView
                         style="@style/TextViewInventory"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/item_inventory_card" />
+                        android:text="@string/inventory_card" />
 
                     <ImageView
                         style="@style/ImageMenuInventory"
@@ -97,7 +88,7 @@
                     <TextView
                         style="@style/TextViewInventory"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/item_inventory_card" />
+                        android:text="@string/inventory_card" />
 
                     <ImageView
                         style="@style/ImageMenuInventory"
@@ -144,7 +135,7 @@
                     <TextView
                         style="@style/TextViewInventory"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/item_inventory_card" />
+                        android:text="@string/inventory_card" />
 
                     <ImageView
                         style="@style/ImageMenuInventory"
@@ -184,7 +175,7 @@
                     <TextView
                         style="@style/TextViewInventory"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/item_inventory_card" />
+                        android:text="@string/inventory_card" />
 
                     <ImageView
                         style="@style/ImageMenuInventory"
@@ -231,7 +222,7 @@
                     <TextView
                         style="@style/TextViewInventory"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/item_inventory_card" />
+                        android:text="@string/inventory_card" />
 
                     <ImageView
                         style="@style/ImageMenuInventory"
@@ -271,7 +262,7 @@
                     <TextView
                         style="@style/TextViewInventory"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/item_inventory_card" />
+                        android:text="@string/inventory_card" />
 
                     <ImageView
                         style="@style/ImageMenuInventory"

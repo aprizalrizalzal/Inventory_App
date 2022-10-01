@@ -39,10 +39,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.itextpdf.text.BaseColor;
@@ -78,7 +74,6 @@ import java.util.UUID;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddReportBinding;
-import id.sch.smkn1batukliang.inventory.model.Users;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.procurement.Procurement;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
@@ -86,6 +81,7 @@ import id.sch.smkn1batukliang.inventory.model.report.ReportItem;
 import id.sch.smkn1batukliang.inventory.model.report.item.Principal;
 import id.sch.smkn1batukliang.inventory.model.report.item.TeamLeader;
 import id.sch.smkn1batukliang.inventory.model.report.item.VicePrincipal;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.utili.MoneyTextWatcher;
 
@@ -96,12 +92,11 @@ public class AddReportFragment extends Fragment {
     private final ArrayList<Procurement> procurements = new ArrayList<>();
     private final ArrayList<String> listUser = new ArrayList<>();
     boolean isEmptyFields = false;
-    private ArrayAdapter<String> stringAdapter;
+    private ArrayAdapter<String> stringListUserAdapter;
     private FragmentAddReportBinding binding;
     private SimpleDateFormat simpleDateFormatId;
     private CustomProgressDialog progressDialog;
-    private CollectionReference collectionReferenceUsers;
-    private DatabaseReference databaseReferenceProcurement, databaseReferenceReport;
+    private DatabaseReference databaseReferenceUsers, databaseReferenceProcurement, databaseReferenceReport;
     private StorageReference storageReferenceReport;
     private double total, totalAmount = 0.0;
     private Placement extraPlacementForReport;
@@ -156,20 +151,18 @@ public class AddReportFragment extends Fragment {
             placement = extraPlacementForReport.getPlacementItem().getPlacement();
         }
 
-        stringAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_mactv, listUser);
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        collectionReferenceUsers = firestore.collection("users");
-
-        automaticTextInputEditText();
-        selectManualTextInputEditText();
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
         databaseReferenceProcurement = database.getReference("procurement");
         databaseReferenceReport = database.getReference("report");
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReferenceReport = storage.getReference("users/procurement/");
+
+        stringListUserAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_mactv, listUser);
+
+        automaticTextInputEditText();
+        selectManualTextInputEditText();
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -207,56 +200,72 @@ public class AddReportFragment extends Fragment {
     }
 
     private void automaticTextInputEditText() {
-        collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "automaticTextInputEditText: successfully " + collectionReferenceUsers.getId());
-                for (DocumentSnapshot snapshot : task.getResult()) {
-                    Users users = snapshot.toObject(Users.class);
-                    if (users != null) {
-                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.team_leader))) {
-                            binding.mactvTeamLeader.setText(users.getUsername());
-                            einTeamLeader = users.getEmployeeIdNumber();
-                        }
-                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.vice_principal))) {
-                            binding.mactvVicePrincipal.setText(users.getUsername());
-                            einVicePrincipal = users.getEmployeeIdNumber();
-                        }
-                        if (users.getLevel() != null && users.getLevel().equals(getString(R.string.principal))) {
-                            binding.mactvPrincipal.setText(users.getUsername());
-                            einPrincipal = users.getEmployeeIdNumber();
+        databaseReferenceUsers.orderByChild("username").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Users");
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Users users = dataSnapshot.getValue(Users.class);
+                        if (users != null) {
+                            if (users.getLevel() != null && users.getLevel().equals(getString(R.string.team_leader))) {
+                                binding.mactvTeamLeader.setText(users.getUsername());
+                                einTeamLeader = users.getEmployeeIdNumber();
+                            }
+                            if (users.getLevel() != null && users.getLevel().equals(getString(R.string.vice_principal))) {
+                                binding.mactvVicePrincipal.setText(users.getUsername());
+                                einVicePrincipal = users.getEmployeeIdNumber();
+                            }
+                            if (users.getLevel() != null && users.getLevel().equals(getString(R.string.principal))) {
+                                binding.mactvPrincipal.setText(users.getUsername());
+                                einPrincipal = users.getEmployeeIdNumber();
+                            }
                         }
                     }
                 }
-            } else {
-                Log.w(TAG, "automaticTextInputEditText: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: Users", error.toException());
             }
         });
     }
 
     private void selectManualTextInputEditText() {
         listUser.clear();
-        collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "selectManualTextInputEditText: successfully " + collectionReferenceUsers.getId());
-                for (DocumentSnapshot snapshot : task.getResult()) {
-                    Users users = snapshot.toObject(Users.class);
-                    if (users != null) {
-                        listUser.clear();
-                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                            listUser.add(documentSnapshot.getString("username"));
-                            binding.mactvTeamLeader.setOnItemClickListener((parent, view, position, id) -> einTeamLeader = task.getResult().getDocuments().get(position).getString("employeeIdNumber"));
-                            binding.mactvVicePrincipal.setOnItemClickListener((parent, view, position, id) -> einVicePrincipal = task.getResult().getDocuments().get(position).getString("employeeIdNumber"));
-                            binding.mactvPrincipal.setOnItemClickListener((parent, view, position, id) -> einPrincipal = task.getResult().getDocuments().get(position).getString("employeeIdNumber"));
+        databaseReferenceUsers.orderByChild("username").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Users");
+                if (snapshot.exists()) {
+                    listUser.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Users users = dataSnapshot.getValue(Users.class);
+                        if (users != null) {
+                            listUser.add(users.getUsername());
+                            stringListUserAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_mactv, listUser);
+                            binding.mactvTeamLeader.setAdapter(stringListUserAdapter);
+                            binding.mactvVicePrincipal.setAdapter(stringListUserAdapter);
+                            binding.mactvPrincipal.setAdapter(stringListUserAdapter);
                         }
-                        binding.mactvTeamLeader.setAdapter(stringAdapter);
-                        binding.mactvVicePrincipal.setAdapter(stringAdapter);
-                        binding.mactvPrincipal.setAdapter(stringAdapter);
+                        binding.mactvTeamLeader.setOnItemClickListener((parent, view, position, id) -> {
+
+                        });
+                        binding.mactvVicePrincipal.setOnItemClickListener((parent, view, position, id) -> {
+
+                        });
+                        binding.mactvPrincipal.setOnItemClickListener((parent, view, position, id) -> {
+
+                        });
                     }
+
                 }
-            } else {
-                Log.w(TAG, "selectManualTextInputEditText: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: Users", error.toException());
             }
         });
     }
@@ -657,31 +666,31 @@ public class AddReportFragment extends Fragment {
     }
 
     private void getTokenForNotification(Report model) {
-        collectionReferenceUsers.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
-                for (DocumentSnapshot snapshot : task.getResult()) {
-                    Users users = snapshot.toObject(Users.class);
-                    String tokenId = snapshot.getString("tokenId");
-                    if (users != null && users.getLevel().equals(getString(R.string.admin))) {
-                        Log.d(TAG, "getTokenForNotification: admin" + tokenId);
-                        sendDataReportAndUser(model, tokenId);
-                    } else if (users != null && users.getLevel().equals(getString(R.string.team_leader))) {
-                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
-                        sendDataReportAndUser(model, tokenId);
-                    } else if (users != null && users.getLevel().equals(getString(R.string.vice_principal))) {
-                        Log.d(TAG, "getTokenForNotification: vicePrincipal" + tokenId);
-                        sendDataReportAndUser(model, tokenId);
-                    } else if (users != null && users.getLevel().equals(getString(R.string.principal))) {
-                        Log.d(TAG, "getTokenForNotification: principal" + tokenId);
-                        sendDataReportAndUser(model, tokenId);
-                    }
-                }
-            } else {
-                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        collectionReferenceUsers.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
+//                for (DocumentSnapshot snapshot : task.getResult()) {
+//                    Users users = snapshot.toObject(Users.class);
+//                    String tokenId = snapshot.getString("tokenId");
+//                    if (users != null && users.getLevel().equals(getString(R.string.admin))) {
+//                        Log.d(TAG, "getTokenForNotification: admin" + tokenId);
+//                        sendDataReportAndUser(model, tokenId);
+//                    } else if (users != null && users.getLevel().equals(getString(R.string.team_leader))) {
+//                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
+//                        sendDataReportAndUser(model, tokenId);
+//                    } else if (users != null && users.getLevel().equals(getString(R.string.vice_principal))) {
+//                        Log.d(TAG, "getTokenForNotification: vicePrincipal" + tokenId);
+//                        sendDataReportAndUser(model, tokenId);
+//                    } else if (users != null && users.getLevel().equals(getString(R.string.principal))) {
+//                        Log.d(TAG, "getTokenForNotification: principal" + tokenId);
+//                        sendDataReportAndUser(model, tokenId);
+//                    }
+//                }
+//            } else {
+//                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
+//                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void sendDataReportAndUser(Report report, String tokenId) {

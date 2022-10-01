@@ -15,9 +15,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
@@ -30,8 +32,8 @@ public class UpdateEmailFragment extends Fragment {
     boolean isEmptyFields = false;
     private FragmentUpdateEmailBinding binding;
     private FirebaseUser user;
+    private DatabaseReference databaseReferenceUsers;
     private String authId, email, newEmail, password;
-    private FirebaseFirestore firestore;
     private CustomProgressDialog progressDialog;
     private View view;
 
@@ -56,9 +58,15 @@ public class UpdateEmailFragment extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        firestore = FirebaseFirestore.getInstance();
 
-        authId = user.getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
+
+        if (user != null) {
+            authId = user.getUid();
+        } else {
+            requireActivity().finish();
+        }
 
         binding.btnUpdate.setOnClickListener(v -> {
             email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
@@ -105,7 +113,7 @@ public class UpdateEmailFragment extends Fragment {
                 user.updateEmail(newEmail).addOnSuccessListener(unused -> {
                     progressDialog.DismissProgressDialog();
                     Log.d(TAG, "updateEmail: successfully " + email);
-                    updateNewEmail(newEmail);
+                    updateNewEmail();
                     Toast.makeText(requireContext(), getString(R.string.successfully) + newEmail, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
@@ -120,16 +128,18 @@ public class UpdateEmailFragment extends Fragment {
         });
     }
 
-    private void updateNewEmail(String newEmail) {
+    private void updateNewEmail() {
         progressDialog.ShowProgressDialog();
-        DocumentReference documentReference = firestore.collection("users").document(authId);
-        documentReference.update("email", newEmail).addOnSuccessListener(unused -> {
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("email", newEmail);
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "clearToken: Users");
             progressDialog.DismissProgressDialog();
-            Log.d(TAG, "updateNewEmail: successfully " + newEmail);
             Navigation.findNavController(view).navigateUp();
         }).addOnFailureListener(e -> {
+            Log.w(TAG, "clearToken: Users", e);
             progressDialog.DismissProgressDialog();
-            Log.w(TAG, "updateNewEmail: failure", e);
             Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
         });
     }

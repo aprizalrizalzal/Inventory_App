@@ -44,9 +44,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+//import com.google.firebase.firestore.CollectionReference;
+//import com.google.firebase.firestore.DocumentSnapshot;
+//import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -70,7 +70,7 @@ import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentEditReportBinding;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
-import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 
 public class EditReportFragment extends Fragment {
@@ -80,7 +80,7 @@ public class EditReportFragment extends Fragment {
     private View view;
     private CustomProgressDialog progressDialog;
     private Report extraReport;
-    private CollectionReference collectionReferenceUsers;
+//    private CollectionReference collectionReferenceUsers;
     private DatabaseReference databaseReferenceReport;
     private PDFView pdfView;
     private String extraReportId;
@@ -167,8 +167,8 @@ public class EditReportFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(requireActivity());
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        collectionReferenceUsers = firestore.collection("users");
+//        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+//        collectionReferenceUsers = firestore.collection("users");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReferenceLevels = database.getReference("levels");
@@ -426,22 +426,22 @@ public class EditReportFragment extends Fragment {
     }
 
     private void getTokenForNotificationApproved(Report report) {
-        collectionReferenceUsers.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
-                for (DocumentSnapshot snapshot : task.getResult()) {
-                    Users users = snapshot.toObject(Users.class);
-                    String tokenId = snapshot.getString("tokenId");
-                    if (users != null && users.getAuthId().equals(report.getAuthId())) {
-                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
-                        sendDataReportApproved(report, tokenId);
-                    }
-                }
-            } else {
-                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        collectionReferenceUsers.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
+//                for (DocumentSnapshot snapshot : task.getResult()) {
+//                    Users users = snapshot.toObject(Users.class);
+//                    String tokenId = snapshot.getString("tokenId");
+//                    if (users != null && users.getAuthId().equals(report.getAuthId())) {
+//                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
+//                        sendDataReportApproved(report, tokenId);
+//                    }
+//                }
+//            } else {
+//                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
+//                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void sendDataReportApproved(Report report, String tokenId) {
@@ -462,22 +462,22 @@ public class EditReportFragment extends Fragment {
     }
 
     private void getTokenForNotificationRejected(Report report) {
-        collectionReferenceUsers.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
-                for (DocumentSnapshot snapshot : task.getResult()) {
-                    Users users = snapshot.toObject(Users.class);
-                    String tokenId = snapshot.getString("tokenId");
-                    if (users != null && users.getAuthId().equals(report.getAuthId())) {
-                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
-                        sendDataReportRejected(report, tokenId);
-                    }
-                }
-            } else {
-                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        collectionReferenceUsers.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
+//                for (DocumentSnapshot snapshot : task.getResult()) {
+//                    Users users = snapshot.toObject(Users.class);
+//                    String tokenId = snapshot.getString("tokenId");
+//                    if (users != null && users.getAuthId().equals(report.getAuthId())) {
+//                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
+//                        sendDataReportRejected(report, tokenId);
+//                    }
+//                }
+//            } else {
+//                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
+//                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void sendDataReportRejected(Report report, String tokenId) {

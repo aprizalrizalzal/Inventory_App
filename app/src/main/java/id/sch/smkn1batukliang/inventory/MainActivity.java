@@ -27,18 +27,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
-import id.sch.smkn1batukliang.inventory.model.Users;
 import id.sch.smkn1batukliang.inventory.model.levels.Levels;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
 import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 
@@ -54,14 +53,13 @@ public class MainActivity extends AppCompatActivity {
     private String authId, authEmail, tokenId;
     private ImageView imgNavUser;
     private TextView username, email;
-    private DocumentReference documentReferenceUser;
-    private DatabaseReference databaseReferenceLevels;
+    private DatabaseReference databaseReferenceUsers, databaseReferenceLevels;
 
     @SuppressLint({"UseCompatLoadingForDrawables", "NonConstantResourceId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         progressDialog = new CustomProgressDialog(MainActivity.this);
@@ -70,20 +68,19 @@ public class MainActivity extends AppCompatActivity {
         messaging = FirebaseMessaging.getInstance();
         user = auth.getCurrentUser();
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceUsers = firestore.collection("users");
-
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
+        databaseReferenceLevels = database.getReference("levels");
 
         if (user != null) {
             authId = user.getUid();
             authEmail = user.getEmail();
-            documentReferenceUser = collectionReferenceUsers.document(authId);
+            changeRealtimeDatabaseUsers();
         } else {
-            reload();
+            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+            startActivity(intent);
+            finish();
         }
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReferenceLevels = database.getReference("levels");
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawerLayout = binding.drawerLayout;
@@ -108,20 +105,25 @@ public class MainActivity extends AppCompatActivity {
         email = navigationView.getHeaderView(0).findViewById(R.id.tv_nav_email);
     }
 
-    private void changeFirestoreUser() {
-        documentReferenceUser.get().addOnCompleteListener(task -> {
-            Users users = task.getResult().toObject(Users.class);
-            if (task.isSuccessful()) {
-                Log.d(TAG, "changeFirestoreUser: successfully " + documentReferenceUser.getId());
-                if (users != null) {
-                    viewFirestoreUsers();
+    private void changeRealtimeDatabaseUsers() {
+        databaseReferenceUsers.child(authId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Users");
+                if (snapshot.exists()) {
+                    Users users = snapshot.getValue(Users.class);
+                    if (users != null) {
+                        viewRealtimeDatabaseUsers();
+                    }
                 } else {
-                    createFirestoreUsers();
+                    createRealtimeDatabaseUsers();
                 }
-            } else {
-                Log.w(TAG, "changeFirestoreUser: failure ", task.getException());
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: Users", error.toException());
+            }
         });
     }
 
@@ -129,78 +131,92 @@ public class MainActivity extends AppCompatActivity {
         messaging.getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 tokenId = task.getResult();
-                updateTokenId(tokenId);
+                updateTokenId();
             } else {
-                Log.w(TAG, "createTokenIdUser: failure", task.getException());
+                Log.w(TAG, "createTokenIdUser: failure ", task.getException());
             }
         });
     }
 
-    private void updateTokenId(String tokenId) {
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceUsers = firestore.collection("users");
-        DocumentReference documentReferenceUser = collectionReferenceUsers.document(authId);
+    private void updateTokenId() {
+        progressDialog.ShowProgressDialog();
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("tokenId", tokenId);
 
-        documentReferenceUser.update("tokenId", tokenId).addOnSuccessListener(unused -> Log.d(TAG, "updateTokenId: successfully " + tokenId)).addOnFailureListener(e -> Log.w(TAG, "updateTokenId: failure ", e));
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateTokenId: Users");
+            progressDialog.DismissProgressDialog();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateTokenId: Users", e);
+            progressDialog.DismissProgressDialog();
+        });
     }
 
-    private void createFirestoreUsers() {
+    private void createRealtimeDatabaseUsers() {
         progressDialog.ShowProgressDialog();
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormatId = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
         String dateId = simpleDateFormatId.format(calendar.getTime());
 
         Users users = new Users(authId, authEmail, "", "", "", "", dateId, "", "", "");
-        documentReferenceUser.set(users).addOnSuccessListener(documentReference -> {
-            Log.d(TAG, "createFirestoreUsers: successfully " + documentReferenceUser.getId());
-            progressDialog.DismissProgressDialog();
-            viewFirestoreUsers();
-        }).addOnFailureListener(e -> {
-            progressDialog.DismissProgressDialog();
-            Log.w(TAG, "createFirestoreUsers: failure ", e);
+        databaseReferenceUsers.child(authId).setValue(users).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "createRealtimeDatabaseUsers: Users");
+                progressDialog.DismissProgressDialog();
+                viewRealtimeDatabaseUsers();
+            } else {
+                Log.w(TAG, "createRealtimeDatabaseUsers: Users ", task.getException());
+                progressDialog.DismissProgressDialog();
+            }
         });
     }
 
-    private void viewFirestoreUsers() {
+    private void viewRealtimeDatabaseUsers() {
         progressDialog.ShowProgressDialog();
         Menu nav_Menu = navigationView.getMenu();
-        documentReferenceUser.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+        databaseReferenceUsers.child(authId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Users");
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "viewFirestoreUsers: successfully " + documentReferenceUser.getId());
-                Users users = task.getResult().toObject(Users.class);
-                if (users != null) {
-                    Glide.with(getApplicationContext())
-                            .load(users.getPhotoLink())
-                            .placeholder(R.drawable.ic_baseline_account_circle)
-                            .into(imgNavUser);
-                    username.setText(users.getUsername());
-                    email.setText(users.getEmail());
+                if (snapshot.exists()) {
+                    Users users = snapshot.getValue(Users.class);
+                    if (users != null) {
+                        Glide.with(getApplicationContext())
+                                .load(users.getPhotoLink())
+                                .placeholder(R.drawable.ic_baseline_account_circle)
+                                .into(imgNavUser);
+                        username.setText(users.getUsername());
+                        email.setText(users.getEmail());
 
-                    if (users.getEmail().equals(getString(R.string.default_email))) {
-                        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
-                        builder.setTitle(getString(R.string.reminder)).setMessage(R.string.do_not_change_the_default_email).setCancelable(false)
-                                .setNeutralButton(getString(R.string.yes), (dialog, id) -> dialog.cancel());
-                        builder.show();
-                        menuAdmin(nav_Menu);
-                    } else {
-                        if (!user.isEmailVerified()) {
-                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-                            builder.setTitle(getString(R.string.reminder)).setMessage(R.string.email_must_be_verified).setCancelable(false)
-                                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                                        dialog.cancel();
-                                        finish();
-                                    })
-                                    .setPositiveButton(getString(R.string.yes), (dialog, id) -> Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_profile));
+                        if (users.getEmail().equals(getString(R.string.default_email))) {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+                            builder.setTitle(getString(R.string.reminder)).setMessage(R.string.do_not_change_the_default_email).setCancelable(false)
+                                    .setNeutralButton(getString(R.string.yes), (dialog, id) -> dialog.cancel());
                             builder.show();
+                            menuAdmin(nav_Menu);
+                        } else {
+                            if (!user.isEmailVerified()) {
+                                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+                                builder.setTitle(getString(R.string.reminder)).setMessage(R.string.email_must_be_verified).setCancelable(false)
+                                        .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                                            dialog.cancel();
+                                            finish();
+                                        })
+                                        .setPositiveButton(getString(R.string.yes), (dialog, id) -> Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main).navigate(R.id.nav_profile));
+                                builder.show();
+                            }
+                            changeRealtimeDatabaseLevel(nav_Menu);
                         }
-                        changeLevel(nav_Menu);
+                        refreshTokenIdUser();
                     }
-                    refreshTokenIdUser();
                 }
-            } else {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: Users", error.toException());
                 progressDialog.DismissProgressDialog();
-                Log.w(TAG, "viewFirestoreUsers: failure ", task.getException());
             }
         });
     }
@@ -217,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         nav_Menu.findItem(R.id.nav_help).setVisible(true);
     }
 
-    private void changeLevel(Menu nav_Menu) {
+    private void changeRealtimeDatabaseLevel(Menu nav_Menu) {
         databaseReferenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -270,24 +286,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void reload() {
-        startActivity(new Intent(getApplicationContext(), SignInActivity.class));
-        finish();
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
         navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
-    }
-
-    @Override
-    protected void onStart() {
-        if (user != null) {
-            changeFirestoreUser();
-        } else {
-            reload();
-        }
-        super.onStart();
     }
 }

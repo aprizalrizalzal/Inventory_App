@@ -18,10 +18,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.ListLevelAdapter;
@@ -37,8 +37,7 @@ public class ListLevelFragment extends Fragment {
     private final ArrayList<Levels> listLevel = new ArrayList<>();
     private FragmentListLevelBinding binding;
     private View view;
-    private CollectionReference collectionReferenceUsers;
-    private DatabaseReference databaseReferenceLevels;
+    private DatabaseReference databaseReferenceUsers, databaseReferenceLevels;
     private ListLevelAdapter adapter;
     private CustomProgressDialog progressDialog;
 
@@ -58,13 +57,11 @@ public class ListLevelFragment extends Fragment {
         binding = FragmentListLevelBinding.inflate(getLayoutInflater(), container, false);
         view = binding.getRoot();
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        collectionReferenceUsers = firestore.collection("users");
+        progressDialog = new CustomProgressDialog(getActivity());
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
         databaseReferenceLevels = database.getReference("levels");
-
-        progressDialog = new CustomProgressDialog(getActivity());
 
         adapter = new ListLevelAdapter();
         binding.tvEmptyData.setText(getString(R.string.no_data_available_levels));
@@ -74,6 +71,7 @@ public class ListLevelFragment extends Fragment {
         binding.rvListLevel.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvListLevel.setAdapter(adapter);
 
+        listLevelRealtime();
         binding.refreshLayout.setOnRefreshListener(() -> {
             listLevelRealtime();
             binding.refreshLayout.setRefreshing(false);
@@ -143,18 +141,20 @@ public class ListLevelFragment extends Fragment {
     }
 
     private void updateLevelUsers(String authId) {
-        collectionReferenceUsers.document(authId).update("level", "").addOnSuccessListener(unused -> {
-            Log.d(TAG, "updateLevelUsers: successfully " + authId);
-            listLevelRealtime();
-        }).addOnFailureListener(e -> {
-            Log.w(TAG, "updateLevelUsers: failure ", e);
-            Toast.makeText(requireActivity(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-        });
-    }
+        progressDialog.ShowProgressDialog();
 
-    @Override
-    public void onStart() {
-        listLevelRealtime();
-        super.onStart();
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("level", "");
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateLevelUsers: Users");
+            progressDialog.DismissProgressDialog();
+            listLevelRealtime();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateLevelUsers: Users", e);
+            progressDialog.DismissProgressDialog();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+        });
     }
 }

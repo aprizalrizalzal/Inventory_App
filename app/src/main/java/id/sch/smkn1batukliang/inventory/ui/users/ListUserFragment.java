@@ -12,18 +12,20 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.ListUserAdapter;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListUsersBinding;
-import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
 
 public class ListUserFragment extends Fragment {
 
@@ -31,9 +33,8 @@ public class ListUserFragment extends Fragment {
     private static final String TAG = "ListUserFragment";
     private final ArrayList<Users> listUser = new ArrayList<>();
     private FragmentListUsersBinding binding;
-    private Users users;
     private View view;
-    private CollectionReference collectionReferenceUsers;
+    private DatabaseReference databaseReferenceUsers;
     private ListUserAdapter adapter;
     private CustomProgressDialog progressDialog;
 
@@ -55,8 +56,8 @@ public class ListUserFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(getActivity());
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        collectionReferenceUsers = firestore.collection("users");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
 
         adapter = new ListUserAdapter();
         binding.tvEmptyData.setText(getString(R.string.no_data_available_users));
@@ -67,30 +68,36 @@ public class ListUserFragment extends Fragment {
         binding.rvUsers.setAdapter(adapter);
 
         binding.refreshLayout.setOnRefreshListener(() -> {
-            listUserFirestore();
+            listRealtimeDatabaseUsers();
             binding.refreshLayout.setRefreshing(false);
         });
 
         return view;
     }
 
-    private void listUserFirestore() {
+    private void listRealtimeDatabaseUsers() {
         listUser.clear();
         progressDialog.ShowProgressDialog();
-        collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: Users");
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "listUserFirestore: successfully " + collectionReferenceUsers.getId());
-                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                    users = documentSnapshot.toObject(Users.class);
-                    listUser.add(users);
-                    adapter.setListUser(listUser);
-                    adapter.setOnItemClickCallback(this::showSelectedUsers);
-                    adapter.setOnItemClickCallbackDelete(this::deleteSelectedUsers);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    if (users != null) {
+                        listUser.add(users);
+                        adapter.setListUser(listUser);
+                    }
+                    adapter.setOnItemClickCallback(detailUsers -> showSelectedUsers(detailUsers));
+                    adapter.setOnItemClickCallbackDelete(deleteUsers -> deleteSelectedUsers(deleteUsers));
                 }
-            } else {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: Users", error.toException());
                 progressDialog.DismissProgressDialog();
-                Log.d(TAG, "get failed with " + task.getException());
             }
         });
     }
@@ -119,7 +126,7 @@ public class ListUserFragment extends Fragment {
 
     @Override
     public void onStart() {
-        listUserFirestore();
+        listRealtimeDatabaseUsers();
         super.onStart();
     }
 }

@@ -1,10 +1,11 @@
-package id.sch.smkn1batukliang.inventory.model;
+package id.sch.smkn1batukliang.inventory.model.users;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Users implements Parcelable {
+import androidx.annotation.NonNull;
 
+public class Users implements Parcelable {
 
     public static final Creator<Users> CREATOR = new Creator<Users>() {
         @Override
@@ -137,6 +138,12 @@ public class Users implements Parcelable {
 
     public void setWhatsappNumber(String whatsappNumber) {
         this.whatsappNumber = whatsappNumber;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return username;
     }
 
     @Override

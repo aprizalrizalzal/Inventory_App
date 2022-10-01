@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_inventory_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/vertical_margin"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="DuplicateSpeakableTextCheck">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/vertical_margin"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewInventory"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/inventory_card" />
+
+            <ImageView
+                style="@style/ImageMenuInventory"
+                android:contentDescription="@string/procurement"
+                android:src="@drawable/ic_baseline_procurement"
+                app:tint="@color/light_green_700" />
+
+            <TextView
+                style="@style/TextViewInventory"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/purpose" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

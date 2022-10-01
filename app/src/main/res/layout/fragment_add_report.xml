@@ -31,24 +31,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            style="@style/TextViewDialog"
-            android:text="@string/knowing" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_team_leader"
-            style="@style/TextInputLayoutInventoryDropdown"
-            android:hint="@string/team_leader">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/mactv_team_leader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                tools:ignore="TextContrastCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_date_procurement"
             style="@style/TextInputLayoutInventory"
@@ -79,9 +61,19 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            style="@style/TextViewDialog"
-            android:text="@string/agree" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_team_leader"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/team_leader">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_team_leader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_principal"

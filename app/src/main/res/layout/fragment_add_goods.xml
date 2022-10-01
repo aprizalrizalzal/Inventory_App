@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.inventories.card.goods.AddGoodsFragment">
 
     <LinearLayout
-        android:id="@+id/land"
         style="@style/LinearLayoutInventory">
 
         <ImageView
@@ -19,215 +19,63 @@
             android:text="@string/app_name"
             tools:ignore="TextContrastCheck" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_format"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/format">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/item_code">
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_format"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_date_procurement"
+            style="@style/TextInputLayoutInventory"
+            android:hint="@string/date"
+            app:endIconDrawable="@drawable/ic_baseline_calendar"
+            app:endIconMode="custom">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/item_name_item_type">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_date_procurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date|text"
+                tools:ignore="TextContrastCheck" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pengurus_barang"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/goods_manager">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/register_number">
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_pengurus_barang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_principal"
+            style="@style/TextInputLayoutInventoryDropdown"
+            android:hint="@string/principal">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/brand_type">
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/mactv_principal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="TextContrastCheck" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/size_cc">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/ingredient">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/year_of_purchase">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/factory">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/frame">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/machine">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/police">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/book_vehicle_owners">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/origin">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/item_quantity">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/price">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputLayoutInventory"
-                android:hint="@string/description">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save"
@@ -245,5 +93,246 @@
             tools:ignore="TextContrastCheck" />
 
     </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/land"-->
+<!--        style="@style/LinearLayoutInventory">-->
+
+<!--        <ImageView-->
+<!--            style="@style/ImageViewInventory"-->
+<!--            android:contentDescription="@string/app_name" />-->
+
+<!--        <TextView-->
+<!--            style="@style/TextViewInventory"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="@string/app_name"-->
+<!--            tools:ignore="TextContrastCheck" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/item_code">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/item_name_item_type">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/register_number">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/brand_type">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/size_cc">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/ingredient">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/year_of_purchase">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/factory">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/frame">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/machine">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/police">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/book_vehicle_owners">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/origin">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/item_quantity">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/price">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/TextInputLayoutInventory"-->
+<!--                android:hint="@string/description">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="text"-->
+<!--                    tools:ignore="TextContrastCheck" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+<!--        </LinearLayout>-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_save"-->
+<!--            style="@style/ButtonInventory"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:text="@string/save"-->
+<!--            tools:ignore="TextContrastCheck" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_update"-->
+<!--            style="@style/ButtonInventory"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:text="@string/update"-->
+<!--            android:visibility="gone"-->
+<!--            tools:ignore="TextContrastCheck" />-->
+
+<!--    </LinearLayout>-->
 
 </androidx.core.widget.NestedScrollView>

@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ import java.util.List;
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.ListReportBinding;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
-import id.sch.smkn1batukliang.inventory.model.Users;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
 
 public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.ViewHolder> {
 
@@ -80,18 +83,24 @@ public class ListReportAdapter extends RecyclerView.Adapter<ListReportAdapter.Vi
         }
 
         public void bind(Report report) {
-            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-            CollectionReference collectionReferenceUsers = firestore.collection("users");
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReferenceUsers = database.getReference("users");
 
-            collectionReferenceUsers.document(report.getAuthId()).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "bind: tvUsernameSuccessfully " + collectionReferenceUsers.document(report.getAuthId()));
-                    Users users = task.getResult().toObject(Users.class);
-                    if (users != null) {
-                        binding.tvUsername.setText(users.getUsername());
+            databaseReferenceUsers.child(report.getAuthId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d(TAG, "onDataChange: Users");
+                    if (snapshot.exists()) {
+                        Users users = snapshot.getValue(Users.class);
+                        if (users != null) {
+                            binding.tvUsername.setText(users.getUsername());
+                        }
                     }
-                } else {
-                    Log.w(TAG, "bind: tvUsernameFailure ", task.getException());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w(TAG, "onCancelled: Users", error.toException());
                 }
             });
 

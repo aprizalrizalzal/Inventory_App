@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,23 +28,24 @@ import java.util.Objects;
 import java.util.UUID;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddOrEditPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.placement.PlacementItem;
+import id.sch.smkn1batukliang.inventory.model.users.Users;
+import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 
 public class AddOrEditPlacementFragment extends Fragment {
 
     private static final String TAG = "AddOrEditPlacementFragment";
-    private final ArrayList<String> listUsers = new ArrayList<>();
+    private final ArrayList<String> listUser = new ArrayList<>();
     boolean isEmptyFields = false;
     private FragmentAddOrEditPlacementBinding binding;
     private View view;
     private CustomProgressDialog progressDialog;
     private Placement extraPlacement;
-    private String authId, placement, username, extraAuthId;
-    private DatabaseReference referencePlacement, referenceExtraPlacement;
-    private ArrayAdapter<String> stringAdapter;
+    private String authId, placement, username, extraAuthId, extraPlacementId;
+    private DatabaseReference databaseReferenceUsers, databaseReferencePlacement;
+    private ArrayAdapter<String> stringListUserAdapter;
 
     public AddOrEditPlacementFragment() {
         // Required empty public constructor
@@ -64,33 +65,44 @@ public class AddOrEditPlacementFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(getActivity());
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceUsers = firestore.collection("users");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        referencePlacement = database.getReference("placement");
+        databaseReferenceUsers = database.getReference("users");
+        databaseReferencePlacement = database.getReference("placement");
 
-        stringAdapter = new ArrayAdapter<>(requireActivity(), R.layout.list_mactv, listUsers);
+        stringListUserAdapter = new ArrayAdapter<>(requireActivity(), R.layout.list_mactv, listUser);
 
         if (getArguments() != null) {
             extraPlacement = getArguments().getParcelable(ListPlacementFragment.EXTRA_PLACEMENT);
         }
 
         if (extraPlacement != null) {
-            referenceExtraPlacement = referencePlacement.child(extraPlacement.getPlacementItem().getPlacementId());
+            extraPlacementId = extraPlacement.getPlacementItem().getPlacementId();
             extraAuthId = extraPlacement.getAuthId();
             viewExtraPlacement();
         } else {
-            listUsers.clear();
-            collectionReferenceUsers.orderBy("username").get().addOnCompleteListener(task -> {
-                Log.d(TAG, "onCreateView: successfully " + collectionReferenceUsers.getId());
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                        listUsers.add(documentSnapshot.getString("username"));
-                        binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> authId = task.getResult().getDocuments().get(position).getId());
+            listUser.clear();
+            databaseReferenceUsers.orderByChild("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d(TAG, "onDataChange: Users");
+                    if (snapshot.exists()) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Users users = dataSnapshot.getValue(Users.class);
+                            if (users != null) {
+                                listUser.add(users.getUsername());
+                                stringListUserAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_mactv, listUser);
+                                binding.mactvUsername.setAdapter(stringListUserAdapter);
+                            }
+                            binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> {
+
+                            });
+                        }
                     }
-                    binding.mactvUsername.setAdapter(stringAdapter);
-                } else {
-                    Log.w(TAG, "onCreateView: failure ", task.getException());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w(TAG, "onCancelled: Users", error.toException());
                 }
             });
         }
@@ -171,7 +183,7 @@ public class AddOrEditPlacementFragment extends Fragment {
 
         PlacementItem modelItem = new PlacementItem("", placementId, placement, dateId, username);
         Placement model = new Placement(authId, modelItem);
-        referencePlacement.child(placementId).setValue(model).addOnSuccessListener(unused -> {
+        databaseReferencePlacement.child(placementId).setValue(model).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "createPlacement: successfully " + placementId);
             Navigation.findNavController(view).navigateUp();
@@ -188,7 +200,7 @@ public class AddOrEditPlacementFragment extends Fragment {
         Map<String, Object> mapPlacement = new HashMap<>();
         mapPlacement.put("/placementItem/placement", placement);
 
-        referenceExtraPlacement.updateChildren(mapPlacement).addOnSuccessListener(unused -> {
+        databaseReferencePlacement.child(extraPlacementId).updateChildren(mapPlacement).addOnSuccessListener(unused -> {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "updatePlacement: successfully " + extraAuthId);
             Navigation.findNavController(view).navigateUp();

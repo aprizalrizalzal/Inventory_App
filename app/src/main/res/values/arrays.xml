@@ -7,4 +7,13 @@
         <item>@string/vice_principal</item>
         <item>@string/principal</item>
     </string-array>
+
+    <string-array name="format">
+        <item>Tanah</item>
+        <item>Peralatan dan mesin</item>
+        <item>Gedung dan Bangunan</item>
+        <item>Jalan</item>
+        <item>Aset Tetap</item>
+        <item>Pengerjaan</item>
+    </string-array>
 </resources>

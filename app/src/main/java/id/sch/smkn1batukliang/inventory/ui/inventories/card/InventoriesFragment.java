@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -47,13 +48,13 @@ public class InventoriesFragment extends Fragment {
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(binding.tabs, binding.viewPager2, (tab, position) -> tab.setText(getResources().getString(TAB_TITLES[position])));
         tabLayoutMediator.attach();
 
-        binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_goods));
+        binding.fab.setOnClickListener(v -> Toast.makeText(requireActivity(), "Test", Toast.LENGTH_SHORT).show());
 
         binding.tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_goods));
+                    binding.fab.setOnClickListener(v -> Toast.makeText(requireActivity(), "Test", Toast.LENGTH_SHORT).show());
                 } else if (tab.getPosition() == 1) {
                     binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_room));
                 }
@@ -62,7 +63,7 @@ public class InventoriesFragment extends Fragment {
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_goods));
+                    binding.fab.setOnClickListener(v -> Toast.makeText(requireActivity(), "Test", Toast.LENGTH_SHORT).show());
                 } else if (tab.getPosition() == 1) {
                     binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_room));
                 }
@@ -71,7 +72,7 @@ public class InventoriesFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_goods));
+                    binding.fab.setOnClickListener(v -> Toast.makeText(requireActivity(), "Test", Toast.LENGTH_SHORT).show());
                 } else if (tab.getPosition() == 1) {
                     binding.fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_inventories_to_add_room));
                 }
