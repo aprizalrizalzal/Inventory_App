@@ -130,7 +130,7 @@ public class ListReportFragment extends Fragment {
     private void listReportRealtime() {
         reports.clear();
         progressDialog.ShowProgressDialog();
-        databaseReferenceReport.orderByChild("reportItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceReport.orderByChild("reportItem/report").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();
@@ -160,7 +160,7 @@ public class ListReportFragment extends Fragment {
     private void listAllReportRealtime() {
         reports.clear();
         progressDialog.ShowProgressDialog();
-        databaseReferenceReport.orderByChild("reportItem/placement").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceReport.orderByChild("reportItem/report").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 progressDialog.DismissProgressDialog();

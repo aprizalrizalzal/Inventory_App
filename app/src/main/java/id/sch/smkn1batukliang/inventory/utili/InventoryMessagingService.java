@@ -24,7 +24,7 @@ import id.sch.smkn1batukliang.inventory.SplashScreenActivity;
 public class InventoryMessagingService extends FirebaseMessagingService {
 
     public static final String NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send";
-    public static final String SERVER_KEY = "AAAApKT5jU0:APA91bGra6NJFk8aN2mL5EGrZlml9uS0hWG8MThlbrBbmSP_vwg8SVE8DUOrXSz457a1RTGXaYkWvsP3a3mFzNj6bHqUrzriKrVNO9kpgiMqMgEtFIXbqXlO08rf3P_QWIhpTYYLk2G5";
+    public static final String SERVER_KEY = "AAAAzGSj4nY:APA91bGZKfUlyv3EuN_iCAlbv_VjVSSwkf00GJHOsgGHDwmF-8-vZUz7fIzLtaeAqPPwxwtN8pD8HDPlSdku5RLuwUYpea6bGNyujkYYRlrWVND-YPWEjI1L4Igp-_aXpM0DZd2zH4BJ";
 
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "channel_1";

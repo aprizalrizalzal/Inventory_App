@@ -37,15 +37,15 @@ import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 public class AddOrEditPlacementFragment extends Fragment {
 
     private static final String TAG = "AddOrEditPlacementFragment";
-    private final ArrayList<String> listUser = new ArrayList<>();
+    private final ArrayList<Users> listUser = new ArrayList<>();
     boolean isEmptyFields = false;
+    private ArrayAdapter<Users> stringListUserAdapter;
     private FragmentAddOrEditPlacementBinding binding;
     private View view;
     private CustomProgressDialog progressDialog;
     private Placement extraPlacement;
     private String authId, placement, username, extraAuthId, extraPlacementId;
-    private DatabaseReference databaseReferenceUsers, databaseReferencePlacement;
-    private ArrayAdapter<String> stringListUserAdapter;
+    private DatabaseReference databaseReferencePlacement;
 
     public AddOrEditPlacementFragment() {
         // Required empty public constructor
@@ -66,7 +66,7 @@ public class AddOrEditPlacementFragment extends Fragment {
         progressDialog = new CustomProgressDialog(getActivity());
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReferenceUsers = database.getReference("users");
+        DatabaseReference databaseReferenceUsers = database.getReference("users");
         databaseReferencePlacement = database.getReference("placement");
 
         stringListUserAdapter = new ArrayAdapter<>(requireActivity(), R.layout.list_mactv, listUser);
@@ -89,13 +89,11 @@ public class AddOrEditPlacementFragment extends Fragment {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Users users = dataSnapshot.getValue(Users.class);
                             if (users != null) {
-                                listUser.add(users.getUsername());
+                                listUser.add(users);
                                 stringListUserAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_mactv, listUser);
                                 binding.mactvUsername.setAdapter(stringListUserAdapter);
                             }
-                            binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> {
-
-                            });
+                            binding.mactvUsername.setOnItemClickListener((parent, view, position, id) -> authId = listUser.get(position).getAuthId());
                         }
                     }
                 }

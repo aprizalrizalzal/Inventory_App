@@ -80,8 +80,7 @@ public class EditReportFragment extends Fragment {
     private View view;
     private CustomProgressDialog progressDialog;
     private Report extraReport;
-//    private CollectionReference collectionReferenceUsers;
-    private DatabaseReference databaseReferenceReport;
+    private DatabaseReference databaseReferenceUsers,databaseReferenceReport;
     private PDFView pdfView;
     private String extraReportId;
     private Map<String, Object> mapReport;
@@ -152,6 +151,11 @@ public class EditReportFragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReferenceLevels = database.getReference("levels");
+        databaseReferenceUsers = database.getReference("users");
+        databaseReferenceReport = database.getReference("report");
+
         if (user != null) {
             authId = user.getUid();
         }
@@ -166,13 +170,6 @@ public class EditReportFragment extends Fragment {
         }
 
         progressDialog = new CustomProgressDialog(requireActivity());
-
-//        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-//        collectionReferenceUsers = firestore.collection("users");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReferenceLevels = database.getReference("levels");
-        databaseReferenceReport = database.getReference("report");
 
         if (extraReport != null) {
             databaseReferenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -426,22 +423,27 @@ public class EditReportFragment extends Fragment {
     }
 
     private void getTokenForNotificationApproved(Report report) {
-//        collectionReferenceUsers.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
-//                for (DocumentSnapshot snapshot : task.getResult()) {
-//                    Users users = snapshot.toObject(Users.class);
-//                    String tokenId = snapshot.getString("tokenId");
-//                    if (users != null && users.getAuthId().equals(report.getAuthId())) {
-//                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
-//                        sendDataReportApproved(report, tokenId);
-//                    }
-//                }
-//            } else {
-//                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
-//                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        Users users = dataSnapshot.getValue(Users.class);
+                        String tokenId = dataSnapshot.child("tokenId").getValue(String.class);
+                        if (users != null && users.getAuthId().equals(report.getAuthId())) {
+                            Log.d(TAG, "getTokenForNotification: guru " + tokenId);
+                            sendDataReportApproved(report, tokenId);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "getTokenForNotification: failure ", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void sendDataReportApproved(Report report, String tokenId) {
@@ -462,22 +464,27 @@ public class EditReportFragment extends Fragment {
     }
 
     private void getTokenForNotificationRejected(Report report) {
-//        collectionReferenceUsers.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
-//                for (DocumentSnapshot snapshot : task.getResult()) {
-//                    Users users = snapshot.toObject(Users.class);
-//                    String tokenId = snapshot.getString("tokenId");
-//                    if (users != null && users.getAuthId().equals(report.getAuthId())) {
-//                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
-//                        sendDataReportRejected(report, tokenId);
-//                    }
-//                }
-//            } else {
-//                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
-//                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        Users users = dataSnapshot.getValue(Users.class);
+                        String tokenId = dataSnapshot.child("tokenId").getValue(String.class);
+                        if (users != null && users.getAuthId().equals(report.getAuthId())) {
+                            Log.d(TAG, "getTokenForNotification: guru " + tokenId);
+                            sendDataReportRejected(report, tokenId);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "getTokenForNotification: failure ", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void sendDataReportRejected(Report report, String tokenId) {

@@ -90,9 +90,9 @@ public class AddReportFragment extends Fragment {
     private static final String TAG = "AddReportFragment";
     private final Calendar calendar = Calendar.getInstance();
     private final ArrayList<Procurement> procurements = new ArrayList<>();
-    private final ArrayList<String> listUser = new ArrayList<>();
+    private final ArrayList<Users> listUser = new ArrayList<>();
+    private ArrayAdapter<Users> stringListUserAdapter;
     boolean isEmptyFields = false;
-    private ArrayAdapter<String> stringListUserAdapter;
     private FragmentAddReportBinding binding;
     private SimpleDateFormat simpleDateFormatId;
     private CustomProgressDialog progressDialog;
@@ -243,21 +243,15 @@ public class AddReportFragment extends Fragment {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Users users = dataSnapshot.getValue(Users.class);
                         if (users != null) {
-                            listUser.add(users.getUsername());
+                            listUser.add(users);
                             stringListUserAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_mactv, listUser);
                             binding.mactvTeamLeader.setAdapter(stringListUserAdapter);
                             binding.mactvVicePrincipal.setAdapter(stringListUserAdapter);
                             binding.mactvPrincipal.setAdapter(stringListUserAdapter);
                         }
-                        binding.mactvTeamLeader.setOnItemClickListener((parent, view, position, id) -> {
-
-                        });
-                        binding.mactvVicePrincipal.setOnItemClickListener((parent, view, position, id) -> {
-
-                        });
-                        binding.mactvPrincipal.setOnItemClickListener((parent, view, position, id) -> {
-
-                        });
+                        binding.mactvTeamLeader.setOnItemClickListener((parent, view, position, id) -> einTeamLeader = listUser.get(position).getEmployeeIdNumber());
+                        binding.mactvVicePrincipal.setOnItemClickListener((parent, view, position, id) -> einVicePrincipal = listUser.get(position).getEmployeeIdNumber());
+                        binding.mactvPrincipal.setOnItemClickListener((parent, view, position, id) -> einPrincipal = listUser.get(position).getEmployeeIdNumber());
                     }
 
                 }
@@ -666,6 +660,36 @@ public class AddReportFragment extends Fragment {
     }
 
     private void getTokenForNotification(Report model) {
+        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        Users users = dataSnapshot.getValue(Users.class);
+                        String tokenId = dataSnapshot.child("tokenId").getValue(String.class);
+                        if (users != null && users.getLevel().equals(getString(R.string.admin))) {
+                            Log.d(TAG, "getTokenForNotification: admin " + tokenId);
+                            sendDataReportAndUser(model, tokenId);
+                        } else if (users != null && users.getLevel().equals(getString(R.string.team_leader))) {
+                            Log.d(TAG, "getTokenForNotification: teamLeader " + tokenId);
+                            sendDataReportAndUser(model, tokenId);
+                        } else if (users != null && users.getLevel().equals(getString(R.string.vice_principal))) {
+                            Log.d(TAG, "getTokenForNotification: vicePrincipal " + tokenId);
+                            sendDataReportAndUser(model, tokenId);
+                        } else if (users != null && users.getLevel().equals(getString(R.string.principal))) {
+                            Log.d(TAG, "getTokenForNotification: principal " + tokenId);
+                            sendDataReportAndUser(model, tokenId);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "getTokenForNotification: failure ", error.toException());
+                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            }
+        });
 //        collectionReferenceUsers.get().addOnCompleteListener(task -> {
 //            if (task.isSuccessful()) {
 //                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());

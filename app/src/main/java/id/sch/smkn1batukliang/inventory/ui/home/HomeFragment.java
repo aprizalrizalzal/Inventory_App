@@ -1,26 +1,17 @@
 package id.sch.smkn1batukliang.inventory.ui.home;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
-
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHomeBinding;
-import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 
 
 public class HomeFragment extends Fragment {
@@ -41,11 +32,9 @@ public class HomeFragment extends Fragment {
         FragmentHomeBinding binding = FragmentHomeBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        CustomProgressDialog progressDialog = new CustomProgressDialog(requireActivity());
         String url = "https://smkn1batukliang.sch.id/";
 
         WebView webView = binding.webView;
-        webView.setWebViewClient(new MyWebViewClient(progressDialog));
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
 
@@ -69,23 +58,5 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
-    }
-
-    private static class MyWebViewClient extends WebViewClient {
-        private final CustomProgressDialog progressDialog;
-
-        public MyWebViewClient(CustomProgressDialog progressDialog) {
-            this.progressDialog = progressDialog;
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//            progressDialog.ShowProgressDialog();
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-//            progressDialog.DismissProgressDialog();
-        }
     }
 }
