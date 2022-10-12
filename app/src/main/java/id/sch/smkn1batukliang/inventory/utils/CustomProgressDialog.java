@@ -1,4 +1,4 @@
-package id.sch.smkn1batukliang.inventory.utili;
+package id.sch.smkn1batukliang.inventory.utils;
 
 import android.app.Activity;
 import android.app.Dialog;

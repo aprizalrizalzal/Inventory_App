@@ -2,7 +2,6 @@ package id.sch.smkn1batukliang.inventory.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PatternMatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -12,11 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import id.sch.smkn1batukliang.inventory.MainActivity;
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivitySignInBinding;
 
 public class SignInActivity extends AppCompatActivity {
@@ -92,7 +90,7 @@ public class SignInActivity extends AppCompatActivity {
             } else {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "signIn: failure ", task.getException());
-                Toast.makeText(getApplicationContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.authentication_failed, Toast.LENGTH_SHORT).show();
             }
         });
     }

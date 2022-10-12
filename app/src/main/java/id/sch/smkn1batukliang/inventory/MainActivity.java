@@ -39,7 +39,7 @@ import id.sch.smkn1batukliang.inventory.databinding.ActivityMainBinding;
 import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class MainActivity extends AppCompatActivity {
 

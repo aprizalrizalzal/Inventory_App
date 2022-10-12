@@ -25,8 +25,8 @@ import java.util.Map;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.ListLevelAdapter;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListLevelBinding;
 import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 
@@ -98,7 +98,7 @@ public class ListLevelFragment extends Fragment {
                             adapter.setListLevel(listLevel);
                         }
                     }
-                    adapter.setOnItemClickCallbackEdit(editLevel -> editSelectedLevels(editLevel));
+                    adapter.setOnItemClickCallback(editLevel -> editSelectedLevels(editLevel));
                     adapter.setOnItemClickCallbackDelete(deleteLevel -> deleteSelectedLevels(deleteLevel));
                 }
             }
@@ -107,7 +107,7 @@ public class ListLevelFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "onCancelled: LevelsFailure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -135,7 +135,7 @@ public class ListLevelFragment extends Fragment {
                 updateLevelUsers(levels.getAuthId());
             } else {
                 Log.w(TAG, "deleteLevel: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e -> Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
     }

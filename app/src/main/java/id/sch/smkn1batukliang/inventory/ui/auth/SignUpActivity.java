@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.ActivitySignUpBinding;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -97,7 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
             } else {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "signUp: failure ", task.getException());
-                Toast.makeText(getApplicationContext(), getString(R.string.registration_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.registration_failed, Toast.LENGTH_SHORT).show();
             }
         });
     }

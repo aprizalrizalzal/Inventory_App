@@ -3,8 +3,8 @@ package id.sch.smkn1batukliang.inventory.ui.report;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static id.sch.smkn1batukliang.inventory.ui.placement.GridPlacementFragment.EXTRA_PLACEMENT_FOR_PROCUREMENT;
-import static id.sch.smkn1batukliang.inventory.utili.InventoryMessagingService.NOTIFICATION_URL;
-import static id.sch.smkn1batukliang.inventory.utili.InventoryMessagingService.SERVER_KEY;
+import static id.sch.smkn1batukliang.inventory.utils.InventoryMessagingService.NOTIFICATION_URL;
+import static id.sch.smkn1batukliang.inventory.utils.InventoryMessagingService.SERVER_KEY;
 
 import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
@@ -82,8 +82,8 @@ import id.sch.smkn1batukliang.inventory.model.report.item.Principal;
 import id.sch.smkn1batukliang.inventory.model.report.item.TeamLeader;
 import id.sch.smkn1batukliang.inventory.model.report.item.VicePrincipal;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.MoneyTextWatcher;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.MoneyTextWatcher;
 
 public class AddReportFragment extends Fragment {
 
@@ -620,7 +620,7 @@ public class AddReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "downloadAndUploadPdf: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -634,7 +634,7 @@ public class AddReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "downloadUriPdf: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -655,7 +655,7 @@ public class AddReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "createReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -687,34 +687,9 @@ public class AddReportFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "getTokenForNotification: failure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
-//        collectionReferenceUsers.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.d(TAG, "getTokenForNotification: successfully " + collectionReferenceUsers.getId());
-//                for (DocumentSnapshot snapshot : task.getResult()) {
-//                    Users users = snapshot.toObject(Users.class);
-//                    String tokenId = snapshot.getString("tokenId");
-//                    if (users != null && users.getLevel().equals(getString(R.string.admin))) {
-//                        Log.d(TAG, "getTokenForNotification: admin" + tokenId);
-//                        sendDataReportAndUser(model, tokenId);
-//                    } else if (users != null && users.getLevel().equals(getString(R.string.team_leader))) {
-//                        Log.d(TAG, "getTokenForNotification: teamLeader" + tokenId);
-//                        sendDataReportAndUser(model, tokenId);
-//                    } else if (users != null && users.getLevel().equals(getString(R.string.vice_principal))) {
-//                        Log.d(TAG, "getTokenForNotification: vicePrincipal" + tokenId);
-//                        sendDataReportAndUser(model, tokenId);
-//                    } else if (users != null && users.getLevel().equals(getString(R.string.principal))) {
-//                        Log.d(TAG, "getTokenForNotification: principal" + tokenId);
-//                        sendDataReportAndUser(model, tokenId);
-//                    }
-//                }
-//            } else {
-//                Log.w(TAG, "getTokenForNotification: failure ", task.getException());
-//                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void sendDataReportAndUser(Report report, String tokenId) {

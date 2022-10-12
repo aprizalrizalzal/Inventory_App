@@ -30,8 +30,8 @@ import id.sch.smkn1batukliang.inventory.adapter.ListReportAdapter;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListReportBinding;
 import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.RecyclerViewEmptyData;
 
 public class ListReportFragment extends Fragment {
 
@@ -121,7 +121,7 @@ public class ListReportFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "onCancelled: failureLevels", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -152,7 +152,7 @@ public class ListReportFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "onCancelled: reportFailure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -182,7 +182,7 @@ public class ListReportFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "onCancelled: reportFailure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
     }

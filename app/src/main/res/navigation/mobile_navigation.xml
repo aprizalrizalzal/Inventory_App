@@ -9,23 +9,7 @@
         android:id="@+id/nav_home"
         android:name="id.sch.smkn1batukliang.inventory.ui.home.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_nav_home_to_nav_grid_placement_for_procurement"
-            app:destination="@id/nav_grid_placement"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_help"
-            app:destination="@id/nav_help"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_inventories"
-            app:destination="@id/nav_inventories"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
-    </fragment>
+        tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/nav_grid_placement"
@@ -100,24 +84,23 @@
         android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.InventoriesFragment"
         android:label="@string/inventories"
         tools:layout="@layout/fragment_inventories">
-        <action
-            android:id="@+id/action_nav_inventories_to_add_room"
-            app:destination="@id/add_room"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
-        android:id="@+id/add_goods"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.goods.AddGoodsFragment"
+        android:id="@+id/list_goods"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.goods.ListGoodsFragment"
         android:label="@string/goods"
-        tools:layout="@layout/fragment_add_goods" />
+        tools:layout="@layout/fragment_list_goods"/>
 
     <fragment
-        android:id="@+id/add_room"
-        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.room.AddRoomFragment"
+        android:id="@+id/list_rooms"
+        android:name="id.sch.smkn1batukliang.inventory.ui.inventories.card.room.ListRoomFragment"
         android:label="@string/room"
-        tools:layout="@layout/fragment_add_room" />
+        tools:layout="@layout/fragment_list_room">
+        <action
+            android:id="@+id/action_list_rooms_to_list_procurement"
+            app:destination="@id/list_procurement" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_list_user"

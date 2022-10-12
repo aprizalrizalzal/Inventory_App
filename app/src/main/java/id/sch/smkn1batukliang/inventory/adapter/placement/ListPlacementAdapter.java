@@ -21,9 +21,15 @@ import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 public class ListPlacementAdapter extends RecyclerView.Adapter<ListPlacementAdapter.ViewHolder> {
 
     private final List<Placement> placements = new ArrayList<>();
-    private OnItemClickCallbackEdit onItemClickCallbackEdit;
+    private OnItemClickCallback onItemClickCallback;
     private OnItemClickCallbackDelete onItemClickCallbackDelete;
+    private boolean activate = true;
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setActivateButtons(boolean activate) {
+        this.activate = activate;
+        notifyDataSetChanged();
+    }
     @SuppressLint("NotifyDataSetChanged")
     public void setListPlacement(List<Placement> placements) {
         this.placements.clear();
@@ -31,8 +37,8 @@ public class ListPlacementAdapter extends RecyclerView.Adapter<ListPlacementAdap
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickCallbackEdit(OnItemClickCallbackEdit onItemClickCallbackEdit) {
-        this.onItemClickCallbackEdit = onItemClickCallbackEdit;
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
     }
 
     public void setOnItemClickCallbackDelete(OnItemClickCallbackDelete onItemClickCallbackDelete) {
@@ -49,7 +55,12 @@ public class ListPlacementAdapter extends RecyclerView.Adapter<ListPlacementAdap
     @Override
     public void onBindViewHolder(@NonNull ListPlacementAdapter.ViewHolder holder, int position) {
         holder.bind(placements.get(position));
-        holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(placements.get(holder.getAdapterPosition())));
+        if (activate) {
+            holder.binding.imgBtnDelete.setVisibility(View.VISIBLE);
+        } else {
+            holder.binding.imgBtnDelete.setVisibility(View.INVISIBLE);
+        }
+        holder.itemView.setOnClickListener(v -> onItemClickCallback.onItemClickedEdit(placements.get(holder.getAdapterPosition())));
         holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(placements.get(holder.getAdapterPosition())));
     }
 
@@ -58,7 +69,7 @@ public class ListPlacementAdapter extends RecyclerView.Adapter<ListPlacementAdap
         return placements.size();
     }
 
-    public interface OnItemClickCallbackEdit {
+    public interface OnItemClickCallback {
         void onItemClickedEdit(Placement placement);
     }
 

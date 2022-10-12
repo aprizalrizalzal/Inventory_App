@@ -45,7 +45,7 @@ import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentProfileBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
 import id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class ProfileFragment extends Fragment {
 
@@ -336,7 +336,7 @@ public class ProfileFragment extends Fragment {
             Log.w(TAG, "uploadImage: failure ", e);
             binding.fabAddImage.setVisibility(View.GONE);
             binding.fabUploadImage.setVisibility(View.VISIBLE);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -350,7 +350,7 @@ public class ProfileFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "getUriPhoto: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -420,7 +420,7 @@ public class ProfileFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "sendEmailVerification: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 

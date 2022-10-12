@@ -24,8 +24,8 @@ import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.placement.ListPlacementAdapter;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.placement.PlacementItem;
@@ -96,7 +96,7 @@ public class ListPlacementFragment extends Fragment {
                             placements.add(placement);
                             adapter.setListPlacement(placements);
                         }
-                        adapter.setOnItemClickCallbackEdit(editPlacement -> editSelectedPlacement(editPlacement));
+                        adapter.setOnItemClickCallback(editPlacement -> editSelectedPlacement(editPlacement));
                         adapter.setOnItemClickCallbackDelete(deletePlacement -> deleteSelectedPlacement(deletePlacement));
                     }
                 }
@@ -106,7 +106,7 @@ public class ListPlacementFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "onCancelled: placementFailure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -135,7 +135,7 @@ public class ListPlacementFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "deletePlacement: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 

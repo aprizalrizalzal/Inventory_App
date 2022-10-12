@@ -1,7 +1,7 @@
 package id.sch.smkn1batukliang.inventory.ui.report;
 
-import static id.sch.smkn1batukliang.inventory.utili.InventoryMessagingService.NOTIFICATION_URL;
-import static id.sch.smkn1batukliang.inventory.utili.InventoryMessagingService.SERVER_KEY;
+import static id.sch.smkn1batukliang.inventory.utils.InventoryMessagingService.NOTIFICATION_URL;
+import static id.sch.smkn1batukliang.inventory.utils.InventoryMessagingService.SERVER_KEY;
 import static id.sch.smkn1batukliang.inventory.ui.report.ListReportFragment.EXTRA_REPORT;
 
 import android.annotation.SuppressLint;
@@ -67,7 +67,7 @@ import java.util.concurrent.Executors;
 import javax.net.ssl.HttpsURLConnection;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentEditReportBinding;
 import id.sch.smkn1batukliang.inventory.model.report.Report;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
@@ -220,7 +220,7 @@ public class EditReportFragment extends Fragment {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Log.w(TAG, "onCancelled: levelsFailure ", error.toException());
-                    Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -245,7 +245,7 @@ public class EditReportFragment extends Fragment {
 
             } catch (IOException e) {
                 Log.w(TAG, "onCreateView: executeFailure ", e);
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
 
             InputStream finalInputStream = inputStream;
@@ -258,7 +258,7 @@ public class EditReportFragment extends Fragment {
                     .onError(e -> {
                         Log.w(TAG, "onCreateView: pdfFailure ", e);
                         progressDialog.DismissProgressDialog();
-                        Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                     })
                     .load());
         });
@@ -295,7 +295,7 @@ public class EditReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "agreeReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -323,7 +323,7 @@ public class EditReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "agreeReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -351,7 +351,7 @@ public class EditReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "agreeReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -391,7 +391,7 @@ public class EditReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "rejectedReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -418,7 +418,7 @@ public class EditReportFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "agreeReport: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -441,7 +441,7 @@ public class EditReportFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "getTokenForNotification: failure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -482,7 +482,7 @@ public class EditReportFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "getTokenForNotification: failure ", error.toException());
-                Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),R.string.failed, Toast.LENGTH_SHORT).show();
             }
         });
     }

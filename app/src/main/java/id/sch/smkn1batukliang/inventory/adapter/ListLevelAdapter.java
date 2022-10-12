@@ -29,7 +29,7 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
 
     private static final String TAG = "ListReportAdapter";
     private final List<Levels> levels = new ArrayList<>();
-    private OnItemClickCallbackEdit onItemClickCallbackEdit;
+    private OnItemClickCallback onItemClickCallback;
     private OnItemClickCallbackDelete onItemClickCallbackDelete;
 
     @SuppressLint("NotifyDataSetChanged")
@@ -39,12 +39,12 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickCallbackDelete(OnItemClickCallbackDelete onItemClickCallbackDelete) {
-        this.onItemClickCallbackDelete = onItemClickCallbackDelete;
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
     }
 
-    public void setOnItemClickCallbackEdit(OnItemClickCallbackEdit onItemClickCallbackEdit) {
-        this.onItemClickCallbackEdit = onItemClickCallbackEdit;
+    public void setOnItemClickCallbackDelete(OnItemClickCallbackDelete onItemClickCallbackDelete) {
+        this.onItemClickCallbackDelete = onItemClickCallbackDelete;
     }
 
     @NonNull
@@ -57,7 +57,7 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ListLevelAdapter.ViewHolder holder, int position) {
         holder.bind(levels.get(position));
-        holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(levels.get(holder.getAdapterPosition())));
+        holder.itemView.setOnClickListener(v -> onItemClickCallback.onItemClickedEdit(levels.get(holder.getAdapterPosition())));
         holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(levels.get(holder.getAdapterPosition())));
     }
 
@@ -66,7 +66,7 @@ public class ListLevelAdapter extends RecyclerView.Adapter<ListLevelAdapter.View
         return levels.size();
     }
 
-    public interface OnItemClickCallbackEdit {
+    public interface OnItemClickCallback {
         void onItemClickedEdit(Levels levels);
     }
 

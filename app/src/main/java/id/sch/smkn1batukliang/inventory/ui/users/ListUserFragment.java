@@ -24,8 +24,8 @@ import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.adapter.ListUserAdapter;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListUsersBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.RecyclerViewEmptyData;
 
 public class ListUserFragment extends Fragment {
 

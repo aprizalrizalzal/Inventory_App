@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHelpBinding;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class HelpFragment extends Fragment {
 

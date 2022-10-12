@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentUpdatePasswordBinding;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class UpdatePasswordFragment extends Fragment {
 
@@ -100,17 +100,17 @@ public class UpdatePasswordFragment extends Fragment {
                 user.updatePassword(newPassword).addOnSuccessListener(unused -> {
                     progressDialog.DismissProgressDialog();
                     Log.d(TAG, "updatePassword: successfully " + email);
-                    Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_LONG).show();
                     Navigation.findNavController(view).navigateUp();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
                     Log.w(TAG, "updatePassword : failure ", e);
-                    Toast.makeText(requireContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                 });
             } else {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "updatePassword: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.authentication_failed, Toast.LENGTH_SHORT).show();
             }
         });
     }

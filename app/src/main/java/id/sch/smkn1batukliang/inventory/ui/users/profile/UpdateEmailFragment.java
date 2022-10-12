@@ -24,7 +24,7 @@ import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentUpdateEmailBinding;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class UpdateEmailFragment extends Fragment {
 
@@ -114,16 +114,16 @@ public class UpdateEmailFragment extends Fragment {
                     progressDialog.DismissProgressDialog();
                     Log.d(TAG, "updateEmail: successfully " + email);
                     updateNewEmail();
-                    Toast.makeText(requireContext(), getString(R.string.successfully) + newEmail, Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
                     Log.w(TAG, "updateEmail: failure ", e);
-                    Toast.makeText(requireContext(), getString(R.string.failed) + email, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                 });
             } else {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "updateEmail: failure ", task.getException());
-                Toast.makeText(requireContext(), getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.authentication_failed, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -140,7 +140,7 @@ public class UpdateEmailFragment extends Fragment {
         }).addOnFailureListener(e -> {
             Log.w(TAG, "clearToken: Users", e);
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 }

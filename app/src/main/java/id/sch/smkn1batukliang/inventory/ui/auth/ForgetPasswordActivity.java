@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.ActivityForgetPasswordBinding;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
@@ -62,11 +62,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 progressDialog.DismissProgressDialog();
                 Log.d(TAG, "resetPassword: successfully " + email);
-                Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
             } else {
                 progressDialog.DismissProgressDialog();
                 Log.w(TAG, "resetPassword: failure ", task.getException());
-                Toast.makeText(getApplicationContext(), getString(R.string.unregistered_email), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unregistered_email, Toast.LENGTH_SHORT).show();
             }
         });
     }

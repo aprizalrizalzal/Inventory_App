@@ -111,8 +111,10 @@
     <string name="up_down_report">Kirim dan unduh laporan</string>
     <string name="download_report_denied">Unduh laporan tidak bisa, izin ditolak</string>
     <string name="no_data_available_procurement">Tidak ada data pengadaan yang tersedia</string>
-    <string name="no_data_available_placement_for_procurement">Tidak ada data penempatan yang tersedia, silahkan hubungi atau chat admin</string>
+    <string name="no_data_available_goods">Tidak ada data barang yang tersedia</string>
+    <string name="no_data_available_placement_for_procurement">Tidak ada data penempatan yang tersedia, silahkan hubungi admin</string>
     <string name="no_data_available_placement">Tidak ada data penempatan yang tersedia</string>
+    <string name="no_data_available_room">Tidak ada data ruangan yang tersedia</string>
     <string name="no_data_available_report">Tidak ada data laporan yang tersedia</string>
     <string name="no_data_available_users">Tidak ada data pengguna yang tersedia</string>
     <string name="no_data_available_levels">Tidak ada data tingkat pengguna yang tersedia</string>
@@ -154,4 +156,5 @@
     <string name="data_officer">Petugas Pendataan</string>
     <string name="person_in_charge">Penanggung Jawab</string>
     <string name="goods_manager">Pengurus Barang</string>
+    <string name="please_login_first">Silahkan masuk terlebih dahulu</string>
 </resources>

@@ -59,7 +59,7 @@
         </activity>
 
         <service
-            android:name=".utili.InventoryMessagingService"
+            android:name=".utils.InventoryMessagingService"
             android:directBootAware="true"
             android:exported="false">
             <intent-filter>

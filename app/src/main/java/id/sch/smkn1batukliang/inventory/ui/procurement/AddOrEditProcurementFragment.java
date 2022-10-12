@@ -25,8 +25,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
-import id.sch.smkn1batukliang.inventory.utili.MoneyTextWatcher;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.MoneyTextWatcher;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentAddOrEditProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.procurement.Procurement;
@@ -206,11 +206,11 @@ public class AddOrEditProcurementFragment extends Fragment {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "createProcurement: successfully " + procurementId);
             Navigation.findNavController(view).navigateUp();
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "createProcurement: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -228,11 +228,11 @@ public class AddOrEditProcurementFragment extends Fragment {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "updateProcurement: successfully " + extraProcurement.getProcurementItem().getProcurementId());
             Navigation.findNavController(view).navigateUp();
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "updateProcurement: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 }

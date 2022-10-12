@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_three_line_item">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_list_item"
+        android:layout_width="@dimen/image_list_size"
+        android:layout_height="@dimen/image_list_size"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:background="@android:color/white"
+        android:elevation="@dimen/elevation_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CircleImageView"
+        tools:ignore="ImageContrastCheck"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_name_of_goods"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:maxLines="1"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tv_amount"
+        app:layout_constraintStart_toEndOf="@+id/img_list_item"
+        app:layout_constraintTop_toTopOf="@+id/img_list_item"
+        tools:text="Laptop" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/tv_amount"
+        app:layout_constraintStart_toStartOf="@+id/tv_name_of_goods"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_of_goods"
+        tools:text="Rp5.500.000" />
+
+    <TextView
+        android:id="@+id/tv_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@+id/tv_price"
+        app:layout_constraintTop_toBottomOf="@+id/tv_price"
+        tools:text="5" />
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/horizontal_margin"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/tv_amount"
+        app:layout_constraintStart_toEndOf="@+id/tv_volume"
+        app:layout_constraintTop_toBottomOf="@+id/tv_price"
+        tools:text="item" />
+
+    <TextView
+        android:id="@+id/tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/horizontal_margin"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_price"
+        tools:text="Rp27.500.000" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_amount"
+        app:layout_constraintStart_toStartOf="@+id/tv_volume" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

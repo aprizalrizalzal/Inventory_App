@@ -23,16 +23,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
+import id.sch.smkn1batukliang.inventory.utils.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.placement.GridPlacementAdapter;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentGridPlacementBinding;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 
 public class GridPlacementFragment extends Fragment {
 
     public static final String EXTRA_PLACEMENT_FOR_PROCUREMENT = "extra_placement_for_procurement";
-    private static final String TAG = "GridPlacementForProcurementFragment";
+    private static final String TAG = "GridPlacementFragment";
     private final ArrayList<Placement> placements = new ArrayList<>();
     private FragmentGridPlacementBinding binding;
     private View view;
@@ -87,12 +87,6 @@ public class GridPlacementFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        gridPlacementForProcurementRealtime();
-        super.onStart();
-    }
-
     private void gridPlacementForProcurementRealtime() {
         placements.clear();
         progressDialog.ShowProgressDialog();
@@ -130,5 +124,11 @@ public class GridPlacementFragment extends Fragment {
         Navigation.findNavController(view)
                 .navigate(R.id.action_nav_grid_placement_to_list_procurement,
                         bundle);
+    }
+
+    @Override
+    public void onStart() {
+        gridPlacementForProcurementRealtime();
+        super.onStart();
     }
 }

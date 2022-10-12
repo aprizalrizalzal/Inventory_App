@@ -32,13 +32,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.RecyclerViewEmptyData;
 import id.sch.smkn1batukliang.inventory.adapter.ListProcurementAdapter;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentListProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.procurement.Procurement;
 import id.sch.smkn1batukliang.inventory.model.procurement.ProcurementItem;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.RecyclerViewEmptyData;
 
 public class ListProcurementFragment extends Fragment {
 
@@ -83,7 +83,7 @@ public class ListProcurementFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.action_up_down_report) {
                     if (procurements.isEmpty()) {
-                        Toast.makeText(requireContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.no_data_available, Toast.LENGTH_SHORT).show();
                     } else {
                         Bundle bundle = new Bundle();
 
@@ -98,8 +98,7 @@ public class ListProcurementFragment extends Fragment {
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
         if (getArguments() != null) {
-            extraPlacementForProcurement = getArguments()
-                    .getParcelable(EXTRA_PLACEMENT_FOR_PROCUREMENT);
+            extraPlacementForProcurement = getArguments().getParcelable(EXTRA_PLACEMENT_FOR_PROCUREMENT);
         }
 
         progressDialog = new CustomProgressDialog(requireActivity());
@@ -148,8 +147,7 @@ public class ListProcurementFragment extends Fragment {
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Procurement procurement = dataSnapshot.getValue(Procurement.class);
-                        String placementId = extraPlacementForProcurement
-                                .getPlacementItem().getPlacementId();
+                        String placementId = extraPlacementForProcurement.getPlacementItem().getPlacementId();
                         if (procurement != null
                                 && authId.equals(procurement.getAuthId())
                                 && placementId.equals(procurement.getPlacementId())) {
@@ -158,10 +156,8 @@ public class ListProcurementFragment extends Fragment {
                             procurements.add(procurement);
                             adapter.setListProcurement(procurements);
                         }
-                        adapter.setOnItemClickCallbackEdit(procurementEdit
-                                -> editSelectedProcurement(procurementEdit));
-                        adapter.setOnItemClickCallbackDelete(procurementDelete
-                                -> deleteSelectedProcurement(procurementDelete));
+                        adapter.setOnItemClickCallback(procurementEdit -> editSelectedProcurement(procurementEdit));
+                        adapter.setOnItemClickCallbackDelete(procurementDelete -> deleteSelectedProcurement(procurementDelete));
                     }
                 }
             }
@@ -211,7 +207,7 @@ public class ListProcurementFragment extends Fragment {
 
     @Override
     public void onStart() {
-        listProcurementRealtime();
         super.onStart();
+        listProcurementRealtime();
     }
 }

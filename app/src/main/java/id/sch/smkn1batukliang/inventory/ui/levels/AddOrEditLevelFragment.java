@@ -31,7 +31,7 @@ import id.sch.smkn1batukliang.inventory.databinding.FragmentAddOrEditLevelBindin
 import id.sch.smkn1batukliang.inventory.model.levels.Levels;
 import id.sch.smkn1batukliang.inventory.model.levels.LevelsItem;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class AddOrEditLevelFragment extends Fragment {
 
@@ -244,7 +244,7 @@ public class AddOrEditLevelFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "createLevels: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -292,7 +292,7 @@ public class AddOrEditLevelFragment extends Fragment {
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "updateLevels: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 }

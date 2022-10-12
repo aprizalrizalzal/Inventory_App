@@ -32,7 +32,7 @@ import id.sch.smkn1batukliang.inventory.databinding.FragmentAddOrEditPlacementBi
 import id.sch.smkn1batukliang.inventory.model.placement.Placement;
 import id.sch.smkn1batukliang.inventory.model.placement.PlacementItem;
 import id.sch.smkn1batukliang.inventory.model.users.Users;
-import id.sch.smkn1batukliang.inventory.utili.CustomProgressDialog;
+import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 public class AddOrEditPlacementFragment extends Fragment {
 
@@ -185,11 +185,11 @@ public class AddOrEditPlacementFragment extends Fragment {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "createPlacement: successfully " + placementId);
             Navigation.findNavController(view).navigateUp();
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "createPlacement: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -202,11 +202,11 @@ public class AddOrEditPlacementFragment extends Fragment {
             progressDialog.DismissProgressDialog();
             Log.d(TAG, "updatePlacement: successfully " + extraAuthId);
             Navigation.findNavController(view).navigateUp();
-            Toast.makeText(requireContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressDialog.DismissProgressDialog();
             Log.w(TAG, "updatePlacement: failure ", e);
-            Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 }

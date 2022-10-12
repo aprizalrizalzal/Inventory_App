@@ -15,16 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.sch.smkn1batukliang.inventory.R;
-import id.sch.smkn1batukliang.inventory.utili.MoneyTextWatcher;
+import id.sch.smkn1batukliang.inventory.utils.MoneyTextWatcher;
 import id.sch.smkn1batukliang.inventory.databinding.ListProcurementBinding;
 import id.sch.smkn1batukliang.inventory.model.procurement.Procurement;
 
 public class ListProcurementAdapter extends RecyclerView.Adapter<ListProcurementAdapter.ViewHolder> {
 
     private final List<Procurement> procurements = new ArrayList<>();
-    private OnItemClickCallbackEdit onItemClickCallbackEdit;
+    private OnItemClickCallback onItemClickCallback;
     private OnItemClickCallbackDelete onItemClickCallbackDelete;
+    private boolean activate = true;
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setActivateButtons(boolean activate) {
+        this.activate = activate;
+        notifyDataSetChanged();
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setListProcurement(List<Procurement> procurements) {
@@ -33,8 +39,8 @@ public class ListProcurementAdapter extends RecyclerView.Adapter<ListProcurement
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickCallbackEdit(OnItemClickCallbackEdit onItemClickCallbackEdit) {
-        this.onItemClickCallbackEdit = onItemClickCallbackEdit;
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
     }
 
     public void setOnItemClickCallbackDelete(OnItemClickCallbackDelete onItemClickCallbackDelete) {
@@ -51,7 +57,12 @@ public class ListProcurementAdapter extends RecyclerView.Adapter<ListProcurement
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(procurements.get(position));
-        holder.itemView.setOnClickListener(v -> onItemClickCallbackEdit.onItemClickedEdit(procurements.get(holder.getAdapterPosition())));
+        if (activate) {
+            holder.binding.imgBtnDelete.setVisibility(View.VISIBLE);
+        } else {
+            holder.binding.imgBtnDelete.setVisibility(View.INVISIBLE);
+        }
+        holder.itemView.setOnClickListener(v -> onItemClickCallback.onItemClickedEdit(procurements.get(holder.getAdapterPosition())));
         holder.binding.imgBtnDelete.setOnClickListener(v -> onItemClickCallbackDelete.onItemClickedDelete(procurements.get(holder.getAdapterPosition())));
     }
 
@@ -60,7 +71,7 @@ public class ListProcurementAdapter extends RecyclerView.Adapter<ListProcurement
         return procurements.size();
     }
 
-    public interface OnItemClickCallbackEdit {
+    public interface OnItemClickCallback {
         void onItemClickedEdit(Procurement procurement);
     }
 
