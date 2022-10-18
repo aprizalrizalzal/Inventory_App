@@ -39,7 +39,7 @@
         android:id="@+id/tv_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/horizontal_margin"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="@+id/img_btn_delete"
         app:layout_constraintStart_toStartOf="@+id/tv_username"

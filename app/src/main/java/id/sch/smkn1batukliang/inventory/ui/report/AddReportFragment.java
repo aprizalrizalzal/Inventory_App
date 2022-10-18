@@ -113,9 +113,9 @@ public class AddReportFragment extends Fragment {
                 Log.w(TAG, "createPurposeProcurement: failure ", e);
                 Toast.makeText(requireContext(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(requireContext(), getString(R.string.download_report), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.upload_report), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(requireContext(), getString(R.string.download_report_denied), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.upload_report_denied), Toast.LENGTH_SHORT).show();
         }
     });
 
@@ -185,7 +185,7 @@ public class AddReportFragment extends Fragment {
             }
         });
 
-        binding.btnDownload.setOnClickListener(v -> {
+        binding.btnUpload.setOnClickListener(v -> {
             purpose = Objects.requireNonNull(binding.tietProcurementPurpose.getText()).toString();
             teamLeader = binding.mactvTeamLeader.getText().toString();
             dateProcurement = Objects.requireNonNull(binding.tietDateProcurement.getText()).toString();

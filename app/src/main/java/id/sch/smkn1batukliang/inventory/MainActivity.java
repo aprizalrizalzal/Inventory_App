@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         nav_Menu.findItem(R.id.nav_home).setVisible(true);
         nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
-        nav_Menu.findItem(R.id.nav_inventories).setVisible(true);
+        nav_Menu.findItem(R.id.nav_inventories).setVisible(false);
         nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_placement).setVisible(true);
         nav_Menu.findItem(R.id.nav_list_level).setVisible(true);
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                             if (authId.equals(levels.getAuthId())) {
                                 nav_Menu.findItem(R.id.nav_home).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_grid_placement).setVisible(true);
-                                nav_Menu.findItem(R.id.nav_inventories).setVisible(true);
+                                nav_Menu.findItem(R.id.nav_inventories).setVisible(false);
                                 nav_Menu.findItem(R.id.nav_list_report).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_user).setVisible(true);
                                 nav_Menu.findItem(R.id.nav_list_placement).setVisible(false);

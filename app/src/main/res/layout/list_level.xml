@@ -40,7 +40,7 @@
         android:id="@+id/tv_level"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/horizontal_margin"
         android:maxLines="1"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/img_btn_delete"

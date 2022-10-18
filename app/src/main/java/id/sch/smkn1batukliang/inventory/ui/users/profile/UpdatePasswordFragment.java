@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.users.profile;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import id.sch.smkn1batukliang.inventory.R;
@@ -27,8 +32,10 @@ public class UpdatePasswordFragment extends Fragment {
     private static final String TAG = "UpdatePasswordFragment";
     boolean isEmptyFields = false;
     private FragmentUpdatePasswordBinding binding;
+    private FirebaseAuth auth;
     private FirebaseUser user;
-    private String email, password, newPassword;
+    private DatabaseReference databaseReferenceUsers;
+    private String authId, email, password, newPassword;
     private CustomProgressDialog progressDialog;
     private View view;
 
@@ -52,8 +59,17 @@ public class UpdatePasswordFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(requireActivity());
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+
+        if (user != null) {
+            authId = user.getUid();
+        } else {
+            requireActivity().finish();
+        }
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReferenceUsers = database.getReference("users");
 
         binding.btnUpdate.setOnClickListener(v -> {
             email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
@@ -70,6 +86,9 @@ public class UpdatePasswordFragment extends Fragment {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
             return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.setError(getString(R.string.email_format));
+            return false;
         } else {
             binding.tilEmail.setErrorEnabled(false);
         }
@@ -83,6 +102,9 @@ public class UpdatePasswordFragment extends Fragment {
 
         if (newPassword.isEmpty()) {
             binding.tilNewPassword.setError(getString(R.string.new_password_required));
+            return false;
+        } else if (newPassword.length() < 8) {
+            binding.tilPassword.setError(getString(R.string.password_length));
             return false;
         } else {
             binding.tilNewPassword.setErrorEnabled(false);
@@ -101,7 +123,7 @@ public class UpdatePasswordFragment extends Fragment {
                     progressDialog.DismissProgressDialog();
                     Log.d(TAG, "updatePassword: successfully " + email);
                     Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_LONG).show();
-                    Navigation.findNavController(view).navigateUp();
+                    updateTokenId();
                 }).addOnFailureListener(e -> {
                     progressDialog.DismissProgressDialog();
                     Log.w(TAG, "updatePassword : failure ", e);
@@ -112,6 +134,23 @@ public class UpdatePasswordFragment extends Fragment {
                 Log.w(TAG, "updatePassword: failure ", task.getException());
                 Toast.makeText(requireContext(), R.string.authentication_failed, Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    private void updateTokenId() {
+        progressDialog.ShowProgressDialog();
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("tokenId", "");
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "clearToken: Users");
+            progressDialog.DismissProgressDialog();
+            auth.signOut();
+            Navigation.findNavController(view).navigate(R.id.action_update_password_to_sign_in_activity);
+            requireActivity().finish();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "clearToken: Users", e);
+            progressDialog.DismissProgressDialog();
         });
     }
 }

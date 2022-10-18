@@ -2,6 +2,7 @@ package id.sch.smkn1batukliang.inventory.ui.users.profile;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class UpdateEmailFragment extends Fragment {
     private static final String TAG = "UpdateEmailFragment";
     boolean isEmptyFields = false;
     private FragmentUpdateEmailBinding binding;
+    private FirebaseAuth auth;
     private FirebaseUser user;
     private DatabaseReference databaseReferenceUsers;
     private String authId, email, newEmail, password;
@@ -56,7 +58,7 @@ public class UpdateEmailFragment extends Fragment {
 
         progressDialog = new CustomProgressDialog(requireActivity());
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -83,12 +85,18 @@ public class UpdateEmailFragment extends Fragment {
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.email_required));
             return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.setError(getString(R.string.email_format));
+            return false;
         } else {
             binding.tilEmail.setErrorEnabled(false);
         }
 
         if (newEmail.isEmpty()) {
             binding.tilNewEmail.setError(getString(R.string.new_email_required));
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.setError(getString(R.string.email_format));
             return false;
         } else {
             binding.tilNewEmail.setErrorEnabled(false);
@@ -134,13 +142,30 @@ public class UpdateEmailFragment extends Fragment {
         mapUsers.put("email", newEmail);
 
         databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updateNewEmail: Users");
+            progressDialog.DismissProgressDialog();
+            updateTokenId();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updateNewEmail: Users", e);
+            progressDialog.DismissProgressDialog();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void updateTokenId() {
+        progressDialog.ShowProgressDialog();
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("tokenId", "");
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
             Log.d(TAG, "clearToken: Users");
             progressDialog.DismissProgressDialog();
-            Navigation.findNavController(view).navigateUp();
+            auth.signOut();
+            Navigation.findNavController(view).navigate(R.id.action_update_email_to_sign_in_activity);
+            requireActivity().finish();
         }).addOnFailureListener(e -> {
             Log.w(TAG, "clearToken: Users", e);
             progressDialog.DismissProgressDialog();
-            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
         });
     }
 }

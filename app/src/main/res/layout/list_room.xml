@@ -40,7 +40,7 @@
         android:id="@+id/tv_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/horizontal_margin"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="@+id/tv_placement"
         app:layout_constraintStart_toStartOf="@+id/tv_placement"

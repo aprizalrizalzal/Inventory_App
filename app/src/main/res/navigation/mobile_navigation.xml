@@ -58,7 +58,7 @@
     <fragment
         android:id="@+id/add_or_edit_procurement"
         android:name="id.sch.smkn1batukliang.inventory.ui.procurement.AddOrEditProcurementFragment"
-        android:label="@string/placement"
+        android:label="@string/procurement"
         tools:layout="@layout/fragment_add_or_edit_procurement" />
 
     <fragment
@@ -183,18 +183,37 @@
         android:id="@+id/update_password"
         android:name="id.sch.smkn1batukliang.inventory.ui.users.profile.UpdatePasswordFragment"
         android:label="@string/update_password"
-        tools:layout="@layout/fragment_update_password" />
+        tools:layout="@layout/fragment_update_password" >
+        <action
+            android:id="@+id/action_update_password_to_sign_in_activity"
+            app:destination="@id/sign_in_activity"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
         android:id="@+id/update_email"
         android:name="id.sch.smkn1batukliang.inventory.ui.users.profile.UpdateEmailFragment"
         android:label="@string/update_email"
-        tools:layout="@layout/fragment_update_email" />
+        tools:layout="@layout/fragment_update_email" >
+        <action
+            android:id="@+id/action_update_email_to_sign_in_activity"
+            app:destination="@id/sign_in_activity"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_help"
         android:name="id.sch.smkn1batukliang.inventory.HelpFragment"
         android:label="@string/help"
         tools:layout="@layout/fragment_help" />
+
+    <activity
+        android:id="@+id/sign_in_activity"
+        android:name="id.sch.smkn1batukliang.inventory.ui.auth.SignInActivity"
+        android:label="activity_sign_in"
+        tools:layout="@layout/activity_sign_in" />
+
 
 </navigation>

@@ -163,7 +163,16 @@ public class ProfileFragment extends Fragment {
                     Glide.with(view).load(users.getPhotoLink())
                             .placeholder(R.drawable.ic_baseline_account_circle)
                             .into(binding.imgUsers);
-
+                    if (!users.getPhotoLink().equals("")) {
+                        binding.imgUsers.setOnLongClickListener(v -> {
+                            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+                            builder.setTitle(R.string.delete).setMessage(R.string.delete_image).setCancelable(false)
+                                    .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel())
+                                    .setPositiveButton(R.string.yes, (dialog, id) -> deleteImage());
+                            builder.show();
+                            return false;
+                        });
+                    }
                     binding.tietUsername.setText(users.getUsername());
                     binding.tietUsername.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -219,10 +228,10 @@ public class ProfileFragment extends Fragment {
                         binding.tilEmail.setError(getString(R.string.email_not_verified));
                         binding.tilEmail.setOnClickListener(v -> {
                             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-                            builder.setTitle(getString(R.string.verification)).setMessage(getString(R.string.send_verification, users.getEmail())).setCancelable(false)
-                                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                                    .setPositiveButton(getString(R.string.send), (dialog, id) -> sendEmailVerification())
-                                    .setNeutralButton(getString(R.string.update_email), (dialog, id) -> updateEmail(users));
+                            builder.setTitle(R.string.verification).setMessage(getString(R.string.send_verification, users.getEmail())).setCancelable(false)
+                                    .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel())
+                                    .setPositiveButton(R.string.send, (dialog, id) -> sendEmailVerification())
+                                    .setNeutralButton(R.string.update_email, (dialog, id) -> updateEmail(users));
                             builder.show();
                         });
                     } else {
@@ -292,9 +301,9 @@ public class ProfileFragment extends Fragment {
 
     private void updateEmail(Users users) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(getString(R.string.update_email)).setMessage(getString(R.string.request_new_email, users.getEmail())).setCancelable(false)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, id) -> Navigation.findNavController(view).navigate(R.id.action_nav_profile_to_update_email));
+        builder.setTitle(R.string.update_email).setMessage(getString(R.string.request_new_email, users.getEmail())).setCancelable(false)
+                .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel())
+                .setPositiveButton(R.string.yes, (dialog, id) -> Navigation.findNavController(view).navigate(R.id.action_nav_profile_to_update_email));
         builder.show();
     }
 
@@ -320,6 +329,38 @@ public class ProfileFragment extends Fragment {
 
     private void selectImage() {
         resultLauncher.launch("image/*");
+    }
+
+    private void deleteImage() {
+        progressDialog.ShowProgressDialog();
+        String pathImage = "users/profile/" + authId + "/image/" + authId + ".jpg";
+        storageReference.child(pathImage).delete().addOnSuccessListener(taskSnapshot -> {
+            progressDialog.DismissProgressDialog();
+            Log.d(TAG, "uploadImage: successfully " + storageReference.getPath());
+            deletePhotoLink();
+        }).addOnFailureListener(e -> {
+            progressDialog.DismissProgressDialog();
+            Log.w(TAG, "uploadImage: failure ", e);
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void deletePhotoLink() {
+        progressDialog.ShowProgressDialog();
+
+        Map<String, Object> mapUsers = new HashMap<>();
+        mapUsers.put("photoLink", "");
+
+        databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
+            Log.d(TAG, "updatePhotoLink: Users");
+            progressDialog.DismissProgressDialog();
+            viewRealtimeDatabaseUsers();
+            Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "updatePhotoLink: Users", e);
+            progressDialog.DismissProgressDialog();
+            Toast.makeText(requireContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void uploadImage() {
@@ -363,6 +404,7 @@ public class ProfileFragment extends Fragment {
         databaseReferenceUsers.child(authId).updateChildren(mapUsers).addOnSuccessListener(unused -> {
             Log.d(TAG, "updatePhotoLink: Users");
             progressDialog.DismissProgressDialog();
+            viewRealtimeDatabaseUsers();
             Toast.makeText(requireContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             Log.w(TAG, "updatePhotoLink: Users", e);

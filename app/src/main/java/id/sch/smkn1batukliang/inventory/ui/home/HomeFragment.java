@@ -1,7 +1,6 @@
 package id.sch.smkn1batukliang.inventory.ui.home;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import id.sch.smkn1batukliang.inventory.R;
 import id.sch.smkn1batukliang.inventory.databinding.FragmentHomeBinding;
-import id.sch.smkn1batukliang.inventory.utils.CustomProgressDialog;
 
 
 public class HomeFragment extends Fragment {
@@ -43,14 +41,13 @@ public class HomeFragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
-        CustomProgressDialog progressDialog = new CustomProgressDialog(requireActivity());
         String url = "https://smkn1batukliang.sch.id/";
 
         WebView webView = binding.webView;
-        webView.setWebViewClient(new MyWebViewClient(progressDialog));
+        webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
 
-        if (user !=null){
+        if (user != null) {
             webView.loadUrl(url);
         } else {
             Toast.makeText(requireActivity(), R.string.please_login_first, Toast.LENGTH_SHORT).show();
@@ -76,23 +73,5 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
-    }
-
-    private static class MyWebViewClient extends WebViewClient {
-        private final CustomProgressDialog progressDialog;
-
-        public MyWebViewClient(CustomProgressDialog progressDialog) {
-            this.progressDialog = progressDialog;
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            progressDialog.ShowProgressDialog();
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            progressDialog.DismissProgressDialog();
-        }
     }
 }

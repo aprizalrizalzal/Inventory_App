@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,10 @@ public class SignUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         progressDialog = new CustomProgressDialog(SignUpActivity.this);
 
         auth = FirebaseAuth.getInstance();
@@ -43,11 +49,6 @@ public class SignUpActivity extends AppCompatActivity {
             isEmptyFields = validateFields(email, password, confirmPassword);
         });
 
-        binding.tvSignUpToSignIn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-            startActivity(intent);
-            finish();
-        });
     }
 
     private boolean validateFields(String email, String password, String confirmPassword) {
@@ -100,6 +101,15 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.registration_failed, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -69,12 +69,12 @@
     <string name="new_email_required">Email baru diperlukan</string>
     <string name="failed">Gagal</string>
     <string name="f_delete_users">Apakah Anda yakin, ingin menghapus %s</string>
-    <string name="f_delete_procurement">Apakah Anda yakin, ingin menghapus pengadaan %s</string>
-    <string name="f_delete_placement">Apakah Anda yakin, ingin menghapus penempatan %s</string>
-    <string name="f_delete_report">Apakah Anda yakin ingin menghapus laporan %s</string>
+    <string name="f_delete_procurement">Apakah Anda yakin, ingin menghapus pengadaan %s?</string>
+    <string name="f_delete_placement">Apakah Anda yakin, ingin menghapus penempatan %s?</string>
+    <string name="f_delete_report">Apakah Anda yakin ingin menghapus laporan %s?</string>
     <string name="f_report_rejected">Harap berikan deskripsi <b>singkat</b> penolakan</string>
-    <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan pengadaan %s</string>
-    <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan laporan  pengadaan %s</string>
+    <string name="f_procurement_approved">Apakah Anda yakin, setuju dengan laporan pengadaan %s?</string>
+    <string name="f_procurement_received">Apakah Anda yakin, sudah menerima dan sesuai dengan laporan  pengadaan %s?</string>
     <string name="cancel">Batal</string>
     <string name="yes">Ya</string>
     <string name="agree">Menyetujui</string>
@@ -93,7 +93,7 @@
     <string name="select_listed_ein_team_leader">Pilih Ketua Tim yang sesuai dan sudah terdaftar</string>
     <string name="select_listed_ein_vice_principal">Pilih Wakil kepala Sekolah yang sesuai dan sudah terdaftar</string>
     <string name="select_listed_ein_principal">Pilih Kepala Sekolah yang sesuai dan sudah terdaftar</string>
-    <string name="f_delete_level">Apakah Anda yakin ingin menghapus tingkat %s</string>
+    <string name="f_delete_level">Apakah Anda yakin ingin menghapus tingkat %s?</string>
     <string name="level_required">Tingkat diperlukan</string>
     <string name="select_listed_level">Pilih tingkat yang sesuai dan sudah terdaftar</string>
     <string name="email_not_verified">Email Belum Diverifikasi</string>
@@ -105,11 +105,12 @@
     <string name="update_level">peningkatan akun pengguna berhasil</string>
     <string name="sub_menu_manage">Mengelola</string>
     <string name="date">Tanggal</string>
+    <string name="upload_report">Unggah Laporan</string>
     <string name="download_report">Unduh Laporan</string>
     <string name="help">Bantuan</string>
     <string name="report">Laporan</string>
-    <string name="up_down_report">Kirim dan unduh laporan</string>
-    <string name="download_report_denied">Unduh laporan tidak bisa, izin ditolak</string>
+    <string name="up_down_report">Kirim dan unggah laporan</string>
+    <string name="upload_report_denied">Unggah laporan tidak bisa, izin ditolak</string>
     <string name="no_data_available_procurement">Tidak ada data pengadaan yang tersedia</string>
     <string name="no_data_available_goods">Tidak ada data barang yang tersedia</string>
     <string name="no_data_available_placement_for_procurement">Tidak ada data penempatan yang tersedia, silahkan hubungi admin</string>
@@ -157,4 +158,5 @@
     <string name="person_in_charge">Penanggung Jawab</string>
     <string name="goods_manager">Pengurus Barang</string>
     <string name="please_login_first">Silahkan masuk terlebih dahulu</string>
+    <string name="delete_image">Apakah Anda yakin, ingin menghapus poto profil?</string>
 </resources>

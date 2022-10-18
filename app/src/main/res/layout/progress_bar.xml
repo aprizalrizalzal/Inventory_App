@@ -7,7 +7,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/progress_size"
-        android:layout_margin="@dimen/vertical_margin"
+        android:layout_margin="@dimen/horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,14 +17,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingHorizontal="@dimen/horizontal_margin">
+            android:paddingHorizontal="@dimen/vertical_padding">
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="@dimen/horizontal_margin" />
+                android:layout_centerHorizontal="true"/>
 
             <TextView
                 android:id="@+id/tv_progress"
@@ -35,5 +34,4 @@
 
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
